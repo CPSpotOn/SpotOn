@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C1AF18E42625EC160033476E /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF18E32625EC160033476E /* WeatherData.swift */; };
 		D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713ABC326235C0D0001ADDC /* NetworkCalls.swift */; };
 		D713ABC726235C620001ADDC /* MapGeoJSONs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713ABC626235C620001ADDC /* MapGeoJSONs.swift */; };
 		D72DA6102623484E008C272A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA60F2623484E008C272A /* AppDelegate.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		73DF5F10D7BB0E1980A1C6EF /* Pods-SpotOn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.debug.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.debug.xcconfig"; sourceTree = "<group>"; };
 		7DE9022139D3DAA15151B691 /* Pods-SpotOn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.release.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.release.xcconfig"; sourceTree = "<group>"; };
+		C1AF18E32625EC160033476E /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		D713ABC326235C0D0001ADDC /* NetworkCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCalls.swift; sourceTree = "<group>"; };
 		D713ABC626235C620001ADDC /* MapGeoJSONs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeoJSONs.swift; sourceTree = "<group>"; };
 		D72DA60C2623484E008C272A /* SpotOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +63,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C1AF18E22625EC030033476E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C1AF18E32625EC160033476E /* WeatherData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D72DA6032623484E008C272A = {
 			isa = PBXGroup;
 			children = (
@@ -84,8 +94,8 @@
 			children = (
 				D72DA62B262354E4008C272A /* Controllers */,
 				D72DA62A262354DE008C272A /* Screens */,
-				D72DA629262354D5008C272A /* Model */,
 				D72DA628262354D1008C272A /* MapData */,
+				C1AF18E22625EC030033476E /* Model */,
 				D72DA627262354C8008C272A /* Network */,
 				D72DA60F2623484E008C272A /* AppDelegate.swift */,
 				D72DA6112623484E008C272A /* SceneDelegate.swift */,
@@ -110,13 +120,6 @@
 				D713ABC626235C620001ADDC /* MapGeoJSONs.swift */,
 			);
 			path = MapData;
-			sourceTree = "<group>";
-		};
-		D72DA629262354D5008C272A /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		D72DA62A262354DE008C272A /* Screens */ = {
@@ -267,6 +270,7 @@
 				D72DA6102623484E008C272A /* AppDelegate.swift in Sources */,
 				D72DA61A2623484E008C272A /* SpotOn.xcdatamodeld in Sources */,
 				D72DA6122623484E008C272A /* SceneDelegate.swift in Sources */,
+				C1AF18E42625EC160033476E /* WeatherData.swift in Sources */,
 				D7BEC0ED262529F80083AEE2 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

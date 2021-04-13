@@ -12,6 +12,9 @@ class LoginViewController: UIViewController {
     
     //MARK:- Variables
     //TODO: Connect all the outlets
+    @IBOutlet weak var userNameField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
+    
     
     //TODO: Add any required variables
     

@@ -58,5 +58,8 @@ Optional:
 * Profile --> Text fields to be modified 
 
 ## Wireframes
+<img src="https://i.imgur.com/caokqUe.jpeg" width=800><br>
 
+### [BONUS] Digital Wireframes & Mockups
+<img src="https://i.imgur.com/70UZ3pU.png" width=800><br>
 

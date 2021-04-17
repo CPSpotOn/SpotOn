@@ -7,12 +7,12 @@
 
 ## Overview
 ### Description
-A map app that allows you to track places where travel buddies have been to. It also allows for sharing spots in town that would have gone unnoticed by visitors otherwise. 
+A map app that allows you to travel with other together in a single intance of map. Track places where travel buddies have been to. It also allows for sharing spots in town that would have gone unnoticed by visitors otherwise. 
 
 ### App Evaluation
 - **Category:** Social Networking / Location Sharing / Map
 - **Mobile:** This app would be primarily developed for mobile devices. Functionality would be limited to mobile devices since it will be used on the move.
-- **Story:** Finds interesting places in town where travel buddies have been to. Users can communicate with one another if they choose to. It would also have an option for reviews of the different places that were visited.
+- **Story:** Finds interesting places in town where travel buddies have been to. Users can communicate with one another if they choose to. It would also have an option for reviews of the different places that were visited. Travel together as group.
 - **Market:** Any individual could choose to use the app. Users would be organized into age groups to allow flow in communication.
 - **Habit:** This app could be used whenever the user would like to take a stroll in their own city or town or wherever they might be traveling to.
 - **Scope:** First users would connect based on their location, it could then turn into an application that could be used as a travel guide, and lastly a possible means of meeting people.
@@ -37,7 +37,7 @@ A map app that allows you to track places where travel buddies have been to. It 
 * Profile Screen
     * Allows user to upload picture if desired as well as have any information deemed interesting to share
 * Map Screen
-    * Allows user to pinpoint a desired location on map
+    * Allows user to pinpoint a desired location on map or travel together with others.
 * Settings Screen
     * Allows user to change language, and notification settings
 

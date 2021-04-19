@@ -78,3 +78,27 @@ Optional:
 | createdAt | DateTime | date when user is registered                                                                                            |
 | updatedAt | DateTime | date when user information is updated                                                                                   |
 
+### Networking
+#### Newtwork calls to register user to backend
+``` Swift
+let user = PFUser()
+        user.name = nameField.text
+        user.username = userNameTF.text
+        user.email = emailField.text
+        user.password = passwordField.text
+         
+        user.signUpInBackground { (success, error) in
+            if let error = error{
+                print("error \(error.localizedDescription)")
+            }else{ //success
+                self.userNameTF.text = ""
+                self.nameField.text = ""
+                self.emailField.text = ""
+                self.passwordField.text = ""
+                self.performSegue(withIdentifier: "loginToHome", sender: nil)
+            }
+            
+        }
+```
+
+

@@ -64,7 +64,7 @@ Optional:
 <img src="https://i.imgur.com/70UZ3pU.png" width=800><br>
 
 ## Schema
----
+
 ### Models
 #### Login
 

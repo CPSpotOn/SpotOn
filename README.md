@@ -79,6 +79,7 @@ Optional:
 | updatedAt | DateTime | date when user information is updated                                                                                   |
 
 ### Networking
+## list of newtwork calls in login screen
 #### Newtwork calls to register user to backend
 ``` Swift
 let user = PFUser()
@@ -101,4 +102,21 @@ let user = PFUser()
         }
 ```
 
+### Loging user
+#### Sending user data and getting OK response
+``` Swift
+Logging in:
+	let userName = userNameTF.text!
+        let password = passwordField.text!
+        
+        PFUser.logInWithUsername(inBackground: userName, password: password) { (user, error) in
+            if user != nil{
+                self.userNameTF.text = ""
+                self.passwordField.text = ""
+                self.performSegue(withIdentifier: "loginToFeed", sender: nil)
+            }else{
+                print("error \(error!.localizedDescription)")
+            }
+        }
+```
 

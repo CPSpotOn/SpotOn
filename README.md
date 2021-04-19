@@ -63,3 +63,18 @@ Optional:
 ### [BONUS] Digital Wireframes & Mockups
 <img src="https://i.imgur.com/70UZ3pU.png" width=800><br>
 
+##Schema
+---
+###Models
+####Login
+
+| Property  | Type     | Description                                                                                                             |
+|-----------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| userId    | String   | unique id for user                                                                                                      |
+| name      | String   | user full name                                                                                                          |
+| username  | String   | unique username for user                                                                                                |
+| email     | String   | user email address                                                                                                      |
+| password  | String   | password created by user, must contain at least one uppercase, or capital letter, one lowercase and at least one number |
+| createdAt | DateTime | date when user is registered                                                                                            |
+| updatedAt | DateTime | date when user information is updated                                                                                   |
+

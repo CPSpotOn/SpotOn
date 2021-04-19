@@ -2,7 +2,7 @@
 //  MapGeoJSONs.swift
 //  SpotOn
 //
-//  Created by My Mac on 4/11/21.
+//  Created by William Rai on 4/11/21.
 //
 
 import Foundation

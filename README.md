@@ -63,3 +63,60 @@ Optional:
 ### [BONUS] Digital Wireframes & Mockups
 <img src="https://i.imgur.com/70UZ3pU.png" width=800><br>
 
+## Schema
+
+### Models
+#### Login
+
+| Property  | Type     | Description                                                                                                             |
+|-----------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| userId    | String   | unique id for user                                                                                                      |
+| name      | String   | user full name                                                                                                          |
+| username  | String   | unique username for user                                                                                                |
+| email     | String   | user email address                                                                                                      |
+| password  | String   | password created by user, must contain at least one uppercase, or capital letter, one lowercase and at least one number |
+| createdAt | DateTime | date when user is registered                                                                                            |
+| updatedAt | DateTime | date when user information is updated                                                                                   |
+
+### Networking
+## list of newtwork calls in login screen
+#### Newtwork calls to register user to backend
+``` Swift
+let user = PFUser()
+        user.name = nameField.text
+        user.username = userNameTF.text
+        user.email = emailField.text
+        user.password = passwordField.text
+         
+        user.signUpInBackground { (success, error) in
+            if let error = error{
+                print("error \(error.localizedDescription)")
+            }else{ //success
+                self.userNameTF.text = ""
+                self.nameField.text = ""
+                self.emailField.text = ""
+                self.passwordField.text = ""
+                self.performSegue(withIdentifier: "loginToHome", sender: nil)
+            }
+            
+        }
+```
+
+### Loging user
+#### Sending user data and getting OK response
+``` Swift
+Logging in:
+	let userName = userNameTF.text!
+        let password = passwordField.text!
+        
+        PFUser.logInWithUsername(inBackground: userName, password: password) { (user, error) in
+            if user != nil{
+                self.userNameTF.text = ""
+                self.passwordField.text = ""
+                self.performSegue(withIdentifier: "loginToFeed", sender: nil)
+            }else{
+                print("error \(error!.localizedDescription)")
+            }
+        }
+```
+

@@ -2,7 +2,7 @@
 //  SettingsViewController.swift
 //  SpotOn
 //
-//  Created by My Mac on 4/12/21.
+//  Created by William Rai on 4/12/21.
 //
 
 import UIKit

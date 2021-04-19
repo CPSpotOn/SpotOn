@@ -1,28 +1,19 @@
 //
-//  HomeViewController.swift
+//  RegisterViewController.swift
 //  SpotOn
 //
-//  Created by William Rai on 4/11/21.
+//  Created by William Rai on 4/17/21.
 //
 
 import UIKit
-import MapKit
 
-class HomeViewController: UIViewController {
-    
-    //MARK:- Variables
-    //TODO: Connect all the outlets
-    @IBOutlet weak var addFloatingBtn: UIButton!
-    //TODO: Add any required variables
-    
+class RegisterViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //TODO: Map initialization
-        
+        // Do any additional setup after loading the view.
     }
-    
-    //MARK:- Map helper functions
     
 
     /*

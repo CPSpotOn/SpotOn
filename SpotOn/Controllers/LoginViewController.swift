@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  SpotOn
 //
-//  Created by My Mac on 4/11/21.
+//  Created by William Rai on 4/11/21.
 //
 
 import UIKit
@@ -26,10 +26,16 @@ class LoginViewController: UIViewController {
     //MARK: - Action Outlets
     //TODO: Add a button action function for login
     
+    @IBAction func onLoginPressed(_ sender: Any) {
+        performSegue(withIdentifier: "loginToHome", sender: nil)
+    }
     
     
     //TODO: Add a button action function for register
     
+    @IBAction func onSignUpPressed(_ sender: Any) {
+        performSegue(withIdentifier: "loginToRegister", sender: nil)
+    }
     
     
     //MARK: - helper functions
@@ -53,16 +59,20 @@ class LoginViewController: UIViewController {
         //when directly signing up from the same login Screen
         /*
         let user = PFUser()
+        user.name = nameField.text
         user.username = userNameTF.text
+        user.email = emailField.text
         user.password = passwordField.text
-        
+         
         user.signUpInBackground { (success, error) in
             if let error = error{
                 print("error \(error.localizedDescription)")
-            }else{ //success
+            }else{ success
                 self.userNameTF.text = ""
+                self.nameField.text = ""
+                self.emailField.text = ""
                 self.passwordField.text = ""
-                self.performSegue(withIdentifier: "loginToFeed", sender: nil)
+                self.performSegue(withIdentifier: "loginToHome", sender: nil)
             }
             
         }

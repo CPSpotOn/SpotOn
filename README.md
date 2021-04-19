@@ -63,10 +63,10 @@ Optional:
 ### [BONUS] Digital Wireframes & Mockups
 <img src="https://i.imgur.com/70UZ3pU.png" width=800><br>
 
-##Schema
+## Schema
 ---
-###Models
-####Login
+### Models
+#### Login
 
 | Property  | Type     | Description                                                                                                             |
 |-----------|----------|-------------------------------------------------------------------------------------------------------------------------|

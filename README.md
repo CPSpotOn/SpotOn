@@ -120,3 +120,17 @@ Logging in:
         }
 ```
 
+
+#### Map
+
+| Property  | Type     | Description                                                                                                             |
+|----------------------|---------------------|---------------------------------------------------------------------------------------------------|
+| userCoordinates      | CLLocationDegrees   | coordinates representing user's location on map                                                   |
+| navigationStatus     | String              | user navigation status                                                                            |
+| userPinStatus        | Boolean             | user location pin status                                                                          |
+| pinCoordinates       | CLLocationDegrees   | pin coordinates on map                                                                            |
+| sessionStatus        | String              | network session status                                                                            |
+| usersPosts           | [String]            | text posted by other users                                                                        |
+| usersPostCoordinates | [CLLocationDegrees] | coordinates representing users post coordinates on map                                            |
+
+

@@ -148,6 +148,6 @@ mapObject.saveInBackground { (success, error) in
     if success {
         print("Map Data saved")
     } else {
-        print("Error saving Map Data")
+        print("error \(error!.localizedDescription)")
     }
 ```

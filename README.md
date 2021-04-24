@@ -80,8 +80,8 @@ Optional:
 | updatedAt | DateTime | date when user information is updated                                                                                   |
 
 ### Networking
-## list of newtwork calls in login screen
-#### Newtwork calls to register user to backend
+#### List of newtwork calls in login screen
+#### Network calls to register user to backend
 ``` Swift
 let user = PFUser()
         user.name = nameField.text
@@ -120,4 +120,35 @@ Logging in:
             }
         }
 ```
+### Sending map data
+#### Map
 
+| Property  | Type     | Description                                                                                                             |
+|----------------------|---------------------|---------------------------------------------------------------------------------------------------|
+| userCoordinates      | CLLocationDegrees   | coordinates representing user's location on map                                                   |
+| navigationStatus     | String              | user navigation status                                                                            |
+| userPinStatus        | Boolean             | user location pin status                                                                          |
+| pinCoordinates       | CLLocationDegrees   | pin coordinates on map                                                                            |
+| sessionStatus        | String              | network session status                                                                            |
+| usersPosts           | [String]            | text posted by other users                                                                        |
+| usersPostCoordinates | [CLLocationDegrees] | coordinates representing users post coordinates on map                                            |
+
+### Networking
+#### List of newtwork calls for sending map data
+#### Newtwork calls to send mapm data
+``` Swift
+let mapObject = PFObject(classname: "MapObjects")
+mapObeject["userCoordinates"] = userCoordinates
+mapObeject["navigationStatus"] = navigationStatus
+mapObeject["userPinStatus"] = userPinStatus 
+mapObeject["pinCoordinates"] = pinCoordinates
+mapObeject["sessionStatus"] = sessionStatus
+mapObeject["usersPosts"] = usersPosts
+mapObeject["usersPostCoordinates"] = usersPostCoordinates
+mapObject.saveInBackground { (success, error) in
+    if success {
+        print("Map Data saved")
+    } else {
+        print("error \(error!.localizedDescription)")
+    }
+```

@@ -130,11 +130,11 @@ Logging in:
 | userPinStatus        | Boolean             | user location pin status                                                                          |
 | pinCoordinates       | CLLocationDegrees   | pin coordinates on map                                                                            |
 | sessionStatus        | String              | network session status                                                                            |
-| usersPosts           | [String]            | text posted by other users                                                                        |
-| usersPostCoordinates | [CLLocationDegrees] | coordinates representing users post coordinates on map                                            |
+| userPosts            | [String]            | text posted by other users                                                                        |
+| userPostCoordinates  | [CLLocationDegrees] | coordinates representing users post coordinates on map                                            |
 
 ### Networking
-#### List of newtwork calls for sending map data
+#### List of network calls for sending map data
 #### Newtwork calls to send mapm data
 ``` Swift
 let mapObject = PFObject(classname: "MapObjects")

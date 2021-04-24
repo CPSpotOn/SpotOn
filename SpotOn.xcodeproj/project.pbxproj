@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B04F7F9F263399BD00B0715C /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04F7F9E263399BD00B0715C /* SettingsTableViewCell.swift */; };
 		C1AF18E42625EC160033476E /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF18E32625EC160033476E /* WeatherData.swift */; };
 		D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713ABC326235C0D0001ADDC /* NetworkCalls.swift */; };
 		D713ABC726235C620001ADDC /* MapGeoJSONs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713ABC626235C620001ADDC /* MapGeoJSONs.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		73DF5F10D7BB0E1980A1C6EF /* Pods-SpotOn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.debug.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.debug.xcconfig"; sourceTree = "<group>"; };
 		7DE9022139D3DAA15151B691 /* Pods-SpotOn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.release.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.release.xcconfig"; sourceTree = "<group>"; };
+		B04F7F9E263399BD00B0715C /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsTableViewCell.swift; path = "../../../../../Downloads/SpotOn-master/SpotOn/Controllers/SettingsTableViewCell.swift"; sourceTree = "<group>"; };
 		C1AF18E32625EC160033476E /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		D713ABC326235C0D0001ADDC /* NetworkCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCalls.swift; sourceTree = "<group>"; };
 		D713ABC626235C620001ADDC /* MapGeoJSONs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeoJSONs.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				D72DA62F26235643008C272A /* LoginViewController.swift */,
 				D72DA63226235650008C272A /* HomeViewController.swift */,
 				D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */,
+				B04F7F9E263399BD00B0715C /* SettingsTableViewCell.swift */,
 				D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */,
 				D78ACC60262B251A009B3740 /* ProfileViewController.swift */,
 			);
@@ -271,6 +274,7 @@
 			files = (
 				D72DA63326235650008C272A /* HomeViewController.swift in Sources */,
 				D78ACC5E262B22E3009B3740 /* RegisterViewController.swift in Sources */,
+				B04F7F9F263399BD00B0715C /* SettingsTableViewCell.swift in Sources */,
 				D713ABC726235C620001ADDC /* MapGeoJSONs.swift in Sources */,
 				D72DA63026235643008C272A /* LoginViewController.swift in Sources */,
 				D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */,

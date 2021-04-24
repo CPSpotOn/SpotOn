@@ -119,7 +119,7 @@ Logging in:
             }
         }
 ```
-
+### Sending map data
 #### Map
 
 | Property  | Type     | Description                                                                                                             |

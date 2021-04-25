@@ -89,6 +89,9 @@
                                                 <state key="normal" title="Register">
                                                     <color key="titleColor" red="0.98370048170000002" green="1" blue="0.97930801739999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onRegister:" destination="84Q-bN-3As" eventType="touchUpInside" id="49b-IM-U8m"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -106,7 +109,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="IHk-Nw-vJ4"/>
                     <connections>
-                        <segue destination="l8J-zf-oAb" kind="presentation" modalPresentationStyle="fullScreen" id="mkm-bz-ZvN"/>
+                        <outlet property="emailField" destination="U2S-ER-XQG" id="O6i-1r-Q9G"/>
+                        <outlet property="nameField" destination="J7q-tp-vuz" id="3Tl-6b-HLd"/>
+                        <outlet property="passwordField" destination="viL-W8-fT5" id="5WI-hj-35U"/>
+                        <outlet property="usernameField" destination="6Oj-Rx-bdH" id="UmH-5r-0bK"/>
+                        <segue destination="l8J-zf-oAb" kind="presentation" identifier="loginToHome" modalPresentationStyle="fullScreen" id="mkm-bz-ZvN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fH4-8l-Ty2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -116,7 +123,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="SpotOn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="BYZ-38-t0r" customClass="LoginViewController" customModule="SpotOn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -241,22 +248,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Look up address" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cna-pY-39w">
-                                <rect key="frame" x="20" y="60" width="374" height="34"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8ZJ-6l-AX8">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                            </mapView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Look up friends" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cna-pY-39w">
+                                <rect key="frame" x="20" y="104" width="374" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8ZJ-6l-AX8">
-                                <rect key="frame" x="0.0" y="99" width="414" height="763"/>
-                            </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CY1-j2-Syf">
-                                <rect key="frame" x="344" y="785" width="50" height="50"/>
-                                <color key="backgroundColor" systemColor="labelColor"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="plus" catalog="system">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="image 10F" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26P-qJ-8uR">
                                 <rect key="frame" x="20" y="785" width="99" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -273,18 +272,16 @@
                             <constraint firstItem="8ZJ-6l-AX8" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" id="2eC-b6-EpL"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="8ZJ-6l-AX8" secondAttribute="trailing" id="5N4-fn-HYh"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="Cna-pY-39w" secondAttribute="trailing" constant="20" id="FUp-Wb-wlW"/>
-                            <constraint firstItem="8ZJ-6l-AX8" firstAttribute="top" secondItem="Cna-pY-39w" secondAttribute="bottom" constant="5" id="KkK-pB-Oc1"/>
+                            <constraint firstItem="8ZJ-6l-AX8" firstAttribute="top" secondItem="c4i-sP-hOe" secondAttribute="top" id="Pjz-Ju-bQl"/>
                             <constraint firstItem="Cna-pY-39w" firstAttribute="top" secondItem="MoO-PH-dBE" secondAttribute="top" constant="16" id="WOJ-79-RiO"/>
-                            <constraint firstItem="MoO-PH-dBE" firstAttribute="bottom" secondItem="CY1-j2-Syf" secondAttribute="bottom" constant="27" id="r0i-9Z-PsM"/>
-                            <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="CY1-j2-Syf" secondAttribute="trailing" constant="20" id="stD-Sl-spU"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="bottom" secondItem="8ZJ-6l-AX8" secondAttribute="bottom" id="wm6-98-Ufj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="JcP-NO-I9g"/>
                     <connections>
-                        <outlet property="addFloatingBtn" destination="CY1-j2-Syf" id="fPx-SE-PQd"/>
-                        <segue destination="67r-rj-6gV" kind="presentation" id="uu7-Xc-1H9"/>
-                        <segue destination="SwC-zt-zBQ" kind="presentation" id="aqI-mu-PSK"/>
+                        <outlet property="mapView" destination="8ZJ-6l-AX8" id="10E-FI-cs3"/>
+                        <segue destination="67r-rj-6gV" kind="presentation" identifier="homeToSettings" id="uu7-Xc-1H9"/>
+                        <segue destination="SwC-zt-zBQ" kind="presentation" identifier="homeToProfile" id="aqI-mu-PSK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hP5-bX-Ol1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -298,15 +295,6 @@
                     <view key="view" contentMode="scaleToFill" id="8Wh-E1-0M4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wfz-sz-4Zi">
-                                <rect key="frame" x="70" y="333" width="274" height="88"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="wMX-bJ-ja0"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -318,7 +306,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Ho9-8b-9nS">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="M9a-qj-qNM" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="HomeNavController" automaticallyAdjustsScrollViewInsets="NO" id="M9a-qj-qNM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HGH-W1-iwG">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -353,13 +341,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mkm-bz-ZvN"/>
+        <segue reference="7EK-gc-7fR"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="plus" catalog="system" width="128" height="113"/>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

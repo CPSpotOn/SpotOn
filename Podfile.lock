@@ -1,22 +1,26 @@
 PODS:
   - Bolts/Tasks (1.9.1)
+  - Floaty (4.2.0)
   - Parse (1.19.1):
     - Parse/Core (= 1.19.1)
   - Parse/Core (1.19.1):
     - Bolts/Tasks (= 1.9.1)
 
 DEPENDENCIES:
+  - Floaty (~> 4.2.0)
   - Parse
 
 SPEC REPOS:
   trunk:
     - Bolts
+    - Floaty
     - Parse
 
 SPEC CHECKSUMS:
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
+  Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
   Parse: e40fdb9c7d665823b7fe9865949cac9a53eb2ce7
 
-PODFILE CHECKSUM: 9cb4d898bfa4a80708ab00fd6e872921a7b2c57c
+PODFILE CHECKSUM: 770cced2caf11b2c17330432ebbc7f76cb12a895
 
 COCOAPODS: 1.10.1

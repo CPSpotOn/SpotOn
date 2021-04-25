@@ -2,7 +2,7 @@
 //  ProfileViewController.swift
 //  SpotOn
 //
-//  Created by My Mac on 4/17/21.
+//  Created by William Rai on 4/17/21.
 //
 
 import UIKit

@@ -12,18 +12,16 @@ import Parse
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         //TODO: Add applicationId and clientKey after creating project in Parse server through Back4App
-//        let parseConfig = ParseClientConfiguration{
-//            $0.applicationId = "ip77RexuzCTgrkGL9FF2cvSttmbVx77OkSFA4ryU"
-//            $0.clientKey = "zXFUsA4QmtiqMQt8bOtqPc6QJoCuzGRxbFVfkUpQ"
-//            $0.server = "https://parseapi.back4app.com/"
-//        }
-//        Parse.initialize(with: parseConfig)
+        let parseConfig = ParseClientConfiguration{
+            $0.applicationId = "Q5akGd8hXmypSdlI9BDOEpyM7nImg9VTYkrjjTYc"
+            $0.clientKey = "ASMbrikLQdoMnPTK2JcRnql3gnKE9PEQfGqcAcTW"
+            $0.server = "https://parseapi.back4app.com/"
+        }
+        Parse.initialize(with: parseConfig)
         
         return true
     }

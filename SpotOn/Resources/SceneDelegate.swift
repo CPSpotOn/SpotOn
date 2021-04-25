@@ -20,12 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //When user is still logged in to the app
         //TODO: uncomment this after setting up Parse Server
-        /*
         if PFUser.current() != nil{
             let main = UIStoryboard(name: "Main", bundle: nil)
             //TODO: initialize the Screen you want to navigate to
-            window?.rootViewController = tabBarController
-        }*/
+            let navController = main.instantiateViewController(identifier: "HomeNavController")
+            window?.rootViewController = navController
+        }
         
         guard let _ = (scene as? UIWindowScene) else { return }
     }

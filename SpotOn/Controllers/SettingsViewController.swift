@@ -9,10 +9,31 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    let tableView : UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableView.delegate = self
+        tableView.dataSource = self
+        view.addSubview(tableView)
+        tablewViewConstraints()
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func tablewViewConstraints(){
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            
+        ])
     }
     
 
@@ -26,4 +47,19 @@ class SettingsViewController: UIViewController {
     }
     */
 
+}
+
+extension SettingsViewController : UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 100
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = "hello"
+        return cell
+    }
+    
+    
 }

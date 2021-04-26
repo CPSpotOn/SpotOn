@@ -16,19 +16,27 @@ class HomeViewController: UIViewController {
     //MARK:- Variables
     //TODO: Connect all the outlets
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var tempImageView: UIImageView!
+    @IBOutlet weak var cityLabel: UILabel!
     
     
     //TODO: Add any required variables
     let locationManger = CLLocationManager()
     let zoomMagnitude : Double = 10000;
+    var weatherManager = WeatherManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //floating button
         setFloaty()
-        
+        setWeatherManager()
         checkLocationServices()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
     }
 
     /*
@@ -110,6 +118,8 @@ extension HomeViewController{
         locationManger.desiredAccuracy = kCLLocationAccuracyReduced
         locationManger.allowsBackgroundLocationUpdates = true
         locationManger.requestAlwaysAuthorization()
+        locationManger.requestWhenInUseAuthorization()
+        locationManger.requestLocation()
     }
     
     //adjust the camera view of the map
@@ -120,8 +130,18 @@ extension HomeViewController{
             mapView.setRegion(region, animated: true)
         }
     }
+    
+    func setWeatherManager() {
+        self.weatherManager.delegate = self
+    }
+    
+    func alert() {
+        let alert = UIAlertController(title: "Did not allow SpotOn to know your location!", message: "It's recommended you allow SpotOn to know your location to fully utilize its features. Please go to settings and allow SpotOn to know your location.", preferredStyle: .alert)
+        self.present(alert, animated: true)
+    }
 }
 
+// MARK:- CLLocationManagerDelegate
 extension HomeViewController: CLLocationManagerDelegate{
     
     func render(_ location : CLLocation){
@@ -134,6 +154,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         guard let location = locations.last else {return}
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion.init(center: center, latitudinalMeters: zoomMagnitude, longitudinalMeters: zoomMagnitude)
+        weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude)
         mapView.setRegion(region, animated: true)
     }
     
@@ -147,10 +168,29 @@ extension HomeViewController: CLLocationManagerDelegate{
                 break
             case .notDetermined , .denied , .restricted:
                 print("denied")
+                alert()
                 break
             default:
                 print("wow nothing worked")
                 break
         }
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+}
+
+// MARK:- WeatherManagerDelegate
+extension HomeViewController: WeatherManagerDelegate {
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+        DispatchQueue.main.async {
+            self.tempLabel.text = weather.temperatureString + "°"
+            self.cityLabel.text = weather.cityName
+            self.tempImageView.image = UIImage(named: weather.conditionName)
+        }
+    }
+    
+    func didFailWithError(error: Error) {
+        print(error)
     }
 }

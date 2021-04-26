@@ -70,6 +70,7 @@
 		C1AF18E22625EC030033476E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D72DA628262354D1008C272A /* MapData */,
 				C1AF18E32625EC160033476E /* WeatherData.swift */,
 			);
 			path = Model;
@@ -96,16 +97,13 @@
 		D72DA60E2623484E008C272A /* SpotOn */ = {
 			isa = PBXGroup;
 			children = (
+				D7E3C9232633BBF10065C5CE /* Database */,
+				D7E3C9212633BBC10065C5CE /* Resources */,
 				D72DA62B262354E4008C272A /* Controllers */,
-				D72DA62A262354DE008C272A /* Screens */,
-				D72DA628262354D1008C272A /* MapData */,
+				D72DA62A262354DE008C272A /* Views */,
 				C1AF18E22625EC030033476E /* Model */,
 				D72DA627262354C8008C272A /* Network */,
-				D72DA60F2623484E008C272A /* AppDelegate.swift */,
-				D72DA6112623484E008C272A /* SceneDelegate.swift */,
-				D72DA61B26234851008C272A /* Assets.xcassets */,
 				D72DA62026234851008C272A /* Info.plist */,
-				D72DA6182623484E008C272A /* SpotOn.xcdatamodeld */,
 			);
 			path = SpotOn;
 			sourceTree = "<group>";
@@ -126,18 +124,20 @@
 			path = MapData;
 			sourceTree = "<group>";
 		};
-		D72DA62A262354DE008C272A /* Screens */ = {
+		D72DA62A262354DE008C272A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D72DA61D26234851008C272A /* LaunchScreen.storyboard */,
-				D72DA6152623484E008C272A /* Main.storyboard */,
+				D72DA61B26234851008C272A /* Assets.xcassets */,
+				D7E3C9222633BBD90065C5CE /* Storyboard */,
 			);
-			path = Screens;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D72DA62B262354E4008C272A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D7E3C92526348D3B0065C5CE /* Helper */,
+				D7E3C9202633BBB90065C5CE /* Cell */,
 				D72DA62F26235643008C272A /* LoginViewController.swift */,
 				D72DA63226235650008C272A /* HomeViewController.swift */,
 				D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */,
@@ -145,6 +145,46 @@
 				D78ACC60262B251A009B3740 /* ProfileViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D7E3C9202633BBB90065C5CE /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		D7E3C9212633BBC10065C5CE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D72DA60F2623484E008C272A /* AppDelegate.swift */,
+				D72DA6112623484E008C272A /* SceneDelegate.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D7E3C9222633BBD90065C5CE /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				D72DA61D26234851008C272A /* LaunchScreen.storyboard */,
+				D72DA6152623484E008C272A /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		D7E3C9232633BBF10065C5CE /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D72DA6182623484E008C272A /* SpotOn.xcdatamodeld */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		D7E3C92526348D3B0065C5CE /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DDD4C498F858DF76A0D373A5 /* Frameworks */ = {

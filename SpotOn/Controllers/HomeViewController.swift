@@ -117,6 +117,7 @@ extension HomeViewController{
         //Chris added this part + plist changed
         locationManger.requestWhenInUseAuthorization()
         locationManger.requestLocation()
+        locationManger.allowsBackgroundLocationUpdates = true
     }
     
     //adjust the camera view of the map
@@ -143,17 +144,19 @@ extension HomeViewController{
 extension HomeViewController: CLLocationManagerDelegate{
     
     func render(_ location : CLLocation){
-        
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion.init(center: center, latitudinalMeters: zoomMagnitude, longitudinalMeters: zoomMagnitude)
+        let pin = MKPointAnnotation()
+        weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude) // Chris added this part
+        mapView.setRegion(region, animated: true)
+        mapView.showsUserLocation = true
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //update locations when user move
         print("test")
         guard let location = locations.last else {return}
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion.init(center: center, latitudinalMeters: zoomMagnitude, longitudinalMeters: zoomMagnitude)
-        weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude) // Chris added this part
-        mapView.setRegion(region, animated: true)
+        render(location)
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

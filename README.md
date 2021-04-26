@@ -152,3 +152,5 @@ mapObject.saveInBackground { (success, error) in
         print("error \(error!.localizedDescription)")
     }
 ```
+
+<img src= "https://i.imgur.com/evl5GlE.gif">

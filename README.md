@@ -4,6 +4,7 @@
 1. [Overview](#Overview)
 2. [Product Spec](#Product-Spec)
 3. [Wireframes](#Wireframes)
+4. [Schema](#Schema)
 
 ## Overview
 ### Description
@@ -63,3 +64,91 @@ Optional:
 ### [BONUS] Digital Wireframes & Mockups
 <img src="https://i.imgur.com/70UZ3pU.png" width=800><br>
 
+## Schema
+
+### Models
+#### Login
+
+| Property  | Type     | Description                                                                                                             |
+|-----------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| userId    | String   | unique id for user                                                                                                      |
+| name      | String   | user full name                                                                                                          |
+| username  | String   | unique username for user                                                                                                |
+| email     | String   | user email address                                                                                                      |
+| password  | String   | password created by user, must contain at least one uppercase, or capital letter, one lowercase and at least one number |
+| createdAt | DateTime | date when user is registered                                                                                            |
+| updatedAt | DateTime | date when user information is updated                                                                                   |
+
+### Networking
+#### List of newtwork calls in login screen
+#### Network calls to register user to backend
+``` Swift
+let user = PFUser()
+        user.name = nameField.text
+        user.username = userNameTF.text
+        user.email = emailField.text
+        user.password = passwordField.text
+         
+        user.signUpInBackground { (success, error) in
+            if let error = error{
+                print("error \(error.localizedDescription)")
+            }else{ //success
+                self.userNameTF.text = ""
+                self.nameField.text = ""
+                self.emailField.text = ""
+                self.passwordField.text = ""
+                self.performSegue(withIdentifier: "loginToHome", sender: nil)
+            }
+            
+        }
+```
+
+### Loging user
+#### Sending user data and getting OK response
+``` Swift
+Logging in:
+	let userName = userNameTF.text!
+        let password = passwordField.text!
+        
+        PFUser.logInWithUsername(inBackground: userName, password: password) { (user, error) in
+            if user != nil{
+                self.userNameTF.text = ""
+                self.passwordField.text = ""
+                self.performSegue(withIdentifier: "loginToFeed", sender: nil)
+            }else{
+                print("error \(error!.localizedDescription)")
+            }
+        }
+```
+### Sending map data
+#### Map
+
+| Property  | Type     | Description                                                                                                             |
+|----------------------|---------------------|---------------------------------------------------------------------------------------------------|
+| userCoordinates      | CLLocationDegrees   | coordinates representing user's location on map                                                   |
+| navigationStatus     | String              | user navigation status                                                                            |
+| userPinStatus        | Boolean             | user location pin status                                                                          |
+| pinCoordinates       | CLLocationDegrees   | pin coordinates on map                                                                            |
+| sessionStatus        | String              | network session status                                                                            |
+| userPosts            | [String]            | text posted by other users                                                                        |
+| userPostCoordinates  | [CLLocationDegrees] | coordinates representing users post coordinates on map                                            |
+
+### Networking
+#### List of network calls for sending map data
+#### Newtwork calls to send mapm data
+``` Swift
+let mapObject = PFObject(classname: "MapObjects")
+mapObeject["userCoordinates"] = userCoordinates
+mapObeject["navigationStatus"] = navigationStatus
+mapObeject["userPinStatus"] = userPinStatus 
+mapObeject["pinCoordinates"] = pinCoordinates
+mapObeject["sessionStatus"] = sessionStatus
+mapObeject["usersPosts"] = usersPosts
+mapObeject["usersPostCoordinates"] = usersPostCoordinates
+mapObject.saveInBackground { (success, error) in
+    if success {
+        print("Map Data saved")
+    } else {
+        print("error \(error!.localizedDescription)")
+    }
+```

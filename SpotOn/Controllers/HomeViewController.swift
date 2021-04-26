@@ -23,8 +23,8 @@ class HomeViewController: UIViewController {
     
     //TODO: Add any required variables
     let locationManger = CLLocationManager()
-    let zoomMagnitude : Double = 10000;
-    var weatherManager = WeatherManager()
+    let zoomMagnitude : Double = 1000; // Zoomed in a little more, prev was 10000
+    var weatherManager = WeatherManager() //Chris added this
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +32,6 @@ class HomeViewController: UIViewController {
         setFloaty()
         setWeatherManager()
         checkLocationServices()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
     }
 
     /*
@@ -51,6 +46,7 @@ class HomeViewController: UIViewController {
 
 }
 
+// MARK:- Setup Functions
 extension HomeViewController{
     //MARK:- Map helper functions
     
@@ -115,9 +111,10 @@ extension HomeViewController{
     func setUpLocationManager(){
         print("setUpLocationManager")
         locationManger.delegate = self
-        locationManger.desiredAccuracy = kCLLocationAccuracyReduced
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
         locationManger.allowsBackgroundLocationUpdates = true
         locationManger.requestAlwaysAuthorization()
+        //Chris added this part + plist changed
         locationManger.requestWhenInUseAuthorization()
         locationManger.requestLocation()
     }
@@ -131,6 +128,7 @@ extension HomeViewController{
         }
     }
     
+    // Chris added weather set func
     func setWeatherManager() {
         self.weatherManager.delegate = self
     }
@@ -154,7 +152,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         guard let location = locations.last else {return}
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion.init(center: center, latitudinalMeters: zoomMagnitude, longitudinalMeters: zoomMagnitude)
-        weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude)
+        weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude) // Chris added this part
         mapView.setRegion(region, animated: true)
     }
     
@@ -168,7 +166,7 @@ extension HomeViewController: CLLocationManagerDelegate{
                 break
             case .notDetermined , .denied , .restricted:
                 print("denied")
-                alert()
+                alert() // Chris added this part
                 break
             default:
                 print("wow nothing worked")
@@ -182,6 +180,7 @@ extension HomeViewController: CLLocationManagerDelegate{
 
 // MARK:- WeatherManagerDelegate
 extension HomeViewController: WeatherManagerDelegate {
+    //Chris Added this part
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.tempLabel.text = weather.temperatureString + "°"

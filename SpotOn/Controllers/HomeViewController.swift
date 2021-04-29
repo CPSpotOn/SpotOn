@@ -35,6 +35,7 @@ class HomeViewController: UIViewController {
         setFloaty()
         setWeatherManager()
         checkLocationServices()
+        overrideUserInterfaceStyle = .light //light mode by default
     }
     
     /*
@@ -86,6 +87,7 @@ extension HomeViewController{
             floaty.close()
         })
         
+        //display or hide pin
         floaty.addItem("Pin", icon: UIImage(systemName: "pin")!) { item in
             if self.pinImageView.isHidden == true {
                 self.pinImageView.isHidden = false
@@ -234,35 +236,36 @@ extension HomeViewController: WeatherManagerDelegate {
 extension HomeViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         //print("regionDidChanged")
-            let center = getCenterLocation(for: mapView)
-            let geoCoder = CLGeocoder()
+        let center = getCenterLocation(for: mapView)
+        let geoCoder = CLGeocoder()
+        
+        guard let previousLocation = self.previousLocation else { return }
+        
+        guard center.distance(from: previousLocation) > 50 else { return }
+        self.previousLocation = center
+        
+        geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in
+            guard let self = self else { return }
             
-            guard let previousLocation = self.previousLocation else { return }
+            if let _ = error {
+                //TODO: Show alert informing the user
+                return
+            }
             
-            guard center.distance(from: previousLocation) > 50 else { return }
-            self.previousLocation = center
+            guard let placemark = placemarks?.first else {
+                //TODO: Show alert informing the user
+                return
+            }
             
-            geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in
-                guard let self = self else { return }
-                
-                if let _ = error {
-                    //TODO: Show alert informing the user
-                    return
-                }
-                
-                guard let placemark = placemarks?.first else {
-                    //TODO: Show alert informing the user
-                    return
-                }
-                
-                let streetNumber = placemark.subThoroughfare ?? ""
-                let streetName = placemark.thoroughfare ?? ""
-                
-                DispatchQueue.main.async {
-                    if self.pinImageView.isHidden != true {
-                        self.geoTestLabel.text = "\(streetNumber) \(streetName)"
-                    }
+            let streetNumber = placemark.subThoroughfare ?? ""
+            let streetName = placemark.thoroughfare ?? ""
+            
+            //move to main thread
+            DispatchQueue.main.async {
+                if self.pinImageView.isHidden != true {
+                    self.geoTestLabel.text = "\(streetNumber) \(streetName)"
                 }
             }
         }
+    }
 }

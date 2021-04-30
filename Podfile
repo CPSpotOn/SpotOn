@@ -8,5 +8,6 @@ target 'SpotOn' do
   # Pods for SpotOn
   pod 'Parse'
   pod 'Floaty', '~> 4.2.0'  # Library for floating buttons
+  pod 'AlamofireImage'
 
 end

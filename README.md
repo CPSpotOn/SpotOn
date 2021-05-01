@@ -154,4 +154,4 @@ mapObject.saveInBackground { (success, error) in
 ```
 
 <img src = "https://i.imgur.com/HdDm2Uz.gif">
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/uA6du3K" data-context="false" ><a href="//imgur.com/a/uA6du3K"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+<img src = "https://imgur.com/a/uA6du3K">

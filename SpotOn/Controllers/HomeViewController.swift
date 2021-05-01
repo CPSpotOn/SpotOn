@@ -223,6 +223,7 @@ extension HomeViewController: WeatherManagerDelegate {
         DispatchQueue.main.async {
             self.tempLabel.text = weather.temperatureString + "°"
             self.cityLabel.text = weather.cityName
+            print("weather conditionname : ", weather.conditionName)
             self.tempImageView.image = UIImage(named: weather.conditionName)
         }
     }

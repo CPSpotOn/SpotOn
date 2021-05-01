@@ -19,12 +19,15 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var tempImageView: UIImageView!
     @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var pinImageView: UIImageView!
+    @IBOutlet weak var geoTestLabel: UILabel!
     
     
     //TODO: Add any required variables
     let locationManger = CLLocationManager()
     let zoomMagnitude : Double = 1000; // Zoomed in a little more, prev was 10000
     var weatherManager = WeatherManager() //Chris added this
+    var previousLocation : CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,18 +35,19 @@ class HomeViewController: UIViewController {
         setFloaty()
         setWeatherManager()
         checkLocationServices()
+        overrideUserInterfaceStyle = .light //light mode by default
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 // MARK:- Setup Functions
@@ -83,6 +87,15 @@ extension HomeViewController{
             floaty.close()
         })
         
+        //display or hide pin
+        floaty.addItem("Pin", icon: UIImage(systemName: "pin")!) { item in
+            if self.pinImageView.isHidden == true {
+                self.pinImageView.isHidden = false
+            } else {
+                self.pinImageView.isHidden = true
+            }
+        }
+        
         self.view.addSubview(floaty)
         
         //constraints
@@ -111,13 +124,13 @@ extension HomeViewController{
     func setUpLocationManager(){
         print("setUpLocationManager")
         locationManger.delegate = self
+        mapView.delegate = self
         locationManger.desiredAccuracy = kCLLocationAccuracyBest
         locationManger.allowsBackgroundLocationUpdates = true
         locationManger.requestAlwaysAuthorization()
         //Chris added this part + plist changed
         locationManger.requestWhenInUseAuthorization()
         locationManger.requestLocation()
-        locationManger.allowsBackgroundLocationUpdates = true
     }
     
     //adjust the camera view of the map
@@ -146,7 +159,7 @@ extension HomeViewController: CLLocationManagerDelegate{
     func render(_ location : CLLocation){
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion.init(center: center, latitudinalMeters: zoomMagnitude, longitudinalMeters: zoomMagnitude)
-        let pin = MKPointAnnotation()
+        //let pin = MKPointAnnotation()
         weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude) // Chris added this part
         mapView.setRegion(region, animated: true)
         mapView.showsUserLocation = true
@@ -156,28 +169,49 @@ extension HomeViewController: CLLocationManagerDelegate{
         //update locations when user move
         print("test")
         guard let location = locations.last else {return}
+        previousLocation = location
         render(location)
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch  manager.authorizationStatus {
-            case .authorizedAlways , .authorizedWhenInUse:
-                print("always and when in use")
-                mapView.showsUserLocation = true
-                zoomInUserLocation()
-                locationManger.startUpdatingLocation()
-                break
-            case .notDetermined , .denied , .restricted:
-                print("denied")
-                alert() // Chris added this part
-                break
-            default:
-                print("wow nothing worked")
-                break
-        }
+        checkAuthorization(manager)
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
+    }
+    
+    // Helper functions
+    func startTrackingLocation() {
+        print("startTrackingLocation")
+        mapView.showsUserLocation = true
+        zoomInUserLocation()
+        locationManger.startUpdatingLocation()
+        previousLocation = getCenterLocation(for: mapView)
+    }
+    
+    func checkAuthorization(_ manager: CLLocationManager) {
+        print("checkAuthorization")
+        switch  manager.authorizationStatus {
+        case .authorizedAlways , .authorizedWhenInUse:
+            print("always and when in use")
+            startTrackingLocation()
+            break
+        case .notDetermined , .denied , .restricted:
+            print("denied")
+            alert() // Chris added this part
+            break
+        default:
+            print("wow nothing worked")
+            break
+        }
+    }
+    
+    func getCenterLocation(for mapView: MKMapView) -> CLLocation {
+        print("getCenterLocation")
+        let latitude = mapView.centerCoordinate.latitude
+        let longitude = mapView.centerCoordinate.longitude
+        
+        return CLLocation(latitude: latitude, longitude: longitude)
     }
 }
 
@@ -185,14 +219,54 @@ extension HomeViewController: CLLocationManagerDelegate{
 extension HomeViewController: WeatherManagerDelegate {
     //Chris Added this part
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+        //Move to main thread
         DispatchQueue.main.async {
             self.tempLabel.text = weather.temperatureString + "°"
             self.cityLabel.text = weather.cityName
+            print("weather conditionname : ", weather.conditionName)
             self.tempImageView.image = UIImage(named: weather.conditionName)
         }
     }
     
     func didFailWithError(error: Error) {
         print(error)
+    }
+}
+
+// MARK:- MKMapViewDelegate
+extension HomeViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        //print("regionDidChanged")
+        let center = getCenterLocation(for: mapView)
+        let geoCoder = CLGeocoder()
+        
+        guard let previousLocation = self.previousLocation else { return }
+        
+        guard center.distance(from: previousLocation) > 50 else { return }
+        self.previousLocation = center
+        
+        geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in
+            guard let self = self else { return }
+            
+            if let _ = error {
+                //TODO: Show alert informing the user
+                return
+            }
+            
+            guard let placemark = placemarks?.first else {
+                //TODO: Show alert informing the user
+                return
+            }
+            
+            let streetNumber = placemark.subThoroughfare ?? ""
+            let streetName = placemark.thoroughfare ?? ""
+            
+            //move to main thread
+            DispatchQueue.main.async {
+                if self.pinImageView.isHidden != true {
+                    self.geoTestLabel.text = "\(streetNumber) \(streetName)"
+                }
+            }
+        }
     }
 }

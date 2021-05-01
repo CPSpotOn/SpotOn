@@ -10,20 +10,33 @@ import Parse
 
 class RegisterViewController: UIViewController {
 
+    //outlets
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var regBtn: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        editPlaceHolder(view: nameField, placeholder: "Name", color: UIColor.black)
+        editPlaceHolder(view: emailField, placeholder: "Email", color: UIColor.black)
+        editPlaceHolder(view: usernameField, placeholder: "Username", color: UIColor.black)
+        editPlaceHolder(view: passwordField, placeholder: "Password", color: UIColor.black)
+        
+        regBtn.layer.cornerRadius = 12
+        
     }
     
 
     @IBAction func onRegister(_ sender: Any) {
        register()
+    }
+    
+    func editPlaceHolder(view : UITextField, placeholder : String, color : UIColor){
+        view.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor : color])
     }
     
     /*

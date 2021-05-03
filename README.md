@@ -24,6 +24,7 @@ A GPS app that allows you to travel with other together in a single instance of 
 - [x] User can register an account 
 - [x] User can log into app
 - [x] User can find coordinates on map page
+- [x] User gets personalized weather info
 
 
 **Required Must-have Stories**

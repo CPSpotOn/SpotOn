@@ -21,6 +21,11 @@ A GPS app that allows you to travel with other together in a single instance of 
 ## Product Spec
 ### 1. User Stories (Required and Optional)
 
+- [x] User can register an account 
+- [x] User can log into app
+- [x] User can find coordinates on map page
+
+
 **Required Must-have Stories**
 
 * User logs in to access previous locations and preference settings

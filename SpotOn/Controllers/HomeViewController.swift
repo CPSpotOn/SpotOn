@@ -94,7 +94,7 @@ extension HomeViewController{
         floaty.addItem("Go", icon: UIImage(systemName: "figure.walk")!) { item in
             //trigger action only uf pin is visible
             if self.pinImageView.isHidden != true {
-                self.getDirection()
+                self.getDirectionWithPin()
             } else {
                 self.mapView.userTrackingMode = .followWithHeading
             }
@@ -192,7 +192,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         locationManger.startUpdatingLocation()
         previousLocation = getCenterLocation(for: mapView)
     }
-    
+
     func checkAuthorization(_ manager: CLLocationManager) {
         print("checkAuthorization")
         switch  manager.authorizationStatus {
@@ -218,7 +218,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
-    func getDirection() {
+    func getDirectionWithPin() {
         //make sure we got user location
         guard let location = locationManger.location?.coordinate else {
             //TODO: Inform the user we don't have their location
@@ -226,7 +226,7 @@ extension HomeViewController: CLLocationManagerDelegate{
             return
         }
         
-        let request = createDirectionRequest(from: location)
+        let request = createDirectionRequestWithPin(from: location)
         let directions = MKDirections(request: request)
         resetMapview(withNew: directions)
         
@@ -255,7 +255,7 @@ extension HomeViewController: CLLocationManagerDelegate{
     }
     
     //requets helper function
-    func createDirectionRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
+    func createDirectionRequestWithPin(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
         let destinationCoordinate = getCenterLocation(for: mapView).coordinate
         let startingPosition = MKPlacemark(coordinate: coordinate)
         let destination = MKPlacemark(coordinate: destinationCoordinate)

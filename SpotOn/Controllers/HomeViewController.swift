@@ -21,6 +21,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var pinImageView: UIImageView!
     @IBOutlet weak var geoTestLabel: UILabel!
+    @IBOutlet weak var searchTextField: UITextField!
     
     
     //TODO: Add any required variables
@@ -38,17 +39,7 @@ class HomeViewController: UIViewController {
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    //end of class
 }
 
 // MARK:- Setup Functions
@@ -92,8 +83,10 @@ extension HomeViewController{
         floaty.addItem("Pin", icon: UIImage(systemName: "pin")!) { item in
             if self.pinImageView.isHidden == true {
                 self.pinImageView.isHidden = false
+                self.searchTextField.text = ""
             } else {
                 self.pinImageView.isHidden = true
+                self.searchTextField.text = ""
             }
         }
         
@@ -102,6 +95,8 @@ extension HomeViewController{
             //trigger action only uf pin is visible
             if self.pinImageView.isHidden != true {
                 self.getDirection()
+            } else {
+                self.mapView.userTrackingMode = .followWithHeading
             }
         }
         
@@ -327,7 +322,8 @@ extension HomeViewController: MKMapViewDelegate {
                 //move to main thread
                 DispatchQueue.main.async {
                     if self.pinImageView.isHidden != true {
-                        self.geoTestLabel.text = "\(streetNumber) \(streetName)"
+                        //self.geoTestLabel.text = "\(streetNumber) \(streetName)"
+                        self.searchTextField.text = "\(streetNumber) \(streetName)"
                     }
                 }
             }

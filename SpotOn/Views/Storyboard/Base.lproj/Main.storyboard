@@ -348,6 +348,7 @@
                         <outlet property="geoTestLabel" destination="OL3-xH-Rpz" id="bZv-LC-1gp"/>
                         <outlet property="mapView" destination="8ZJ-6l-AX8" id="10E-FI-cs3"/>
                         <outlet property="pinImageView" destination="BZV-gY-M4n" id="Nln-FX-x2C"/>
+                        <outlet property="searchTextField" destination="Cna-pY-39w" id="Mnd-Fc-Gyg"/>
                         <outlet property="tempImageView" destination="2yv-Gh-j7c" id="f45-ao-9WD"/>
                         <outlet property="tempLabel" destination="hvb-JP-bEK" id="kyP-KS-xfX"/>
                         <segue destination="67r-rj-6gV" kind="presentation" identifier="homeToSettings" id="uu7-Xc-1H9"/>

@@ -243,7 +243,7 @@
         <!--Profile View Controller-->
         <scene sceneID="rgb-k8-jdz">
             <objects>
-                <viewController id="SwC-zt-zBQ" customClass="ProfileViewController" customModule="SpotOn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Profile" id="SwC-zt-zBQ" customClass="ProfileViewController" customModule="SpotOn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ap2-zQ-zJ3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -361,7 +361,7 @@
         <!--Settings View Controller-->
         <scene sceneID="kwR-ho-tVF">
             <objects>
-                <viewController id="67r-rj-6gV" customClass="SettingsViewController" customModule="SpotOn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Settings" id="67r-rj-6gV" customClass="SettingsViewController" customModule="SpotOn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8Wh-E1-0M4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

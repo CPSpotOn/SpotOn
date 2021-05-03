@@ -31,11 +31,26 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //floating button
-        setFloaty()
+        
+        //floating button setUp
+        let floatingButton = FloatingButton(controller: self)
+        floatingButton.addButtons(with: pinImageView)
+        view.addSubview(floatingButton)
+        setConstraints(floatingButton: floatingButton)
+        
         setWeatherManager()
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
+    }
+    
+    //constraint for FLoating Action Button
+    func setConstraints(floatingButton : FloatingButton){
+        //constraints
+        //floaty.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        floatingButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        floatingButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        floatingButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        floatingButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
     }
     
     /*
@@ -53,59 +68,6 @@ class HomeViewController: UIViewController {
 // MARK:- Setup Functions
 extension HomeViewController{
     //MARK:- Map helper functions
-    
-    //creates a floating button and sets constraint
-    func setFloaty(){
-        let floaty = Floaty()
-        floaty.translatesAutoresizingMaskIntoConstraints = false
-        
-        //logsout on click
-        floaty.addItem("Logout", icon: UIImage(systemName: "clear")!, handler: { item in
-            PFUser.logOut()
-            //let delegate = self.view.window?.windowScene?.delegate as! SceneDelegate
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                  let sceneDelegate = windowScene.delegate as? SceneDelegate
-            else{
-                return
-            }
-            let main = UIStoryboard(name: "Main", bundle: nil)
-            let loginViewController = main.instantiateViewController(withIdentifier: "LoginViewController")
-            sceneDelegate.window?.rootViewController = loginViewController
-            
-            floaty.close()
-        })
-        
-        //segues into Settings from Home
-        floaty.addItem("Settings", icon: UIImage(systemName: "gearshape")!, handler: { item in
-            self.performSegue(withIdentifier: "homeToSettings", sender: nil)
-            floaty.close()
-        })
-        
-        //navigate to Profile from Home
-        floaty.addItem("Profile", icon: UIImage(systemName: "person")!, handler: { item in
-            self.performSegue(withIdentifier: "homeToProfile", sender: nil)
-            floaty.close()
-        })
-        
-        //display or hide pin
-        floaty.addItem("Pin", icon: UIImage(systemName: "pin")!) { item in
-            if self.pinImageView.isHidden == true {
-                self.pinImageView.isHidden = false
-            } else {
-                self.pinImageView.isHidden = true
-            }
-        }
-        
-        self.view.addSubview(floaty)
-        
-        //constraints
-        //floaty.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        floaty.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-        floaty.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        floaty.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        floaty.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
-        
-    }
     
     //checks if high level local service is on
     func checkLocationServices(){

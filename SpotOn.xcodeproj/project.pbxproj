@@ -20,6 +20,7 @@
 		D72DA61F26234851008C272A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D72DA61D26234851008C272A /* LaunchScreen.storyboard */; };
 		D72DA63026235643008C272A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA62F26235643008C272A /* LoginViewController.swift */; };
 		D72DA63326235650008C272A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA63226235650008C272A /* HomeViewController.swift */; };
+		D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78370E9263F725A00CECE32 /* FloatingButton.swift */; };
 		D78ACC5E262B22E3009B3740 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */; };
 		D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78ACC60262B251A009B3740 /* ProfileViewController.swift */; };
 		D7BEC0ED262529F80083AEE2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */; };
@@ -44,6 +45,7 @@
 		D72DA62026234851008C272A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D72DA62F26235643008C272A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D72DA63226235650008C272A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D78370E9263F725A00CECE32 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		D78ACC60262B251A009B3740 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -150,7 +152,7 @@
 		D72DA62B262354E4008C272A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D7E3C92526348D3B0065C5CE /* Helper */,
+				D7E3C92526348D3B0065C5CE /* Functions */,
 				D7E3C9202633BBB90065C5CE /* Cell */,
 				D72DA62F26235643008C272A /* LoginViewController.swift */,
 				D72DA63226235650008C272A /* HomeViewController.swift */,
@@ -194,11 +196,12 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		D7E3C92526348D3B0065C5CE /* Helper */ = {
+		D7E3C92526348D3B0065C5CE /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				D78370E9263F725A00CECE32 /* FloatingButton.swift */,
 			);
-			path = Helper;
+			path = Functions;
 			sourceTree = "<group>";
 		};
 		DDD4C498F858DF76A0D373A5 /* Frameworks */ = {
@@ -332,6 +335,7 @@
 				D72DA6102623484E008C272A /* AppDelegate.swift in Sources */,
 				D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */,
 				D72DA61A2623484E008C272A /* SpotOn.xcdatamodeld in Sources */,
+				D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */,
 				D72DA6122623484E008C272A /* SceneDelegate.swift in Sources */,
 				C1AF18E42625EC160033476E /* WeatherData.swift in Sources */,
 				C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */,

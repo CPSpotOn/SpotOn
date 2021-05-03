@@ -70,5 +70,7 @@
         <string>Your location is required for map and weather services</string>
         <key>NSLocationWhenInUseUsageDescription</key>
         <string>Your location is required for map and weather services</string>
+        <key>UIUserInterfaceStyle</key>
+        <string>Light</string>
     </dict>
 </plist>

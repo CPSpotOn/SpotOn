@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -348,6 +348,7 @@
                         <outlet property="geoTestLabel" destination="OL3-xH-Rpz" id="bZv-LC-1gp"/>
                         <outlet property="mapView" destination="8ZJ-6l-AX8" id="10E-FI-cs3"/>
                         <outlet property="pinImageView" destination="BZV-gY-M4n" id="Nln-FX-x2C"/>
+                        <outlet property="searchTextField" destination="Cna-pY-39w" id="Mnd-Fc-Gyg"/>
                         <outlet property="tempImageView" destination="2yv-Gh-j7c" id="f45-ao-9WD"/>
                         <outlet property="tempLabel" destination="hvb-JP-bEK" id="kyP-KS-xfX"/>
                         <segue destination="67r-rj-6gV" kind="presentation" identifier="homeToSettings" id="uu7-Xc-1H9"/>

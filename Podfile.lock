@@ -1,26 +1,30 @@
 PODS:
   - Bolts/Tasks (1.9.1)
   - Floaty (4.2.0)
-  - Parse (1.19.1):
-    - Parse/Core (= 1.19.1)
-  - Parse/Core (1.19.1):
+  - Parse (1.19.2):
+    - Parse/Core (= 1.19.2)
+  - Parse/Core (1.19.2):
     - Bolts/Tasks (= 1.9.1)
+  - SwiftHEXColors (1.4.1)
 
 DEPENDENCIES:
   - Floaty (~> 4.2.0)
   - Parse
+  - SwiftHEXColors
 
 SPEC REPOS:
   trunk:
     - Bolts
     - Floaty
     - Parse
+    - SwiftHEXColors
 
 SPEC CHECKSUMS:
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
   Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
-  Parse: e40fdb9c7d665823b7fe9865949cac9a53eb2ce7
+  Parse: 081fb8755c3000fd11df817eec235def233d0af3
+  SwiftHEXColors: 1cb6e5d55c52749aa33db8f088ac55eb71ca4c7f
 
-PODFILE CHECKSUM: 770cced2caf11b2c17330432ebbc7f76cb12a895
+PODFILE CHECKSUM: 1643294eb968b3d6668ad8c9ba9da1118c2cebd3
 
 COCOAPODS: 1.10.1

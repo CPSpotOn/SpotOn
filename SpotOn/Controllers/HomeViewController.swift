@@ -97,7 +97,9 @@ extension HomeViewController{
             }
         }
         
+        //display go
         floaty.addItem("Go", icon: UIImage(systemName: "figure.walk")!) { item in
+            //trigger action only uf pin is visible
             if self.pinImageView.isHidden != true {
                 self.getDirection()
             }
@@ -132,7 +134,7 @@ extension HomeViewController{
         print("setUpLocationManager")
         locationManger.delegate = self
         mapView.delegate = self
-        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        locationManger.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManger.allowsBackgroundLocationUpdates = true
         locationManger.requestAlwaysAuthorization()
         //Chris added this part + plist changed
@@ -237,10 +239,14 @@ extension HomeViewController: CLLocationManagerDelegate{
             //TODO: Handle error if needed
             guard let response = response else { return }
             
+            //for multiple routes
+            
             for route in response.routes {
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.userTrackingMode = .followWithHeading
             }
+            
+            
         }
         pinImageView.isHidden = true
     }
@@ -264,7 +270,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         request.source = MKMapItem(placemark: startingPosition)
         request.destination = MKMapItem(placemark: destination)
         request.transportType = .automobile
-        request.requestsAlternateRoutes = true
+        request.requestsAlternateRoutes = false
         
         return request
     }
@@ -328,6 +334,7 @@ extension HomeViewController: MKMapViewDelegate {
         }
     }
     
+    //rederer func
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         renderer.strokeColor = .blue

@@ -7,7 +7,7 @@
 
 import UIKit
 import Parse
-
+import SwiftHEXColors
 class RegisterViewController: UIViewController {
 
     //outlets
@@ -27,6 +27,7 @@ class RegisterViewController: UIViewController {
         editPlaceHolder(view: passwordField, placeholder: "Password", color: UIColor.black)
         
         regBtn.layer.cornerRadius = 12
+        view.backgroundColor = UIColor(hexString: "#4a47a3")
         
     }
     

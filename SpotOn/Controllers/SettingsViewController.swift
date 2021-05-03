@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftHEXColors
 
 class SettingsViewController: UIViewController {
 
@@ -22,7 +23,7 @@ class SettingsViewController: UIViewController {
         tableView.dataSource = self
         view.addSubview(tableView)
         tablewViewConstraints()
-        
+        view.backgroundColor = UIColor(hexString: "#a7c5eb")
         // Do any additional setup after loading the view.
     }
     

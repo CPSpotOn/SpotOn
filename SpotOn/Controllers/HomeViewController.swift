@@ -28,6 +28,7 @@ class HomeViewController: UIViewController {
     let zoomMagnitude : Double = 1000; // Zoomed in a little more, prev was 10000
     var weatherManager = WeatherManager() //Chris added this
     var previousLocation : CLLocation?
+    var directionsArrya: [MKDirections] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +94,12 @@ extension HomeViewController{
                 self.pinImageView.isHidden = false
             } else {
                 self.pinImageView.isHidden = true
+            }
+        }
+        
+        floaty.addItem("Go", icon: UIImage(systemName: "figure.walk")!) { item in
+            if self.pinImageView.isHidden != true {
+                self.getDirection()
             }
         }
         
@@ -213,6 +220,54 @@ extension HomeViewController: CLLocationManagerDelegate{
         
         return CLLocation(latitude: latitude, longitude: longitude)
     }
+    
+    func getDirection() {
+        //make sure we got user location
+        guard let location = locationManger.location?.coordinate else {
+            //TODO: Inform the user we don't have their location
+            
+            return
+        }
+        
+        let request = createDirectionRequest(from: location)
+        let directions = MKDirections(request: request)
+        resetMapview(withNew: directions)
+        
+        directions.calculate { response, error in
+            //TODO: Handle error if needed
+            guard let response = response else { return }
+            
+            for route in response.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.userTrackingMode = .followWithHeading
+            }
+        }
+        pinImageView.isHidden = true
+    }
+    
+    //remove overlays from map
+    func resetMapview(withNew directions: MKDirections) {
+        mapView.removeOverlays(mapView.overlays)
+        directionsArrya.append(directions)
+        let _ = directionsArrya.map({$0.cancel()})
+        self.mapView.userTrackingMode = .none
+    }
+    
+    //requets helper function
+    func createDirectionRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
+        let destinationCoordinate = getCenterLocation(for: mapView).coordinate
+        let startingPosition = MKPlacemark(coordinate: coordinate)
+        let destination = MKPlacemark(coordinate: destinationCoordinate)
+        
+        //create request
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: startingPosition)
+        request.destination = MKMapItem(placemark: destination)
+        request.transportType = .automobile
+        request.requestsAlternateRoutes = true
+        
+        return request
+    }
 }
 
 // MARK:- WeatherManagerDelegate
@@ -237,36 +292,46 @@ extension HomeViewController: WeatherManagerDelegate {
 extension HomeViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         //print("regionDidChanged")
-        let center = getCenterLocation(for: mapView)
-        let geoCoder = CLGeocoder()
-        
-        guard let previousLocation = self.previousLocation else { return }
-        
-        guard center.distance(from: previousLocation) > 50 else { return }
-        self.previousLocation = center
-        
-        geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in
-            guard let self = self else { return }
+        //if pin is not active, do not calc
+        if pinImageView.isHidden != true {
+            let center = getCenterLocation(for: mapView)
+            let geoCoder = CLGeocoder()
             
-            if let _ = error {
-                //TODO: Show alert informing the user
-                return
-            }
+            guard let previousLocation = self.previousLocation else { return }
             
-            guard let placemark = placemarks?.first else {
-                //TODO: Show alert informing the user
-                return
-            }
+            guard center.distance(from: previousLocation) > 50 else { return }
+            self.previousLocation = center
             
-            let streetNumber = placemark.subThoroughfare ?? ""
-            let streetName = placemark.thoroughfare ?? ""
-            
-            //move to main thread
-            DispatchQueue.main.async {
-                if self.pinImageView.isHidden != true {
-                    self.geoTestLabel.text = "\(streetNumber) \(streetName)"
+            geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in
+                guard let self = self else { return }
+                
+                if let _ = error {
+                    //TODO: Show alert informing the user
+                    return
+                }
+                
+                guard let placemark = placemarks?.first else {
+                    //TODO: Show alert informing the user
+                    return
+                }
+                
+                let streetNumber = placemark.subThoroughfare ?? ""
+                let streetName = placemark.thoroughfare ?? ""
+                
+                //move to main thread
+                DispatchQueue.main.async {
+                    if self.pinImageView.isHidden != true {
+                        self.geoTestLabel.text = "\(streetNumber) \(streetName)"
+                    }
                 }
             }
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
+        renderer.strokeColor = .blue
+        
+        return renderer
     }
 }

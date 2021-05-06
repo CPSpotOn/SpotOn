@@ -10,6 +10,7 @@
 		C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610026371ED100C8EF6C /* WeatherModel.swift */; };
 		C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610426371F0A00C8EF6C /* WeatherManager.swift */; };
 		C1AF18E42625EC160033476E /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF18E32625EC160033476E /* WeatherData.swift */; };
+		C1F67110263FBD940009AE79 /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F6710F263FBD940009AE79 /* MapData.swift */; };
 		D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713ABC326235C0D0001ADDC /* NetworkCalls.swift */; };
 		D713ABC726235C620001ADDC /* MapGeoJSONs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713ABC626235C620001ADDC /* MapGeoJSONs.swift */; };
 		D72DA6102623484E008C272A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA60F2623484E008C272A /* AppDelegate.swift */; };
@@ -33,6 +34,7 @@
 		C194610026371ED100C8EF6C /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		C194610426371F0A00C8EF6C /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		C1AF18E32625EC160033476E /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
+		C1F6710F263FBD940009AE79 /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		D713ABC326235C0D0001ADDC /* NetworkCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCalls.swift; sourceTree = "<group>"; };
 		D713ABC626235C620001ADDC /* MapGeoJSONs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeoJSONs.swift; sourceTree = "<group>"; };
 		D72DA60C2623484E008C272A /* SpotOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				D713ABC626235C620001ADDC /* MapGeoJSONs.swift */,
+				C1F6710F263FBD940009AE79 /* MapData.swift */,
 			);
 			path = MapData;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				D72DA61A2623484E008C272A /* SpotOn.xcdatamodeld in Sources */,
 				D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */,
 				D72DA6122623484E008C272A /* SceneDelegate.swift in Sources */,
+				C1F67110263FBD940009AE79 /* MapData.swift in Sources */,
 				C1AF18E42625EC160033476E /* WeatherData.swift in Sources */,
 				C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */,
 				D7BEC0ED262529F80083AEE2 /* SettingsViewController.swift in Sources */,

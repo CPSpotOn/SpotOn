@@ -144,15 +144,13 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="z9g-RF-rbi">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="406"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SpotOn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCV-WR-H7e">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SpotOnLogo_1" translatesAutoresizingMaskIntoConstraints="NO" id="9dd-am-RNw">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="200"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="200" id="af4-mI-sZH"/>
+                                                    <constraint firstAttribute="width" constant="374" id="FDm-fE-Pjk"/>
+                                                    <constraint firstAttribute="height" constant="200" id="e4q-w3-x6y"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="XfE-Gt-PUj">
                                                 <rect key="frame" x="0.0" y="220" width="374" height="116"/>
                                                 <subviews>
@@ -348,6 +346,7 @@
                         <outlet property="geoTestLabel" destination="OL3-xH-Rpz" id="bZv-LC-1gp"/>
                         <outlet property="mapView" destination="8ZJ-6l-AX8" id="10E-FI-cs3"/>
                         <outlet property="pinImageView" destination="BZV-gY-M4n" id="Nln-FX-x2C"/>
+                        <outlet property="searchTextField" destination="Cna-pY-39w" id="Mnd-Fc-Gyg"/>
                         <outlet property="tempImageView" destination="2yv-Gh-j7c" id="f45-ao-9WD"/>
                         <outlet property="tempLabel" destination="hvb-JP-bEK" id="kyP-KS-xfX"/>
                         <segue destination="67r-rj-6gV" kind="presentation" identifier="homeToSettings" id="uu7-Xc-1H9"/>
@@ -415,6 +414,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Pin" width="16" height="46"/>
+        <image name="SpotOnLogo_1" width="250" height="250"/>
         <image name="sun" width="128" height="128"/>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -7,7 +7,7 @@
 
 import UIKit
 import Parse
-
+import SwiftHEXColors
 
 class LoginViewController: UIViewController {
     
@@ -21,8 +21,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        view.backgroundColor = UIColor(hexString: "#413c69")
     }
     
     //MARK: - Action Outlets

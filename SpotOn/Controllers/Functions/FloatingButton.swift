@@ -9,9 +9,15 @@ import Foundation
 import Floaty
 import Parse
 
+protocol Test {
+    func run(isHidden : Bool);
+}
+
 class FloatingButton : Floaty{
     
+    //variables
     var controller : UIViewController!
+    var test : Test!
     
     
     init(controller : UIViewController) {
@@ -61,6 +67,17 @@ class FloatingButton : Floaty{
                 imageView.isHidden = true
             }
         }
+        
+        self.addItem("Go", icon: UIImage(systemName: "figure.walk")!) { item in
+            //trigger action only uf pin is visible
+            if imageView.isHidden != true {
+                //self.getDirection()
+                self.test.run(isHidden: true)
+            } else {
+                //self.mapView.userTrackingMode = .followWithHeading
+                self.test.run(isHidden: false)
+            }
+                }
     }
     
     required init?(coder aDecoder: NSCoder) {

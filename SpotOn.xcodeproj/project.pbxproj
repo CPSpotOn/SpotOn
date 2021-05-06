@@ -21,6 +21,8 @@
 		D72DA61F26234851008C272A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D72DA61D26234851008C272A /* LaunchScreen.storyboard */; };
 		D72DA63026235643008C272A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA62F26235643008C272A /* LoginViewController.swift */; };
 		D72DA63326235650008C272A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA63226235650008C272A /* HomeViewController.swift */; };
+		D772CEE82644AB0A0083245A /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D772CEE72644AB0A0083245A /* AlertService.swift */; };
+		D772CEEB2644AB240083245A /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D772CEEA2644AB240083245A /* AlertViewController.swift */; };
 		D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78370E9263F725A00CECE32 /* FloatingButton.swift */; };
 		D78ACC5E262B22E3009B3740 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */; };
 		D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78ACC60262B251A009B3740 /* ProfileViewController.swift */; };
@@ -47,6 +49,8 @@
 		D72DA62026234851008C272A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D72DA62F26235643008C272A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D72DA63226235650008C272A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D772CEE72644AB0A0083245A /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
+		D772CEEA2644AB240083245A /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		D78370E9263F725A00CECE32 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		D78ACC60262B251A009B3740 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -162,6 +166,7 @@
 				D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */,
 				D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */,
 				D78ACC60262B251A009B3740 /* ProfileViewController.swift */,
+				D772CEEA2644AB240083245A /* AlertViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				D78370E9263F725A00CECE32 /* FloatingButton.swift */,
+				D772CEE72644AB0A0083245A /* AlertService.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -335,7 +341,9 @@
 				D72DA63026235643008C272A /* LoginViewController.swift in Sources */,
 				C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */,
 				D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */,
+				D772CEE82644AB0A0083245A /* AlertService.swift in Sources */,
 				D72DA6102623484E008C272A /* AppDelegate.swift in Sources */,
+				D772CEEB2644AB240083245A /* AlertViewController.swift in Sources */,
 				D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */,
 				D72DA61A2623484E008C272A /* SpotOn.xcdatamodeld in Sources */,
 				D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */,

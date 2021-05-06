@@ -36,10 +36,24 @@ class HomeViewController: UIViewController {
         
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
-        floatingButton.test = self
+        floatingButton.test = self  
         floatingButton.addButtons(with: pinImageView)
+        
+        
+        //invite or accept
+        floatingButton.addItem("Connect", icon: UIImage(named: "connect")){ item in
+            let alertVc = AlertService().alert()
+            alertVc.modalPresentationStyle = .overCurrentContext
+            alertVc.providesPresentationContextTransitionStyle = true
+            alertVc.definesPresentationContext = true
+            alertVc.modalTransitionStyle = .crossDissolve
+            self.present(alertVc, animated: true, completion: nil)
+            
+        }
+        
         view.addSubview(floatingButton)
         setConstraints(floatingButton: floatingButton)
+        
         
         setWeatherManager()
         checkLocationServices()

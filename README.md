@@ -25,6 +25,12 @@ A GPS app that allows you to travel with other together in a single instance of 
 - [x] User can log into app
 - [x] User can find coordinates on map page
 - [x] User gets personalized weather info
+- [x] User can pin locations on the map
+- [x] Obtain address and postion from pin on map
+- [x] Give user routes to a pinned location
+- [x] Follow user on map
+- [x] User can opened prototyped perfil page
+- [x] User can opened prototyped settings page
 
 
 **Required Must-have Stories**

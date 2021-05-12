@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlertViewController: UIViewController {
+class RequestViewController: UIViewController {
     
     @IBOutlet weak var invitationLinkField: UITextField!
     

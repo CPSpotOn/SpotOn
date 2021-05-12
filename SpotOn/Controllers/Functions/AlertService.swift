@@ -9,9 +9,10 @@ import UIKit
 
 class AlertService{
     
-    func alert() -> AlertViewController{
+    func alert(me : HomeViewController) -> RequestViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        let alertVC = storyboard.instantiateViewController(identifier: "AlertVc") as! AlertViewController
+        let alertVC = storyboard.instantiateViewController(identifier: "AlertVc") as! RequestViewController
+        alertVC.generateToHomeDelegate = me
         
         return alertVC
     }

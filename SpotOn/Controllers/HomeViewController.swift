@@ -42,7 +42,7 @@ class HomeViewController: UIViewController {
         
         //invite or accept
         floatingButton.addItem("Connect", icon: UIImage(named: "connect")){ item in
-            let alertVc = AlertService().alert()
+            let alertVc = AlertService().alert(me: self)
             alertVc.modalPresentationStyle = .overCurrentContext
             alertVc.providesPresentationContextTransitionStyle = true
             alertVc.definesPresentationContext = true
@@ -58,6 +58,7 @@ class HomeViewController: UIViewController {
         setWeatherManager()
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
+       
     }
 
     
@@ -81,6 +82,7 @@ class HomeViewController: UIViewController {
      }
      */
     
+   
 
 }
 
@@ -119,8 +121,10 @@ extension HomeViewController{
     //or zooms into the user location
     func zoomInUserLocation(){
         if let location = locationManger.location?.coordinate{
+            print("when zooming : ", location)
             let region = MKCoordinateRegion.init(center: location, latitudinalMeters: zoomMagnitude, longitudinalMeters: zoomMagnitude)
             mapView.setRegion(region, animated: true)
+            
         }
     }
     
@@ -155,6 +159,8 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude) // Chris added this part
         mapView.setRegion(region, animated: true)
         mapView.showsUserLocation = true
+
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -323,4 +329,12 @@ extension HomeViewController: MKMapViewDelegate {
         
         return renderer
     }
+}
+
+extension HomeViewController : GeneratedToHomeDelegate{
+    func gotoHomeAndAction() {
+        print("I reached Home. Thank you")
+    }
+    
+    
 }

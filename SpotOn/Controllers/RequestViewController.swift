@@ -11,7 +11,7 @@ import Parse
 //copy this in your file
 protocol GeneratedToHomeDelegate {
     //add parameters if needed
-    func gotoHomeAndAction(access: String);
+    func gotoHomeAndAction(access: String, createSession: Bool);
 }
 
 class RequestViewController: UIViewController {
@@ -54,7 +54,7 @@ class RequestViewController: UIViewController {
 //        }
         accessKey = randomString(length: 6)
         codeLabel.text = accessKey!
-        generateToHomeDelegate.gotoHomeAndAction(access: accessKey!)
+        generateToHomeDelegate.gotoHomeAndAction(access: accessKey!, createSession: true)
         
         //if you want to dismiss
         dismiss(animated: true, completion: nil)
@@ -63,7 +63,7 @@ class RequestViewController: UIViewController {
     }
     
     func randomString(length: Int) -> String {
-      let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      let letters = "0123456789"
       return String((0..<length).map{ _ in letters.randomElement()! })
     }
     
@@ -87,7 +87,7 @@ class RequestViewController: UIViewController {
 extension RequestViewController : UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accessKey = textField.text!
-        generateToHomeDelegate.gotoHomeAndAction(access: accessKey!)
+        generateToHomeDelegate.gotoHomeAndAction(access: accessKey!, createSession: false)
         dismiss(animated: true, completion: nil)
         return true
     }

@@ -145,7 +145,7 @@ extension HomeViewController{
     
     func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
     }
 }
 
@@ -260,6 +260,8 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             network.createLiveQuery { travel in
                 self.setIndexNum = 0
                 travel["access"] = accessKey
+                travel["author"] = PFUser.current()!
+                //travel["objectId"] = accessKey
                 let myCoordinates = [location.latitude, location.longitude]
                 let destinationCoordinates = self.getDestinationCoordinates()
                 let aDestinationCoordinates = [destinationCoordinates.latitude, destinationCoordinates.longitude]
@@ -269,6 +271,8 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 travel["position"] = [[location.latitude, location.longitude]]
                // var userCount = travel["userCount"] as! [[PFUser: Int]]
                 travel.saveInBackground()
+                //print(travel.objectId)
+                
                 print("Query Created :D")
             }
             
@@ -296,16 +300,16 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             return
         }
         network.userJoinedSession(accessKey: myAccessKey ?? "") { travel in
-            
+            print("Query joined :3")
             var userCount = travel["userCount"] as! [[Int]]
             var positions = travel["position"] as! [[CLLocationDegrees]]
-            var startCoordinates = travel["startCoordinates"] as! [CLLocationDegrees]
-            var destinationCoordinates = travel["destinationCoordinates"] as! [CLLocationDegrees]
-            let startCoordinatesCLL = CLLocationCoordinate2D(latitude: startCoordinates[0] ?? 0.0, longitude: startCoordinates[1] ?? 0.0)
-            let destinationCoordinatesCLL = CLLocationCoordinate2D(latitude: destinationCoordinates[0] ?? 0.0, longitude: destinationCoordinates[1] ?? 0.0)
+            let startCoordinates = travel["startCoordinates"] as! [CLLocationDegrees]
+            let destinationCoordinates = travel["destinationCoordinates"] as! [CLLocationDegrees]
+            let startCoordinatesCLL = CLLocationCoordinate2D(latitude: startCoordinates[0] , longitude: startCoordinates[1] )
+            let destinationCoordinatesCLL = CLLocationCoordinate2D(latitude: destinationCoordinates[0] , longitude: destinationCoordinates[1] )
             
-            var request = self.createDirectionRequestForOthers(from: startCoordinatesCLL, to: destinationCoordinatesCLL)
-            self.setIndexNum = userCount.count + 1
+            let request = self.createDirectionRequestForOthers(from: startCoordinatesCLL, to: destinationCoordinatesCLL)
+            self.setIndexNum = userCount.last![0] + 1
             userCount.append([self.setIndexNum])
             travel["userCount"] = userCount
             positions.append([location.latitude, location.longitude])
@@ -344,8 +348,10 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         removeAnnotations()
         network.liveLocationUpdates(accessKey: myAccessKey ?? "") { travel in
             var usersPositions = travel["position"] as! [[CLLocationDegrees]]
-            var myAnnotations = Array(repeating: MKPointAnnotation(), count: usersPositions.count)
-            var userCount = travel["userCount"] as! [[Int]]
+            let userCount = travel["userCount"] as! [[Int]]
+            let myCount = userCount.last?.last!
+            print("My Count \(myCount!)")
+            let myAnnotations = Array(repeating: MKPointAnnotation(), count: myCount!)
             for count in userCount {
                 for position in usersPositions {
                     if count[0] != self.setIndexNum {
@@ -353,9 +359,10 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                         let lon = position[1]
                         
                         let a = count[0]
+                        print(a)
                         //let lat = usersPositions[a][0]
                         //let lon = usersPositions[a][1]
-                        let c = CLLocationCoordinate2D(latitude: lat ?? 0.0, longitude: lon ?? 0.0)
+                        let c = CLLocationCoordinate2D(latitude: lat , longitude: lon )
                         myAnnotations[a].coordinate = c
                         self.mapView.addAnnotation(myAnnotations[a])
                     }
@@ -363,6 +370,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             }
             // update my locaiton on parse
             let myPos = [location.latitude, location.longitude]
+            print("Index :\(self.setIndexNum!)")
             usersPositions[self.setIndexNum] = myPos
             travel["position"] = usersPositions
             travel.saveInBackground()
@@ -493,9 +501,13 @@ extension HomeViewController: MKMapViewDelegate {
 }
 
 extension HomeViewController : GeneratedToHomeDelegate{
-    func gotoHomeAndAction(access: String) {
+    func gotoHomeAndAction(access: String, createSession: Bool) {
         myAccessKey = access
-        getDirectionForGroup(accessKey: myAccessKey!, inSession: inOnlineSession)
+        if createSession {
+            getDirectionForGroup(accessKey: myAccessKey!, inSession: inOnlineSession)
+        } else {
+            getDirectionFromGroup()
+        }
         scheduledTimerWithTimeInterval()
     }
 }

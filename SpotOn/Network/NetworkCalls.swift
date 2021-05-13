@@ -19,41 +19,28 @@ struct NetworkCalls {
     }
     func userJoinedSession(accessKey: String, success: @escaping (PFObject) -> (), failure: @escaping (Error) -> ()) {
         let query = PFQuery(className: queryName)
-        query.includeKey(accessKey)
+        query.whereKey("access", equalTo: accessKey)
+        print("Access key: \(accessKey)")
+        //query.whereKey("author", notEqualTo: PFUser.current()!)
+        //query.includeKey(accessKey)
+        //query.includeKey(accessKey)
         query.findObjectsInBackground { objects, error in
             if error != nil {
                 failure(error!)
             } else {
-                success(objects![0])
-            }
-        }
-    }
-    func userJoinedHelper(session: PFObject, position: CLLocationCoordinate2D) {
-        var userCount = session["userCount"] as! [[PFUser: Int]]
-        var usersLocation = session["position"] as! [[CLLocationCoordinate2D]]
-        let lastCount = userCount.last!
-        for (a, b) in lastCount {
-            userCount.append([PFUser.current()! : b + 1])
-        }
-        usersLocation.append([position])
-        session["userCount"] = userCount
-        session["position"] = usersLocation
-        session.saveInBackground { success, error in
-            if success {
-                print("Saved new data")
-            } else {
-                print("Error: \(String(describing: error?.localizedDescription))")
+                success(objects!.last!)
             }
         }
     }
     func liveLocationUpdates(accessKey: String, success: @escaping(PFObject) -> (), failure: @escaping(Error) ->()) {
         let query = PFQuery(className: queryName)
-        query.includeKey(accessKey)
+        query.whereKey("access", equalTo: accessKey)
+        //query.whereKey("author", notEqualTo: PFUser.current()!)
         query.findObjectsInBackground { objects, error in
             if error != nil {
                 failure(error!)
             } else {
-                success(objects![0])
+                success(objects!.last!)
             }
         }
     }

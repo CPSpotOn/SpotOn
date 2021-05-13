@@ -11,7 +11,7 @@ import Parse
 //copy this in your file
 protocol GeneratedToHomeDelegate {
     //add parameters if needed
-    func gotoHomeAndAction();
+    func gotoHomeAndAction(access: String);
 }
 
 class RequestViewController: UIViewController {
@@ -23,7 +23,7 @@ class RequestViewController: UIViewController {
     
     
     var generateToHomeDelegate : GeneratedToHomeDelegate!
-    
+    var accessKey : String?
     let viewColor = UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1)
     
 
@@ -52,8 +52,9 @@ class RequestViewController: UIViewController {
 //                print("error : \(error?.localizedDescription)")
 //            }
 //        }
-        
-        generateToHomeDelegate.gotoHomeAndAction()
+        accessKey = randomString(length: 6)
+        codeLabel.text = accessKey!
+        generateToHomeDelegate.gotoHomeAndAction(access: accessKey!)
         
         //if you want to dismiss
         dismiss(animated: true, completion: nil)
@@ -85,37 +86,9 @@ class RequestViewController: UIViewController {
 
 extension RequestViewController : UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("Join")
-        
-        let query = PFQuery(className: "request_list")
-        query.whereKey("token", contains: textField.text)
-        query.includeKey("userId")
-        
-        query.findObjectsInBackground { (token : [PFObject]?, error : Error? ) in
-            if let error = error{
-                print("error : \(error.localizedDescription)")
-            }else{
-                print("found :",token)
-                let userId = token![0]["userId"]
-                let connection = PFObject(className: "connection")
-                connection["user1Id"] = userId
-                connection["user2ID"] = PFUser.current()
-                
-                connection.saveInBackground { success, error in
-                    if success{
-                        print("successfully made connection")
-                    }else{
-                        print("error : \(error?.localizedDescription)")
-                    }
-                }
-                
-            }
-        }
-        
-//        let test_friend = PFObject(className: "test_friend")
-//        test_friend["userId"] = PFUser.current()
-        
-        
+        accessKey = textField.text!
+        generateToHomeDelegate.gotoHomeAndAction(access: accessKey!)
+        dismiss(animated: true, completion: nil)
         return true
     }
 }

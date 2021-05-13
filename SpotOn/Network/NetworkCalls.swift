@@ -12,19 +12,50 @@ import CoreLocation
 
 //TODO: Add network call methods
 struct NetworkCalls {
-    func createPost(post post: String, coordinate coordinate: CLLocationDegrees,  from user: PFUser) {
-        //TODO: Create post for user
-        var postObject = PFObject(className: "Posts")
+    let queryName = "LiveTravel"
+    func createLiveQuery(success: @escaping (PFObject) ->()) {
+        let startUpQuery = PFObject(className: queryName)
+        success(startUpQuery)
     }
-    func loadPosts(user user: PFUser) -> [String] {
-        //TODO: Load posts from network
-        return []
+    func userJoinedSession(accessKey: String, success: @escaping (PFObject) -> (), failure: @escaping (Error) -> ()) {
+        let query = PFQuery(className: queryName)
+        query.includeKey(accessKey)
+        query.findObjectsInBackground { objects, error in
+            if error != nil {
+                failure(error!)
+            } else {
+                success(objects![0])
+            }
+        }
     }
-    func loadPostsCoordinates(user user: PFUser) -> [CLLocationDegrees] {
-        //TODO: Load cooordinate for posts
-        return []
+    func userJoinedHelper(session: PFObject, position: CLLocationCoordinate2D) {
+        var userCount = session["userCount"] as! [[PFUser: Int]]
+        var usersLocation = session["position"] as! [[CLLocationCoordinate2D]]
+        let lastCount = userCount.last!
+        for (a, b) in lastCount {
+            userCount.append([PFUser.current()! : b + 1])
+        }
+        usersLocation.append([position])
+        session["userCount"] = userCount
+        session["position"] = usersLocation
+        session.saveInBackground { success, error in
+            if success {
+                print("Saved new data")
+            } else {
+                print("Error: \(String(describing: error?.localizedDescription))")
+            }
+        }
     }
-    func placePostOnMap(mapView mapView: MKMapView) {
-        //TODO: Place posts on map
+    func liveLocationUpdates(accessKey: String, success: @escaping(PFObject) -> (), failure: @escaping(Error) ->()) {
+        let query = PFQuery(className: queryName)
+        query.includeKey(accessKey)
+        query.findObjectsInBackground { objects, error in
+            if error != nil {
+                failure(error!)
+            } else {
+                success(objects![0])
+            }
+        }
     }
 }
+

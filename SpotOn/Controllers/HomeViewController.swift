@@ -30,6 +30,11 @@ class HomeViewController: UIViewController {
     var weatherManager = WeatherManager() //Chris added this
     var previousLocation : CLLocation?
     var directionsArrya: [MKDirections] = []
+    var network = NetworkCalls()
+    var inOnlineSession = false
+    var myAccessKey : String?
+    var timer = Timer()
+    var setIndexNum : Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,9 +63,9 @@ class HomeViewController: UIViewController {
         setWeatherManager()
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
-       
+        
     }
-
+    
     
     //constraint for FLoating Action Button
     func setConstraints(floatingButton : FloatingButton){
@@ -82,15 +87,15 @@ class HomeViewController: UIViewController {
      }
      */
     
-   
-
+    
+    
 }
 
 // MARK:- Setup Functions
 extension HomeViewController{
     //MARK:- Map helper functions
     
-
+    
     //checks if high level local service is on
     func checkLocationServices(){
         if CLLocationManager.locationServicesEnabled(){
@@ -137,6 +142,11 @@ extension HomeViewController{
         let alert = UIAlertController(title: "Did not allow SpotOn to know your location!", message: "It's recommended you allow SpotOn to know your location to fully utilize its features. Please go to settings and allow SpotOn to know your location.", preferredStyle: .alert)
         self.present(alert, animated: true)
     }
+    
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
+    }
 }
 
 // MARK:- CLLocationManagerDelegate
@@ -159,7 +169,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         weatherManager.fetchWeather(latitude: center.latitude, longitude: center.longitude) // Chris added this part
         mapView.setRegion(region, animated: true)
         mapView.showsUserLocation = true
-
+        
         
     }
     
@@ -238,6 +248,131 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         pinImageView.isHidden = true
     }
     
+    func getDirectionForGroup(accessKey: String, inSession: Bool) {
+        if !inSession {
+            //make sure we got user location
+            guard let location = locationManger.location?.coordinate else {
+                //TODO: Inform the user we don't have their location
+                
+                return
+            }
+            print("Creating Query")
+            network.createLiveQuery { travel in
+                self.setIndexNum = 0
+                travel["access"] = accessKey
+                let myCoordinates = [location.latitude, location.longitude]
+                let destinationCoordinates = self.getDestinationCoordinates()
+                let aDestinationCoordinates = [destinationCoordinates.latitude, destinationCoordinates.longitude]
+                travel["startCoordinates"] = myCoordinates
+                travel["destinationCoordinates"] = aDestinationCoordinates
+                travel["userCount"] = [[self.setIndexNum]]
+                travel["position"] = [[location.latitude, location.longitude]]
+               // var userCount = travel["userCount"] as! [[PFUser: Int]]
+                travel.saveInBackground()
+                print("Query Created :D")
+            }
+            
+            let request = createDirectionRequest(from: location)
+            let directions = MKDirections(request: request)
+            resetMapview(withNew: directions)
+            
+            directions.calculate { response, error in
+                //TODO: Handle error if needed
+                guard let response = response else { return }
+                //for multiple routes
+                for route in response.routes {
+                    self.mapView.addOverlay(route.polyline)
+                    self.mapView.userTrackingMode = .followWithHeading
+                }
+            }
+            pinImageView.isHidden = true
+            print("Sent directions")
+        }
+    }
+    
+    func getDirectionFromGroup() {
+        guard let location = locationManger.location?.coordinate else {
+            //TODO: Inform the user we don't have their location
+            return
+        }
+        network.userJoinedSession(accessKey: myAccessKey ?? "") { travel in
+            
+            var userCount = travel["userCount"] as! [[Int]]
+            var positions = travel["position"] as! [[CLLocationDegrees]]
+            var startCoordinates = travel["startCoordinates"] as! [CLLocationDegrees]
+            var destinationCoordinates = travel["destinationCoordinates"] as! [CLLocationDegrees]
+            let startCoordinatesCLL = CLLocationCoordinate2D(latitude: startCoordinates[0] ?? 0.0, longitude: startCoordinates[1] ?? 0.0)
+            let destinationCoordinatesCLL = CLLocationCoordinate2D(latitude: destinationCoordinates[0] ?? 0.0, longitude: destinationCoordinates[1] ?? 0.0)
+            
+            var request = self.createDirectionRequestForOthers(from: startCoordinatesCLL, to: destinationCoordinatesCLL)
+            self.setIndexNum = userCount.count + 1
+            userCount.append([self.setIndexNum])
+            travel["userCount"] = userCount
+            positions.append([location.latitude, location.longitude])
+            travel["position"] = positions
+            let directions = MKDirections(request: request)
+            
+            self.resetMapview(withNew: directions)
+            
+            directions.calculate { response, error in
+                //TODO: Handle error if needed
+                guard let response = response else { return }
+                //for multiple routes
+                for route in response.routes {
+                    self.mapView.addOverlay(route.polyline)
+                    self.mapView.userTrackingMode = .followWithHeading
+                }
+            }
+            self.pinImageView.isHidden = true
+            print("Sent directions")
+            travel.saveInBackground()
+            print("Saved stuff :3")
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+
+        
+    }
+    
+    
+    @objc func getLocationsUpdates() {
+        guard let location = locationManger.location?.coordinate else {
+            //TODO: Inform the user we don't have their location
+            return
+        }
+        removeAnnotations()
+        network.liveLocationUpdates(accessKey: myAccessKey ?? "") { travel in
+            var usersPositions = travel["position"] as! [[CLLocationDegrees]]
+            var myAnnotations = Array(repeating: MKPointAnnotation(), count: usersPositions.count)
+            var userCount = travel["userCount"] as! [[Int]]
+            for count in userCount {
+                for position in usersPositions {
+                    if count[0] != self.setIndexNum {
+                        let lat = position[0]
+                        let lon = position[1]
+                        
+                        let a = count[0]
+                        //let lat = usersPositions[a][0]
+                        //let lon = usersPositions[a][1]
+                        let c = CLLocationCoordinate2D(latitude: lat ?? 0.0, longitude: lon ?? 0.0)
+                        myAnnotations[a].coordinate = c
+                        self.mapView.addAnnotation(myAnnotations[a])
+                    }
+                }
+            }
+            // update my locaiton on parse
+            let myPos = [location.latitude, location.longitude]
+            usersPositions[self.setIndexNum] = myPos
+            travel["position"] = usersPositions
+            travel.saveInBackground()
+            
+        } failure: { error in
+            print("Error: \(error)")
+        }
+
+    }
+    
     //remove overlays from map
     func resetMapview(withNew directions: MKDirections) {
         mapView.removeOverlays(mapView.overlays)
@@ -248,7 +383,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
     
     //requets helper function
     func createDirectionRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
-        let destinationCoordinate = getCenterLocation(for: mapView).coordinate
+        let destinationCoordinate = getDestinationCoordinates()
         let startingPosition = MKPlacemark(coordinate: coordinate)
         let destination = MKPlacemark(coordinate: destinationCoordinate)
         
@@ -256,10 +391,36 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: startingPosition)
         request.destination = MKMapItem(placemark: destination)
-        request.transportType = .walking
+        request.transportType = .automobile
         request.requestsAlternateRoutes = false
         
         return request
+    }
+    
+    //requets helper function for others
+    func createDirectionRequestForOthers(from coordinate: CLLocationCoordinate2D, to toCoordinate: CLLocationCoordinate2D) -> MKDirections.Request {
+        let destinationCoordinate = toCoordinate
+        let startingPosition = MKPlacemark(coordinate: coordinate)
+        let destination = MKPlacemark(coordinate: destinationCoordinate)
+        
+        //create request
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: startingPosition)
+        request.destination = MKMapItem(placemark: destination)
+        request.transportType = .automobile
+        request.requestsAlternateRoutes = false
+        
+        return request
+    }
+    
+    func getDestinationCoordinates() -> CLLocationCoordinate2D {
+        let destinationCoordinate = getCenterLocation(for: mapView).coordinate
+        return destinationCoordinate
+    }
+    
+    func removeAnnotations() {
+        let annotations = mapView.annotations.filter({ !($0 is MKUserLocation) })
+        mapView.removeAnnotations(annotations)
     }
 }
 
@@ -332,9 +493,9 @@ extension HomeViewController: MKMapViewDelegate {
 }
 
 extension HomeViewController : GeneratedToHomeDelegate{
-    func gotoHomeAndAction() {
-        print("I reached Home. Thank you")
+    func gotoHomeAndAction(access: String) {
+        myAccessKey = access
+        getDirectionForGroup(accessKey: myAccessKey!, inSession: inOnlineSession)
+        scheduledTimerWithTimeInterval()
     }
-    
-    
 }

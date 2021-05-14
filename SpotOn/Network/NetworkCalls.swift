@@ -18,6 +18,17 @@ struct NetworkCalls {
         let startUpQuery = PFObject(className: queryName)
         success(startUpQuery)
     }
+    func returnQuery(accessKey: String, success: @escaping (PFObject) -> (), failure: @escaping (Error) -> ()) {
+        let query = PFQuery(className: queryName)
+        query.whereKey("access", equalTo: accessKey)
+        query.findObjectsInBackground { objects, error in
+            if error != nil {
+                failure(error!)
+            } else {
+                success(objects!.last!)
+            }
+        }
+    }
     func userJoinedSession(accessKey: String, success: @escaping (PFObject) -> (), failure: @escaping (Error) -> ()) {
         let query = PFQuery(className: queryName)
         query.whereKey("access", equalTo: accessKey)
@@ -41,7 +52,7 @@ struct NetworkCalls {
             if error != nil {
                 failure(error!)
             } else {
-                success(objects!.last!)
+                success(objects![0])
             }
         }
 

@@ -61,6 +61,7 @@ class RequestViewController: UIViewController {
         codeLabel.text = accessKey
         
         print(randomString(length: 6))
+        dismiss(animated: true, completion: nil)
     }
     
     func randomString(length: Int) -> String {

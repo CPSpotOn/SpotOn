@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "SpotOnLogo_1.png",
+      "filename" : "connect.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "SpotOnLogo_1@2x.png",
+      "filename" : "connect@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "SpotOnLogo_1@3x.png",
+      "filename" : "connect@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -31,6 +31,7 @@ A GPS app that allows you to travel with other together in a single instance of 
 - [x] Follow user on map
 - [x] User can opened prototyped perfil page
 - [x] User can opened prototyped settings page
+- [x] Naviagte together with other users
 
 
 **Required Must-have Stories**

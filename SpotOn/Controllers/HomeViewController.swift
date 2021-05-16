@@ -34,11 +34,12 @@ class HomeViewController: UIViewController {
     var inOnlineSession = false
     var myAccessKey : String?
     var timer = Timer()
-    var setIndexNum : Int!
-    
+    var setIndexNum = 0
+    var userAnnotations = [GuestAnnotation(location: nil)]
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        userAnnotations[0].shown = false
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
         floatingButton.test = self  
@@ -250,6 +251,15 @@ extension HomeViewController{
         })
     }
     
+    func setUpArrayAnnotations(userCount: Int) {
+        print("Inside setupArray")
+        for a in (0...userCount) {
+            var a = GuestAnnotation(location: nil)
+            a.shown = false
+            userAnnotations.append(a)
+        }
+    }
+    
 }
 
 // MARK:- CLLocationManagerDelegate
@@ -426,7 +436,9 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             let destinationCoordinatesCLL = CLLocationCoordinate2D(latitude: destinationCoordinates[0] , longitude: destinationCoordinates[1] )
             
             let request = self.createDirectionRequestForOthers(from: startCoordinatesCLL, to: destinationCoordinatesCLL)
+            
             self.setIndexNum = userCount + 1
+
             userCount = self.setIndexNum
             travel["userCount"] = userCount
             positions.append([location.latitude, location.longitude])
@@ -452,6 +464,10 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }
+        //Add new  user annotation
+        var annonation = GuestAnnotation(location: nil)
+        annonation.shown = false
+        userAnnotations.append(annonation)
         scheduledTimerWithTimeIntervalWaitinng()
     }
     
@@ -462,18 +478,60 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             //TODO: Inform the user we don't have their location
             return
         }
-        removeAnnotations()
         network.returnQuery(accessKey: myAccessKey ?? "") { travel in
             var usersPositions = travel["position"] as! [[CLLocationDegrees]]
             let userCount = travel["userCount"] as! Int
-            let myAnnotations = Array(repeating: MKPointAnnotation(), count: userCount)
             var loop = 0
             while loop < userCount {
                 if loop != self.setIndexNum {
                     let coordinate = usersPositions[loop]
                     let coord2D = CLLocationCoordinate2D(latitude: coordinate[0], longitude: coordinate[1])
-                    myAnnotations[loop].coordinate = coord2D
-                    self.mapView.addAnnotation(myAnnotations[loop])
+                    //myAnnotations[loop].coordinate = coord2D
+                    if self.userAnnotations[loop].shown {
+                        print("Animating annotation")
+                        UIView.animate(withDuration: 0.75) {
+                            self.userAnnotations[loop].coordinate = coord2D
+                        }
+                    } else {
+                        print("Showing annotations")
+                        self.userAnnotations[loop].shown = true
+                        self.mapView.addAnnotation(self.userAnnotations[loop])
+                    }
+                } else {
+                    let myPos = [location.latitude, location.longitude]
+                    usersPositions[self.setIndexNum ?? 0] = myPos
+                    travel["position"] = usersPositions
+                }
+                loop += 1
+            }
+            travel.saveInBackground()
+        } failure: { error in
+            print("Error: \(error.localizedDescription)")
+        }
+
+        /*
+        
+        network.returnQuery(accessKey: myAccessKey ?? "") { travel in
+            var usersPositions = travel["position"] as! [[CLLocationDegrees]]
+            let userCount = travel["userCount"] as! Int
+            let myAnnotations = Array(repeating: MKPointAnnotation(), count: userCount)
+            //self.userAnnotations = [GuestAnnotation].init(repeating: GuestAnnotation(location: nil), count: userCount)
+            let test = self.setUpArrayAnnotations(userCount: userCount)
+            var loop = 0
+            while loop < userCount {
+                if loop != self.setIndexNum {
+                    let coordinate = usersPositions[loop]
+                    let coord2D = CLLocationCoordinate2D(latitude: coordinate[0], longitude: coordinate[1])
+                    //myAnnotations[loop].coordinate = coord2D
+                    self.userAnnotations![loop].coordinate = coord2D
+                    if test {
+                        self.removeAnnotations()
+                        self.mapView.addAnnotation(self.userAnnotations?[loop] as! MKAnnotation)
+                    } else {
+                        UIView.animate(withDuration: 0.2) {
+                            self.userAnnotations![loop].coordinate = coord2D
+                        }
+                    }
                 } else {
                     let myPos = [location.latitude, location.longitude]
                     usersPositions[self.setIndexNum] = myPos
@@ -488,9 +546,10 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     print("Something went wrong :( \(error?.localizedDescription)")
                 }
             }
+            
         } failure: { error in
             print("Error: \(error.localizedDescription)")
-        }
+        }*/
 
         /*
         removeAnnotations()

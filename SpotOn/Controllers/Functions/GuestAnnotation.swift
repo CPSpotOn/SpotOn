@@ -7,6 +7,7 @@
 
 import Foundation
 import MapKit
+
 class GuestAnnotation : NSObject, MKAnnotation {
     @objc dynamic var coordinate: CLLocationCoordinate2D
     var title: String!

@@ -24,7 +24,7 @@ struct NetworkCalls {
         query.findObjectsInBackground { objects, error in
             if error != nil {
                 failure(error!)
-            } else {
+            } else if success != nil {
                 success(objects!.last!)
             }
         }
@@ -39,7 +39,7 @@ struct NetworkCalls {
         query.findObjectsInBackground { objects, error in
             if error != nil {
                 failure(error!)
-            } else {
+            } else if success != nil {
                 success(objects!.last!)
             }
         }

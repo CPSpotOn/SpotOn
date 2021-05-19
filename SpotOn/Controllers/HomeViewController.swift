@@ -22,6 +22,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var pinImageView: UIImageView!
     @IBOutlet weak var geoTestLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var accessLabel: UILabel!
+    @IBOutlet weak var infoStackView: UIStackView!
     
     
     //TODO: Add any required variables
@@ -36,15 +38,17 @@ class HomeViewController: UIViewController {
     var timer = Timer()
     var setIndexNum = 0
     var userAnnotations = [GuestAnnotation(location: nil)]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "Home"
         userAnnotations[0].shown = false
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
         floatingButton.test = self  
         floatingButton.addButtons(with: pinImageView)
         
+        infoStackView.backgroundColor = .clear
         
         //invite or accept
         floatingButton.addItem("Connect", icon: UIImage(named: "connect")){ item in
@@ -77,18 +81,6 @@ class HomeViewController: UIViewController {
         floatingButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         floatingButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
-    
     
 }
 
@@ -216,6 +208,7 @@ extension HomeViewController{
         //Chris added this part + plist changed
         locationManger.requestWhenInUseAuthorization()
         locationManger.requestLocation()
+        accessLabel.isHidden = true
     }
     
     //adjust the camera view of the map
@@ -229,7 +222,9 @@ extension HomeViewController{
         }
     }
     
-    // Chris added weather set func
+    /*
+     Setup wWeather Manager Delegate
+     */
     func setWeatherManager() {
         self.weatherManager.delegate = self
     }
@@ -239,27 +234,22 @@ extension HomeViewController{
         self.present(alert, animated: true)
     }
     
-    //a scheduler that calls the function getLocationsUpdates every 1.0s
+    /*
+     A scheduler that calls the function getLocationsUpdates every 0.25s
+     */
     func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
         timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
     }
     
-    func scheduledTimerWithTimeIntervalWaitinng() {
+    /*
+     A scheduler that delays the app for 2.5s
+     */
+    func scheduledTimerWithTimeIntervalWaiting() {
         timer = Timer.scheduledTimer(withTimeInterval: 2.5, repeats: false, block: { timer in
             print("Waiting.......")
         })
     }
-    
-    func setUpArrayAnnotations(userCount: Int) {
-        print("Inside setupArray")
-        for a in (0...userCount) {
-            var a = GuestAnnotation(location: nil)
-            a.shown = false
-            userAnnotations.append(a)
-        }
-    }
-    
 }
 
 // MARK:- CLLocationManagerDelegate
@@ -369,7 +359,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
     
     
     //liveQuery
-    func getDirectionForGroup(accessKey: String, inSession: Bool) {
+    func getDirectionForGroupSession(accessKey: String, inSession: Bool) {
         if !inSession {
             //make sure we got user location
             guard let location = locationManger.location?.coordinate else {
@@ -416,12 +406,14 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     self.mapView.userTrackingMode = .followWithHeading
                 }
             }
+            accessLabel.isHidden = false
+            accessLabel.text = "Access: \(myAccessKey)"
             pinImageView.isHidden = true
             print("Sent directions")
         }
     }
     
-    func getDirectionFromGroup() {
+    func joinGroupSession() {
         guard let location = locationManger.location?.coordinate else {
             //TODO: Inform the user we don't have their location
             return
@@ -466,9 +458,13 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         }
         //Add new  user annotation
         var annonation = GuestAnnotation(location: nil)
+        var user = PFUser.current()!
         annonation.shown = false
+        annonation.title = user["name"] as! String
         userAnnotations.append(annonation)
-        scheduledTimerWithTimeIntervalWaitinng()
+        accessLabel.isHidden = false
+        accessLabel.text = "Access: \(myAccessKey)"
+        scheduledTimerWithTimeIntervalWaiting()
     }
     
     
@@ -748,9 +744,9 @@ extension HomeViewController : GeneratedToHomeDelegate{
     func gotoHomeAndAction(access: String, createSession: Bool) {
         myAccessKey = access
         if createSession {
-            getDirectionForGroup(accessKey: myAccessKey!, inSession: inOnlineSession)
+            getDirectionForGroupSession(accessKey: myAccessKey!, inSession: inOnlineSession)
         } else {
-            getDirectionFromGroup()
+            joinGroupSession()
         }
         scheduledTimerWithTimeInterval()
     }

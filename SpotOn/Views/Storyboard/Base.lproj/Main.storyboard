@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -270,10 +270,21 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="MkV-9R-fDW" userLabel="Weather Stack View">
-                                <rect key="frame" x="20" y="778" width="80" height="44"/>
+                                <rect key="frame" x="20" y="760" width="80" height="62"/>
                                 <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TiZ-YK-tiA">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="17"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6A-oX-yp0">
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="17"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="Ovx-wo-jog">
-                                        <rect key="frame" x="0.0" y="0.0" width="80" height="26"/>
+                                        <rect key="frame" x="0.0" y="18" width="80" height="26"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sun" translatesAutoresizingMaskIntoConstraints="NO" id="2yv-Gh-j7c">
                                                 <rect key="frame" x="0.0" y="0.0" width="27" height="26"/>
@@ -294,7 +305,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pYH-8F-zM5">
-                                        <rect key="frame" x="0.0" y="27" width="80" height="17"/>
+                                        <rect key="frame" x="0.0" y="45" width="80" height="17"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cupertino" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="daG-hw-QOG">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="17"/>
@@ -342,8 +353,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="JcP-NO-I9g"/>
                     <connections>
+                        <outlet property="accessLabel" destination="F6A-oX-yp0" id="It9-Bi-j0n"/>
                         <outlet property="cityLabel" destination="daG-hw-QOG" id="FwL-yN-jwc"/>
                         <outlet property="geoTestLabel" destination="OL3-xH-Rpz" id="bZv-LC-1gp"/>
+                        <outlet property="infoStackView" destination="MkV-9R-fDW" id="Y5T-uV-xcg"/>
                         <outlet property="mapView" destination="8ZJ-6l-AX8" id="10E-FI-cs3"/>
                         <outlet property="pinImageView" destination="BZV-gY-M4n" id="Nln-FX-x2C"/>
                         <outlet property="searchTextField" destination="Cna-pY-39w" id="Mnd-Fc-Gyg"/>

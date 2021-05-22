@@ -166,4 +166,4 @@ mapObject.saveInBackground { (success, error) in
     }
 ```
 
-<img src = "https://i.imgur.com/hrDlUy3.gif" width=500>
+<img src = "https://i.imgur.com/hmBJwpN.gif" width=500>

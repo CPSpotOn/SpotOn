@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D0F5429264C5F4900E9A47E /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0F5428264C5F4900E9A47E /* Token.swift */; };
+		C17EBCF3264ED34B0096117B /* GuestAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */; };
 		C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610026371ED100C8EF6C /* WeatherModel.swift */; };
 		C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610426371F0A00C8EF6C /* WeatherManager.swift */; };
 		C1AF18E42625EC160033476E /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF18E32625EC160033476E /* WeatherData.swift */; };
@@ -21,6 +23,9 @@
 		D72DA61F26234851008C272A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D72DA61D26234851008C272A /* LaunchScreen.storyboard */; };
 		D72DA63026235643008C272A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA62F26235643008C272A /* LoginViewController.swift */; };
 		D72DA63326235650008C272A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA63226235650008C272A /* HomeViewController.swift */; };
+		D772CEE82644AB0A0083245A /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D772CEE72644AB0A0083245A /* AlertService.swift */; };
+		D772CEEB2644AB240083245A /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D772CEEA2644AB240083245A /* RequestViewController.swift */; };
+		D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78370E9263F725A00CECE32 /* FloatingButton.swift */; };
 		D78ACC5E262B22E3009B3740 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */; };
 		D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78ACC60262B251A009B3740 /* ProfileViewController.swift */; };
 		D7BEC0ED262529F80083AEE2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */; };
@@ -28,8 +33,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D0F5428264C5F4900E9A47E /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		73DF5F10D7BB0E1980A1C6EF /* Pods-SpotOn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.debug.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.debug.xcconfig"; sourceTree = "<group>"; };
 		7DE9022139D3DAA15151B691 /* Pods-SpotOn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.release.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.release.xcconfig"; sourceTree = "<group>"; };
+		C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAnnotation.swift; sourceTree = "<group>"; };
 		C194610026371ED100C8EF6C /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		C194610426371F0A00C8EF6C /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		C1AF18E32625EC160033476E /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
@@ -46,6 +53,9 @@
 		D72DA62026234851008C272A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D72DA62F26235643008C272A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D72DA63226235650008C272A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D772CEE72644AB0A0083245A /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
+		D772CEEA2644AB240083245A /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
+		D78370E9263F725A00CECE32 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		D78ACC60262B251A009B3740 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +97,7 @@
 			children = (
 				C19460FF26371EB200C8EF6C /* WeatherData */,
 				D72DA628262354D1008C272A /* MapData */,
+				3D0F5428264C5F4900E9A47E /* Token.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -153,13 +164,14 @@
 		D72DA62B262354E4008C272A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D7E3C92526348D3B0065C5CE /* Helper */,
+				D7E3C92526348D3B0065C5CE /* Functions */,
 				D7E3C9202633BBB90065C5CE /* Cell */,
 				D72DA62F26235643008C272A /* LoginViewController.swift */,
 				D72DA63226235650008C272A /* HomeViewController.swift */,
 				D7BEC0EC262529F80083AEE2 /* SettingsViewController.swift */,
 				D78ACC5D262B22E3009B3740 /* RegisterViewController.swift */,
 				D78ACC60262B251A009B3740 /* ProfileViewController.swift */,
+				D772CEEA2644AB240083245A /* RequestViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -197,11 +209,14 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		D7E3C92526348D3B0065C5CE /* Helper */ = {
+		D7E3C92526348D3B0065C5CE /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				D78370E9263F725A00CECE32 /* FloatingButton.swift */,
+				D772CEE72644AB0A0083245A /* AlertService.swift */,
+				C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */,
 			);
-			path = Helper;
+			path = Functions;
 			sourceTree = "<group>";
 		};
 		DDD4C498F858DF76A0D373A5 /* Frameworks */ = {
@@ -332,11 +347,16 @@
 				D72DA63026235643008C272A /* LoginViewController.swift in Sources */,
 				C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */,
 				D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */,
+				D772CEE82644AB0A0083245A /* AlertService.swift in Sources */,
 				D72DA6102623484E008C272A /* AppDelegate.swift in Sources */,
+				D772CEEB2644AB240083245A /* RequestViewController.swift in Sources */,
+				3D0F5429264C5F4900E9A47E /* Token.swift in Sources */,
 				D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */,
 				D72DA61A2623484E008C272A /* SpotOn.xcdatamodeld in Sources */,
+				D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */,
 				D72DA6122623484E008C272A /* SceneDelegate.swift in Sources */,
 				C1F67110263FBD940009AE79 /* MapData.swift in Sources */,
+				C17EBCF3264ED34B0096117B /* GuestAnnotation.swift in Sources */,
 				C1AF18E42625EC160033476E /* WeatherData.swift in Sources */,
 				C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */,
 				D7BEC0ED262529F80083AEE2 /* SettingsViewController.swift in Sources */,

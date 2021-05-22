@@ -33,6 +33,7 @@ A GPS app that allows you to travel with other together in a single instance of 
 - [x] User can opened prototyped settings page
 - [x] Naviagte together with other users
 - [x] Show other users on map
+- [x] Gifs created to show build progress and added to README
 
 
 **Required Must-have Stories**

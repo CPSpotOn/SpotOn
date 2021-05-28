@@ -43,6 +43,7 @@ class HomeViewController: UIViewController {
     var accessKey = "";
     var settings = AppSetting()
     var transportMethod = MKDirectionsTransportType()
+    var centerToggel = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +71,16 @@ class HomeViewController: UIViewController {
             alertVc.modalTransitionStyle = .crossDissolve
             self.present(alertVc, animated: true, completion: nil)
             
+        }
+        
+        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
+            if self.centerToggel {
+                self.mapView.userTrackingMode = .none
+                self.centerToggel = false
+            } else {
+                self.mapView.userTrackingMode = .follow
+                self.centerToggel = true
+            }
         }
         
         view.addSubview(floatingButton)
@@ -642,7 +653,14 @@ extension HomeViewController: WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         //Move to main thread
         DispatchQueue.main.async {
-            self.tempLabel.text = weather.temperatureString + "°"
+            let unitM = self.settings.getUnit()
+            if unitM != nil {
+                if unitM! == "SI" {
+                    self.tempLabel.text = weather.temperatureString + "°C"
+                } else {
+                    self.tempLabel.text = weather.temperatureString + "°F"
+                }
+            }
             self.cityLabel.text = weather.cityName
             print("weather conditionname : ", weather.conditionName)
             self.tempImageView.image = UIImage(named: weather.conditionName)
@@ -659,6 +677,8 @@ extension HomeViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         //print("regionDidChanged")
         //if pin is not active, do not calc
+        self.centerToggel = false
+        self.mapView.userTrackingMode = .none
         if pinImageView.isHidden != true {
             let center = getCenterLocation(for: mapView)
             let geoCoder = CLGeocoder()

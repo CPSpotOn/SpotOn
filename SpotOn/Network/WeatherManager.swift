@@ -18,6 +18,7 @@ protocol WeatherManagerDelegate {
 struct WeatherManager {
     
     //OpenWeather API KEY & URL
+    var unit = "imperial"
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial"
     // Delegate
     var delegate: WeatherManagerDelegate?

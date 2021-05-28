@@ -74,7 +74,7 @@ class FloatingButton : Floaty{
                 //self.getDirection()
                 self.test.run(isHidden: true)
             } else {
-                //self.mapView.userTrackingMode = .followWithHeading
+                //self.mapView.userTrackingMode = .follow
                 self.test.run(isHidden: false)
             }
                 }

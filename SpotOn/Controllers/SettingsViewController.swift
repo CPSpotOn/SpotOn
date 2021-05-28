@@ -1,15 +1,18 @@
+
 //
 //  SettingsViewController.swift
 //  SpotOn
 //
 //  Created by William Rai on 4/12/21.
 //
-
 import UIKit
 import SwiftHEXColors
 
 class SettingsViewController: UIViewController {
 
+    @IBOutlet weak var unitsSC: UISegmentedControl!
+    @IBOutlet weak var transportationSC: UISegmentedControl!
+    let userD = UserDefaults.standard
     let tableView : UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,29 +21,36 @@ class SettingsViewController: UIViewController {
     }()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = self
-        view.addSubview(tableView)
-        tablewViewConstraints()
-        view.backgroundColor = UIColor(hexString: "#a7c5eb")
         // Do any additional setup after loading the view.
+        let transport = userD.string(forKey: "transport")
+        let unit =  userD.string(forKey: "unit")
+        
+        if transport != nil {
+            if transport! == "Car" {
+                transportationSC.selectedSegmentIndex = 0
+            } else {
+                transportationSC.selectedSegmentIndex = 1
+            }
+        }
+        if unit != nil {
+            if unit! == "SI" {
+                unitsSC.selectedSegmentIndex = 0
+            } else {
+                unitsSC.selectedSegmentIndex = 1
+            }
+        }
     }
-    
-    func tablewViewConstraints(){
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            
-        ])
-    }
-    
 
+    @IBAction func saveButtonPressed(_ sender: UIButton) {
+        let transport = transportationSC.titleForSegment(at: transportationSC.selectedSegmentIndex)
+        let unit =  unitsSC.titleForSegment(at: unitsSC.selectedSegmentIndex)
+        userD.setValue(transport, forKey: "transport")
+        userD.setValue(unit, forKey: "unit")
+        userD.setValue(true, forKey: "save")
+        self.dismiss(animated: true, completion: nil)
+    }
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
@@ -48,19 +58,4 @@ class SettingsViewController: UIViewController {
     }
     */
 
-}
-
-extension SettingsViewController : UITableViewDelegate, UITableViewDataSource{
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "hello"
-        return cell
-    }
-    
-    
 }

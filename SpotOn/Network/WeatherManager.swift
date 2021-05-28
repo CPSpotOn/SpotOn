@@ -4,7 +4,6 @@
 //
 //  Created by Christopher Mena on 4/26/21.
 //
-
 import Foundation
 import CoreLocation
 
@@ -19,7 +18,7 @@ protocol WeatherManagerDelegate {
 struct WeatherManager {
     
     //OpenWeather API KEY & URL
-    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial"
+    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial"
     // Delegate
     var delegate: WeatherManagerDelegate?
     
@@ -75,5 +74,9 @@ struct WeatherManager {
             delegate?.didFailWithError(error: error)
             return nil
         }
+    }
+    
+    mutating func setLink(link: String) {
+        weatherURL = link
     }
 }

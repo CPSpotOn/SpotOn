@@ -77,15 +77,15 @@ class HomeViewController: UIViewController {
             
         }
         
-        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
-            if self.centerToggel {
-                self.mapView.userTrackingMode = .none
-                self.centerToggel = false
-            } else {
-                self.mapView.userTrackingMode = .follow
-                self.centerToggel = true
-            }
-        }
+//        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
+//            if self.centerToggel {
+//                self.mapView.userTrackingMode = .none
+//                self.centerToggel = false
+//            } else {
+//                self.mapView.userTrackingMode = .follow
+//                self.centerToggel = true
+//            }
+//        }
         
         view.addSubview(floatingButton)
         setConstraints(floatingButton: floatingButton)
@@ -112,6 +112,18 @@ class HomeViewController: UIViewController {
 
         
     }
+    
+    //center toggle
+    @IBAction func onTapCenter(_ sender: Any) {
+        if self.centerToggel {
+            self.mapView.userTrackingMode = .none
+            self.centerToggel = false
+        } else {
+            self.mapView.userTrackingMode = .follow
+            self.centerToggel = true
+        }
+    }
+    
     
     
     //constraint for FLoating Action Button

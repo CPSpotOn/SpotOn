@@ -26,6 +26,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var infoStackView: UIStackView!
+    @IBOutlet weak var imageView: UIImageView!
     
     
     //TODO: Add any required variables
@@ -46,7 +47,7 @@ class HomeViewController: UIViewController {
     var settings = AppSetting()
     var transportMethod = MKDirectionsTransportType()
     var centerToggel = false
-    var imageUser = [UIImage?]()
+    var imageUser = [UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +95,22 @@ class HomeViewController: UIViewController {
         overrideUserInterfaceStyle = .light //light mode by default
         
         showClosestUsers()
+        
+        
+        network.imagesQuery(username: myUser.username!) { user in
+            if user != nil {
+                DispatchQueue.main.async {
+                    let imageFile = user["image"] as! PFFileObject
+                    let imageUrl = imageFile.url!
+                    //let url = URL(string: imageUrl)!
+                    self.downloadImage(from: URL(string: imageUrl)!)
+                }
+            }
+        } failure: { error in
+            print("Error: \(error.localizedDescription)")
+        }
+
+        
     }
     
     
@@ -300,30 +317,32 @@ extension HomeViewController{
             }
     }
     
-    func getImage(_ url:URL,handler: @escaping (UIImage?)->Void) {
-        print(url)
-        let urlReq = URLRequest(url: url)
-        let downloader = ImageDownloader()
-        downloader.download(urlReq) { response in
-            if let data = response.value {
-                print("Image downloaded")
-                handler(data)
-            } else {
-                handler(nil)
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    func downloadImage(from url: URL) {
+        print("Download Started")
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            // always update the UI from the main thread
+            DispatchQueue.main.async() { [weak self] in
+                self?.imageView.image = UIImage(data: data)
+                self?.imageUser.append(UIImage(data: data)!)
             }
         }
     }
+    
     func getImageURL(username: String){
         network.imagesQuery(username: username) { user in
             //image
             let image = user["image"] as! PFFileObject
             let imageUrl = image.url!
             let url = URL(string: imageUrl)!
-            self.getImage(url) { uImage in
-                //
-                print("Appending image")
-                self.imageUser.append(uImage)
-            }
+            self.downloadImage(from: url)
+            
         } failure: { error in
             print("Error: \(error.localizedDescription)")
         }
@@ -480,6 +499,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     //print("Waiting 4.5s in getDirectionsForGroup")
                     self.scheduledTimerWithTimeIntervalWaiting()
                 }
+                self.getImageURL(username: self.myUser.username!)
                 print("Query Created :D")
             }
             
@@ -556,9 +576,6 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 }
             }
             
-            for name in usernames {
-                self.getImageURL(username: name)
-            }
             print(self.imageUser)
             self.pinImageView.isHidden = true
             print("Sent directions")
@@ -590,11 +607,18 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             let userCount = travel["userCount"] as! Int
             var joining = travel["joining"] as! Bool
             var namesArray = travel["names"] as! [String]
+            var usernames =  travel["usernames"] as! [String]
             
             while self.userAnnotations.count < namesArray.count {
                 var annonation = GuestAnnotation()
                 annonation.isShown = false
                 self.userAnnotations.append(annonation)
+            }
+            if self.imageUser.count < usernames.count {
+                self.imageUser.removeAll()
+                for name in usernames {
+                    self.getImageURL(username: name)
+                }
             }
             if joining {
                 
@@ -781,7 +805,9 @@ extension HomeViewController: MKMapViewDelegate {
         } else {
             annonationView?.annotation = annotation
         }
-        annonationView?.image = imageUser[setIndexNum]
+        let cpa = MKPointAnnotation() as! GuestAnnotation
+        cpa.imageView = imageUser[setIndexNum]
+        annonationView?.image = imageUser[self.setIndexNum]
          return annonationView
      }
 }

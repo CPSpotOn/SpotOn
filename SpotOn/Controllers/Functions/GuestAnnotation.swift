@@ -11,6 +11,7 @@ import MapKit
 class GuestAnnotation : MKPointAnnotation {
     //var imageName: UIImage?
     var isShown: Bool!
+    var imageView: UIImage!
     
     override init() {
         super.init()

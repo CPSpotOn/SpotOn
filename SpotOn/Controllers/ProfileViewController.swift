@@ -17,16 +17,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hexString: "#709fb0")
+//        view.backgroundColor = UIColor(hexString: "#709fb0")
         // Do any additional setup after loading the view.
         
         profImageView.layer.masksToBounds = true
-        profImageView.layer.cornerRadius = profImageView.bounds.width / 2
+        profImageView.layer.cornerRadius = 10.0
         
         usernameLabel.text = PFUser.current()?.username
         emailLabel.text = PFUser.current()?.email
         
-        getImage()
+        
+        //getImage()
     }
     
     func getImage(){
@@ -44,6 +45,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 }
             }else{
                 print("error retrieving image : \(error?.localizedDescription)")
+                self.profImageView.image = UIImage(named: "user")
+
             }
         }
     }
@@ -88,6 +91,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     //Opens Camera if there is in the system
     //otherwise opens photo gallery
     @IBAction func onTapImage(_ sender: Any) {
+        print("test")
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true

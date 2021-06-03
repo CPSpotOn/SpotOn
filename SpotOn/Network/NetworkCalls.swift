@@ -55,7 +55,18 @@ struct NetworkCalls {
                 success(objects![0])
             }
         }
-
+    }
+    func imagesQuery(username: String, success: @escaping(PFObject) -> (), failure: @escaping(Error) ->()) {
+        let query = PFQuery(className: "userImage")
+        query.whereKey("username", equalTo: username)
+        
+        query.getFirstObjectInBackground { object, error in
+            if object != nil {
+                success(object!)
+            } else {
+                failure(error!)
+            }
+        }
     }
 }
 

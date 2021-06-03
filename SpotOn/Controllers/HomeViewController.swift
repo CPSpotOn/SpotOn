@@ -10,6 +10,8 @@ import MapKit
 import CoreLocation
 import Floaty
 import Parse
+import Alamofire
+import AlamofireImage
 
 class HomeViewController: UIViewController {
     
@@ -37,13 +39,14 @@ class HomeViewController: UIViewController {
     var myAccessKey : String?
     var timer = Timer()
     var setIndexNum: Int =  0
-    var userAnnotations = [GuestAnnotation(location: nil)]
+    var userAnnotations = [GuestAnnotation()]
     var userTrackCount : Int = 0
     var myUser = PFUser.current()!
     var accessKey = "";
     var settings = AppSetting()
     var transportMethod = MKDirectionsTransportType()
     var centerToggel = false
+    var imageUser = [UIImage?]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +57,7 @@ class HomeViewController: UIViewController {
         super.viewDidAppear(animated)
         setUpSettings()
         self.title = "Home"
-        userAnnotations[0].shown = false
+        userAnnotations[0].isShown = false
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
         floatingButton.test = self
@@ -296,6 +299,36 @@ extension HomeViewController{
                 }
             }
     }
+    
+    func getImage(_ url:URL,handler: @escaping (UIImage?)->Void) {
+        print(url)
+        let urlReq = URLRequest(url: url)
+        let downloader = ImageDownloader()
+        downloader.download(urlReq) { response in
+            if let data = response.value {
+                print("Image downloaded")
+                handler(data)
+            } else {
+                handler(nil)
+            }
+        }
+    }
+    func getImageURL(username: String){
+        network.imagesQuery(username: username) { user in
+            //image
+            let image = user["image"] as! PFFileObject
+            let imageUrl = image.url!
+            let url = URL(string: imageUrl)!
+            self.getImage(url) { uImage in
+                //
+                print("Appending image")
+                self.imageUser.append(uImage)
+            }
+        } failure: { error in
+            print("Error: \(error.localizedDescription)")
+        }
+
+    }
 }
 
 // MARK:- CLLocationManagerDelegate
@@ -398,7 +431,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             
             for route in response.routes {
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.userTrackingMode = .follow
+                self.mapView.userTrackingMode = .followWithHeading
             }
         }
         pinImageView.isHidden = true
@@ -415,6 +448,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             print("Creating Query")
             network.createLiveQuery { travel in
                 self.setIndexNum = 0
+                var username = self.myUser.username!
                 travel["access"] = accessKey
                 travel["author"] = PFUser.current()!
                 travel["joining"] = false
@@ -427,6 +461,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 travel["destinationCoordinates"] = aDestinationCoordinates
                 travel["userCount"] = 0
                 travel["position"] = [[location.latitude, location.longitude]]
+                travel["usernames"] = [username]
                 if self.transportMethod == .automobile {
                     travel["method"] = "Car"
                 } else if self.transportMethod == .walking {
@@ -478,6 +513,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             print("Query joined :3")
             var userCount = travel["userCount"] as! Int
             var namesArray = travel["names"] as! [String]
+            var usernames =  travel["usernames"] as! [String]
             var positions = travel["position"] as! [[CLLocationDegrees]]
             let startCoordinates = travel["startCoordinates"] as! [CLLocationDegrees]
             let destinationCoordinates = travel["destinationCoordinates"] as! [CLLocationDegrees]
@@ -494,7 +530,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             let request = self.createDirectionRequestForOthers(from: startCoordinatesCLL, to: destinationCoordinatesCLL)
             
             self.setIndexNum = userCount + 1
-            
+            usernames.append(self.myUser.username!)
             namesArray.append(self.myUser["name"] as! String)
             travel["names"] = namesArray
             travel["joining"] = true
@@ -502,7 +538,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             travel["userCount"] = userCount
             positions.append([location.latitude, location.longitude])
             travel["position"] = positions
-           
+            travel["usernames"] = usernames
             arrayOfNames.append(self.myUser["name"] as! String)
             print(arrayOfNames)
             travel["names"] = arrayOfNames
@@ -519,6 +555,11 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     self.mapView.userTrackingMode = .follow
                 }
             }
+            
+            for name in usernames {
+                self.getImageURL(username: name)
+            }
+            print(self.imageUser)
             self.pinImageView.isHidden = true
             print("Sent directions")
             travel.saveInBackground()
@@ -528,16 +569,15 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             print("Error \(error.localizedDescription)")
         }
         //Add new  user annotation
-        var annonation = GuestAnnotation(location: nil)
+        var annonation = GuestAnnotation()
         //var user = PFUser.current()!
-        annonation.shown = false
+        annonation.isShown = false
         //annonation.title = myUser["name"] as! String
         userAnnotations.append(annonation)
         accessLabel.isHidden = false
         //accessLabel.text = "Access: \(myAccessKey)"
         scheduledTimerWithTimeIntervalWaiting()
     }
-    
     
     @objc func getLocationsUpdates() {
         print("Getting updates :3")
@@ -552,8 +592,8 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             var namesArray = travel["names"] as! [String]
             
             while self.userAnnotations.count < namesArray.count {
-                var annonation = GuestAnnotation(location: nil)
-                annonation.shown = false
+                var annonation = GuestAnnotation()
+                annonation.isShown = false
                 self.userAnnotations.append(annonation)
             }
             if joining {
@@ -570,14 +610,14 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     //Check if index exist
                     let exist = self.userAnnotations.indices.contains(loop)
                     if exist {
-                        if self.userAnnotations[loop].shown {
+                        if self.userAnnotations[loop].isShown {
                             print("Animating annotation")
                             UIView.animate(withDuration: 0.75) {
                                 self.userAnnotations[loop].coordinate = coord2D
                             }
                         } else {
                             print("Showing annotations")
-                            self.userAnnotations[loop].shown = true
+                            self.userAnnotations[loop].isShown = true
                             self.mapView.addAnnotation(self.userAnnotations[loop])
                         }
                     }
@@ -660,6 +700,8 @@ extension HomeViewController: WeatherManagerDelegate {
                 } else {
                     self.tempLabel.text = weather.temperatureString + "°F"
                 }
+            } else {
+                self.tempLabel.text = weather.temperatureString + "°F"
             }
             self.cityLabel.text = weather.cityName
             print("weather conditionname : ", weather.conditionName)
@@ -678,7 +720,7 @@ extension HomeViewController: MKMapViewDelegate {
         //print("regionDidChanged")
         //if pin is not active, do not calc
         self.centerToggel = false
-        self.mapView.userTrackingMode = .none
+        //self.mapView.userTrackingMode = .none
         if pinImageView.isHidden != true {
             let center = getCenterLocation(for: mapView)
             let geoCoder = CLGeocoder()
@@ -724,6 +766,24 @@ extension HomeViewController: MKMapViewDelegate {
         
         return renderer
     }
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        guard !(annotation is MKUserLocation) else {
+            return nil
+        }
+        
+        var annonationView = mapView.dequeueReusableAnnotationView(withIdentifier: "custom")
+        
+        if annonationView == nil {
+            // Create annonation
+            annonationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "custom")
+            annonationView?.canShowCallout = true
+        } else {
+            annonationView?.annotation = annotation
+        }
+        annonationView?.image = imageUser[setIndexNum]
+         return annonationView
+     }
 }
 
 extension HomeViewController : GeneratedToHomeDelegate{

@@ -8,14 +8,11 @@
 import Foundation
 import MapKit
 
-class GuestAnnotation : NSObject, MKAnnotation {
-    @objc dynamic var coordinate: CLLocationCoordinate2D
-    var title: String!
-    var subtitle: String!
-    var shown: Bool!
-
-    init(location coord:CLLocationCoordinate2D?) {
-        self.coordinate = coord ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
+class GuestAnnotation : MKPointAnnotation {
+    //var imageName: UIImage?
+    var isShown: Bool!
+    
+    override init() {
         super.init()
     }
 }

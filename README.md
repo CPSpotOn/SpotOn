@@ -34,6 +34,8 @@ A GPS app that allows you to travel with other together in a single instance of 
 - [x] Naviagte together with other users
 - [x] Show other users on map
 - [x] Gifs created to show build progress and added to README
+- [x] Create a narrated walkthrough video of your completed app
+- [x] Present your app at Demo Day
 
 
 **Required Must-have Stories**

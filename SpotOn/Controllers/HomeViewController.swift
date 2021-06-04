@@ -26,7 +26,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var infoStackView: UIStackView!
-    @IBOutlet weak var imageView: UIImageView!
     
     
     //TODO: Add any required variables
@@ -341,7 +340,6 @@ extension HomeViewController{
             print("Download Finished")
             // always update the UI from the main thread
             DispatchQueue.main.async() { [weak self] in
-                self?.imageView.image = UIImage(data: data)
                 self?.imageUser.append(UIImage(data: data)!)
             }
         }

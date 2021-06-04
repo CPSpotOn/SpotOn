@@ -39,7 +39,7 @@ class HomeViewController: UIViewController {
     var myAccessKey : String?
     var timer = Timer()
     var setIndexNum: Int =  0
-    var userAnnotations = [GuestAnnotation()]
+    var userAnnotations = [GuestAnnotation(title: nil, locationName: nil, discipline: nil, coordinate: nil, subtitle: nil)]
     var userTrackCount : Int = 0
     var myUser = PFUser.current()!
     var accessKey = "";
@@ -76,15 +76,15 @@ class HomeViewController: UIViewController {
             
         }
         
-//        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
-//            if self.centerToggel {
-//                self.mapView.userTrackingMode = .none
-//                self.centerToggel = false
-//            } else {
-//                self.mapView.userTrackingMode = .follow
-//                self.centerToggel = true
-//            }
-//        }
+        //        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
+        //            if self.centerToggel {
+        //                self.mapView.userTrackingMode = .none
+        //                self.centerToggel = false
+        //            } else {
+        //                self.mapView.userTrackingMode = .follow
+        //                self.centerToggel = true
+        //            }
+        //        }
         
         view.addSubview(floatingButton)
         setConstraints(floatingButton: floatingButton)
@@ -93,7 +93,7 @@ class HomeViewController: UIViewController {
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
         
-        showClosestUsers()
+        //showClosestUsers()
         
         
         network.imagesQuery(username: myUser.username!) { user in
@@ -108,7 +108,7 @@ class HomeViewController: UIViewController {
         } failure: { error in
             print("Error: \(error.localizedDescription)")
         }
-
+        
         
     }
     
@@ -136,101 +136,6 @@ class HomeViewController: UIViewController {
     }
     
 }
-
-//show closest users in the map
-//calls the LiveTravel object
-//and sets the pin to user current location
-extension HomeViewController{
-    func showClosestUsers(){
-        //acess code : 060924
-        //lat : 37.785834 , long : -122.406417
-        let accessCode = "060924"
-        let query = PFQuery(className: "LiveTravel")
-        query.whereKey("access", contains: accessCode)
-        query.includeKey("author")
-        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
-            if error != nil{
-                print("error : \(error?.localizedDescription)")
-            }else{
-                print("count : ", objects?.count)
-                
-                //the total users that is associated with the access code
-                //if there are two users, they are shown in the map
-                for user in objects! {
-                    let author = user["author"] as! PFUser
-                    DispatchQueue.main.async {
-                        let pin = MKPointAnnotation()
-                        pin.coordinate = CLLocationCoordinate2D(latitude: 37.79059491411279, longitude: -122.40690136825816)
-                        pin.title = author["name"] as! String
-                        self.mapView.addAnnotation(pin)
-                    }
-                }
-            }
-        }
-    }
-    
-    //view of annotation
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard !(annotation is MKUserLocation) else {
-            return nil
-        }
-        
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "user")
-        if annotationView == nil{
-            //Create custom view
-        }else{
-            annotationView?.annotation = annotation
-        }
-        
-        return annotationView
-    }
-    
-    //when annotation is selected
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if let annotationTitle = view.annotation?.title
-        {
-            print("User tapped on annotation with title: \(annotationTitle!)")
-            //calculate distance and add a route
-            //make sure we got user location
-            let sourcePlacemark = MKPlacemark(coordinate: (locationManger.location?.coordinate)!)
-            let destPlacemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 37.79059491411279, longitude: -122.40690136825816))
-            let sourceItem = MKMapItem(placemark: sourcePlacemark)
-            let destItem = MKMapItem(placemark: destPlacemark)
-            
-            let destinationRequest = MKDirections.Request()
-            destinationRequest.source = sourceItem
-            destinationRequest.destination = destItem
-            destinationRequest.transportType = .automobile
-            destinationRequest.requestsAlternateRoutes = false
-            
-            let direction = MKDirections(request: destinationRequest)
-            direction.calculate { response, error in
-                guard let response = response else{
-                    if let error = error{
-                        print("error :\(error)")
-                    }
-                    return
-                }
-                
-                let route = response.routes[0]
-                self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
-            }
-        }
-        
-        
-    }
-    
-    //when annotation is deselected
-    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        print("DeSelect")
-        self.mapView.removeOverlays(self.mapView.overlays)
-    }
-    
-}
-//end of show users and routes on the map
-
-
 
 // MARK:- Setup Functions
 extension HomeViewController{
@@ -305,27 +210,27 @@ extension HomeViewController{
     }
     
     func setUpSettings() {
-            settings.getUserDefaults()
-            var transport = settings.getTransport()
-            var unit = settings.getUnit()
-            if transport != nil {
-                //TODO set transport
-                if transport! == "Car" {
-                    transportMethod = .automobile
-                } else if transport! == "Walk" {
-                    transportMethod = .walking
-                }
-            } else {
+        settings.getUserDefaults()
+        let transport = settings.getTransport()
+        let unit = settings.getUnit()
+        if transport != nil {
+            //TODO set transport
+            if transport! == "Car" {
                 transportMethod = .automobile
+            } else if transport! == "Walk" {
+                transportMethod = .walking
             }
-            if unit != nil {
-                //TODO: set unit
-                if unit! == "SI" {
-                    weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=metric")
-                } else if unit! == "Imperial" {
-                    weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial")
-                }
+        } else {
+            transportMethod = .automobile
+        }
+        if unit != nil {
+            //TODO: set unit
+            if unit! == "SI" {
+                weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=metric")
+            } else if unit! == "Imperial" {
+                weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial")
             }
+        }
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -356,7 +261,7 @@ extension HomeViewController{
         } failure: { error in
             print("Error: \(error.localizedDescription)")
         }
-
+        
     }
 }
 
@@ -369,7 +274,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             getDirection()
         }else{
             self.mapView.userTrackingMode = .follow
-
+            
         }
     }
     
@@ -539,6 +444,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             //TODO: Inform the user we don't have their location
             return
         }
+        mapView.register(GuestAnnotationMarkerView.self,forAnnotationViewWithReuseIdentifier:MKMapViewDefaultAnnotationViewReuseIdentifier)
         network.returnQuery(accessKey: myAccessKey ?? "") { travel in
             print("Query joined :3")
             var userCount = travel["userCount"] as! Int
@@ -572,6 +478,15 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             arrayOfNames.append(self.myUser["name"] as! String)
             print(arrayOfNames)
             travel["names"] = arrayOfNames
+            
+            self.userAnnotations.removeAll()
+            var loop = 0
+            while loop < usernames.count {
+                var annotation = GuestAnnotation(title: namesArray[loop], locationName: nil, discipline: String(loop), coordinate: nil, subtitle: usernames[loop])
+                annotation.isShown = false
+                self.userAnnotations.append(annotation)
+                loop += 1
+            }
             let directions = MKDirections(request: request)
             
             self.resetMapview(withNew: directions)
@@ -596,7 +511,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             print("Error \(error.localizedDescription)")
         }
         //Add new  user annotation
-        var annonation = GuestAnnotation()
+        var annonation = GuestAnnotation(title: nil, locationName: nil, discipline: nil, coordinate: nil, subtitle: nil)
         //var user = PFUser.current()!
         annonation.isShown = false
         //annonation.title = myUser["name"] as! String
@@ -619,15 +534,14 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             var namesArray = travel["names"] as! [String]
             var usernames =  travel["usernames"] as! [String]
             
-            while self.userAnnotations.count < namesArray.count {
-                var annonation = GuestAnnotation()
-                annonation.isShown = false
-                self.userAnnotations.append(annonation)
-            }
-            if self.imageUser.count < usernames.count {
-                self.imageUser.removeAll()
-                for name in usernames {
-                    self.getImageURL(username: name)
+            if self.userAnnotations.count < namesArray.count {
+                var loop = self.userAnnotations.count
+                
+                while loop < usernames.count {
+                    var annotation = GuestAnnotation(title: namesArray[loop], locationName: nil, discipline: String(loop), coordinate: nil, subtitle: usernames[loop])
+                    annotation.isShown = false
+                    self.userAnnotations.append(annotation)
+                    loop += 1
                 }
             }
             if joining {
@@ -657,7 +571,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     }
                 } else {
                     let myPos = [location.latitude, location.longitude]
-                    usersPositions[self.setIndexNum ?? 0] = myPos
+                    usersPositions[self.setIndexNum ] = myPos
                     travel["position"] = usersPositions
                 }
                 loop += 1
@@ -666,7 +580,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         } failure: { error in
             print("Error: \(error.localizedDescription)")
         }
-
+        
     }
     
     //remove overlays from map
@@ -678,7 +592,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
     }
     
     //requets helper function
-
+    
     func createDirectionRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
         let destinationCoordinate = getDestinationCoordinates()
         let startingPosition = MKPlacemark(coordinate: coordinate)
@@ -750,6 +664,31 @@ extension HomeViewController: WeatherManagerDelegate {
 
 // MARK:- MKMapViewDelegate
 extension HomeViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        // 2
+        guard let annotation = annotation as? GuestAnnotation else {
+            return nil
+        }
+        
+        // 3
+        let identifier = "guest"
+        var view: MKMarkerAnnotationView
+        // 4
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(
+            withIdentifier: identifier) as? MKMarkerAnnotationView {
+            dequeuedView.annotation = annotation
+            view = dequeuedView
+        } else {
+            // 5
+            view = MKMarkerAnnotationView(
+                annotation: annotation,
+                reuseIdentifier: identifier)
+            view.canShowCallout = true
+            view.calloutOffset = CGPoint(x: -5, y: 5)
+            view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }
+        return view
+    }
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         //print("regionDidChanged")
         //if pin is not active, do not calc
@@ -815,11 +754,9 @@ extension HomeViewController: MKMapViewDelegate {
         } else {
             annonationView?.annotation = annotation
         }
-        let cpa = MKPointAnnotation() as! GuestAnnotation
-        cpa.imageView = imageUser[setIndexNum]
         annonationView?.image = imageUser[self.setIndexNum]
-         return annonationView
-     }
+        return annonationView
+    }
 }
 
 extension HomeViewController : GeneratedToHomeDelegate{

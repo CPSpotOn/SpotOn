@@ -8,12 +8,46 @@
 import Foundation
 import MapKit
 
-class GuestAnnotation : MKPointAnnotation {
+class GuestAnnotation : NSObject, MKAnnotation {
     //var imageName: UIImage?
-    var isShown: Bool!
-    var imageView: UIImage!
+    let title: String?
+    let subtitle: String?
+    let locationName: String?
+    let discipline: String?
+    @objc dynamic var coordinate: CLLocationCoordinate2D
+    var isShown: Bool = false
     
-    override init() {
+    init(
+        title: String?,
+        locationName: String?,
+        discipline: String?,
+        coordinate: CLLocationCoordinate2D?,
+        subtitle: String?
+    ) {
+        self.title = title
+        self.locationName = locationName
+        self.discipline = discipline
+        self.subtitle = subtitle
+        if coordinate != nil {
+            self.coordinate = coordinate!
+        } else {
+            self.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(), longitude: CLLocationDegrees())
+        }
         super.init()
+    }
+    
+    var markerTintColor: UIColor  {
+      switch discipline {
+      case "1":
+        return .red
+      case "2":
+        return .cyan
+      case "3":
+        return .blue
+      case "4":
+        return .purple
+      default:
+        return .green
+      }
     }
 }

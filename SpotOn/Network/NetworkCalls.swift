@@ -14,6 +14,7 @@ import CoreLocation
 struct NetworkCalls {
 
     let queryName = "LiveTravel"
+    
     func createLiveQuery(success: @escaping (PFObject) ->()) {
         let startUpQuery = PFObject(className: queryName)
         success(startUpQuery)

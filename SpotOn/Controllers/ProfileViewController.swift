@@ -8,6 +8,7 @@ import UIKit
 import SwiftHEXColors
 import Parse
 import AlamofireImage
+import UIKit
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -27,12 +28,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         emailLabel.text = PFUser.current()?.email
         
         
-        //getImage()
+        getImage()
     }
     
     func getImage(){
         let query = PFQuery(className: "userImage")
-        query.whereKey("username", equalTo: PFUser.current()?.username!)
+        query.whereKey("username", equalTo: PFUser.current()?.username! ?? "")
         query.getFirstObjectInBackground { object, error in
             if object != nil{
                 DispatchQueue.main.async {
@@ -42,9 +43,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     let url = URL(string: imageUrl)!
                     
                     self.profImageView.af.setImage(withURL: url)
+                    //self.profImageView.makeRounded()
                 }
             }else{
-                print("error retrieving image : \(error?.localizedDescription)")
+                print("error retrieving image : \(String(describing: error?.localizedDescription))")
                 self.profImageView.image = UIImage(named: "user")
 
             }
@@ -76,13 +78,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         object!.saveInBackground()
                         print("password changed successfully")
                     }else{
-                        print("error changing : \(error?.localizedDescription)")
+                        print("error changing : \(String(describing: error?.localizedDescription))")
                     }
                 }
             }
          
         }))
-        
         self.present(alert, animated: true)
     }
     
@@ -128,7 +129,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 if success{
                     print("sucessfully saved")
                 }else{
-                    print("error saving image : \(error?.localizedDescription)")
+                    print("error saving image : \(String(describing: error?.localizedDescription))")
                 }
             }
         }
@@ -144,4 +145,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     */
 
+}
+
+// MARK:- UIImageView
+extension UIImageView {
+    func makeRounded() {
+        self.layer.borderWidth = 1
+        self.layer.masksToBounds = false
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.cornerRadius = self.frame.height / 2
+        self.clipsToBounds = true
+    }
 }

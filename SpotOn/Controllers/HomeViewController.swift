@@ -57,13 +57,10 @@ class HomeViewController: UIViewController {
         super.viewDidAppear(animated)
         setUpSettings()
         self.title = "Home"
-        userAnnotations[0].isShown = false
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
         floatingButton.test = self
         floatingButton.addButtons(with: pinImageView)
-        
-        infoStackView.backgroundColor = .clear
         
         //invite or accept
         floatingButton.addItem("Connect", icon: UIImage(named: "connect")){ item in
@@ -75,17 +72,6 @@ class HomeViewController: UIViewController {
             self.present(alertVc, animated: true, completion: nil)
             
         }
-        
-        //        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
-        //            if self.centerToggel {
-        //                self.mapView.userTrackingMode = .none
-        //                self.centerToggel = false
-        //            } else {
-        //                self.mapView.userTrackingMode = .follow
-        //                self.centerToggel = true
-        //            }
-        //        }
-        
         view.addSubview(floatingButton)
         setConstraints(floatingButton: floatingButton)
         setWeatherManager()
@@ -94,22 +80,6 @@ class HomeViewController: UIViewController {
         overrideUserInterfaceStyle = .light //light mode by default
         
         //showClosestUsers()
-        
-        
-        network.imagesQuery(username: myUser.username!) { user in
-            if user != nil {
-                DispatchQueue.main.async {
-                    let imageFile = user["image"] as! PFFileObject
-                    let imageUrl = imageFile.url!
-                    //let url = URL(string: imageUrl)!
-                    self.downloadImage(from: URL(string: imageUrl)!)
-                }
-            }
-        } failure: { error in
-            print("Error: \(error.localizedDescription)")
-        }
-        
-        
     }
     
     //center toggle
@@ -140,8 +110,6 @@ class HomeViewController: UIViewController {
 // MARK:- Setup Functions
 extension HomeViewController{
     //MARK:- Map helper functions
-    
-    
     //checks if high level local service is on
     func checkLocationServices(){
         if CLLocationManager.locationServicesEnabled(){
@@ -371,7 +339,17 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         pinImageView.isHidden = true
     }
     
-    //liveQuery
+    /* Creates a query/object for hosting a multi user travelling session
+     Object create contains infomation with keyValues:
+     userCount: Contains user count - 1 denoting their index
+     startCoordinates: Contains starting position from which navegation will be calculated
+     destinationCoordinates: Contains destionation coordinate
+     access: Secret random 6 digit access key
+     author: Pointer to host
+     names: Array of the names of users in the session
+     position: Array of position for each user on map.
+     Return: Void
+     */
     func getDirectionForGroupSession(accessKey: String, inSession: Bool) {
         if !inSession {
             //make sure we got user location
@@ -379,37 +357,45 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 //TODO: Inform the user we don't have their location
                 return
             }
+            //Create query object
             print("Creating Query")
             network.createLiveQuery { travel in
+                //travel is PFObject
+                //set initial index for host
                 self.setIndexNum = 0
-                var username = self.myUser.username!
+                //get user's username
+                let username = self.myUser.username!
+                //assign values to column on object
                 travel["access"] = accessKey
                 travel["author"] = PFUser.current()!
-                travel["joining"] = false
                 travel["names"] = [self.myUser["name"] as! String]
-                //travel["objectId"] = accessKey
+                //obtain current user's location
                 let myCoordinates = [location.latitude, location.longitude]
                 let destinationCoordinates = self.getDestinationCoordinates()
                 let aDestinationCoordinates = [destinationCoordinates.latitude, destinationCoordinates.longitude]
+                //assign user's location to column of object
                 travel["startCoordinates"] = myCoordinates
                 travel["destinationCoordinates"] = aDestinationCoordinates
+                //set user count to zero denotating index for each user
                 travel["userCount"] = 0
                 travel["position"] = [[location.latitude, location.longitude]]
                 travel["usernames"] = [username]
+                
+                //check for transportation method
                 if self.transportMethod == .automobile {
                     travel["method"] = "Car"
                 } else if self.transportMethod == .walking {
                     travel["method"] = "Walk"
                 }
-                // var userCount = travel["userCount"] as! [[PFUser: Int]]
+                //save changed and update objects data
                 travel.saveInBackground { success, error in
-                    if error != nil {
-                        print("Error: \(error?.localizedDescription)")
-                    } else if success != nil {
-                        print("Saved")
+                    if success {
+                        print(success)
+                    } else {
+                        print("Error: \(String(describing: error?.localizedDescription))")
                     }
                 }
-                //print(travel.objectId)
+                //delay
                 DispatchQueue.main.async {
                     //print("Waiting 4.5s in getDirectionsForGroup")
                     self.scheduledTimerWithTimeIntervalWaiting()
@@ -418,10 +404,12 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 print("Query Created :D")
             }
             
+            //create request for direction
             let request = createDirectionRequest(from: location)
             let directions = MKDirections(request: request)
             resetMapview(withNew: directions)
             
+            //plots reponse from direction
             directions.calculate { response, error in
                 //TODO: Handle error if needed
                 guard let response = response else { return }
@@ -431,22 +419,35 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     self.mapView.userTrackingMode = .follow
                 }
             }
+            //hide lables
             accessLabel.isHidden = false
-            //accessLabel.text = "Access: \(myAccessKey)"
             self.title = myAccessKey
             pinImageView.isHidden = true
             print("Sent directions")
         }
     }
     
+    /* Joins  query object hosting a multi user travelling session
+     Object joined contains infomation with key values:
+     userCount: Contains user count - 1 denoting their index. It gets updated with +1
+     startCoordinates: Contains starting position from which navegation will be calculated
+     destinationCoordinates: Contains destionation coordinate
+     access: Secret random 6 digit access key
+     author: Pointer to host
+     names: Array of the names of users in the session. It gets updated with the user joining the session
+     position: Array of position for each user on map.. It gets updated with the user joining the session location
+     Return: Void
+     */
     func joinGroupSession() {
         guard let location = locationManger.location?.coordinate else {
             //TODO: Inform the user we don't have their location
             return
         }
         mapView.register(GuestAnnotationMarkerView.self,forAnnotationViewWithReuseIdentifier:MKMapViewDefaultAnnotationViewReuseIdentifier)
+        //calls network to return query passing the access key
         network.returnQuery(accessKey: myAccessKey ?? "") { travel in
             print("Query joined :3")
+            //loads data from query
             var userCount = travel["userCount"] as! Int
             var namesArray = travel["names"] as! [String]
             var usernames =  travel["usernames"] as! [String]
@@ -454,22 +455,26 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             let startCoordinates = travel["startCoordinates"] as! [CLLocationDegrees]
             let destinationCoordinates = travel["destinationCoordinates"] as! [CLLocationDegrees]
             var arrayOfNames = travel["names"] as! [String]
-            var method = travel["method"] as! String
+            let method = travel["method"] as! String
             let startCoordinatesCLL = CLLocationCoordinate2D(latitude: startCoordinates[0] , longitude: startCoordinates[1] )
             let destinationCoordinatesCLL = CLLocationCoordinate2D(latitude: destinationCoordinates[0] , longitude: destinationCoordinates[1] )
             
+            //loads traporpation method
             if method == "Car" {
                 self.transportMethod = .automobile
             } else if method == "Walk" {
                 self.transportMethod = .walking
             }
+            //creates request with loaded data
             let request = self.createDirectionRequestForOthers(from: startCoordinatesCLL, to: destinationCoordinatesCLL)
             
+            //set index for joining user
             self.setIndexNum = userCount + 1
+            //add current values to usernames and names array
             usernames.append(self.myUser.username!)
             namesArray.append(self.myUser["name"] as! String)
+            //update query column values
             travel["names"] = namesArray
-            travel["joining"] = true
             userCount = self.setIndexNum
             travel["userCount"] = userCount
             positions.append([location.latitude, location.longitude])
@@ -479,18 +484,20 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             print(arrayOfNames)
             travel["names"] = arrayOfNames
             
+            //updates annonation array for user
             self.userAnnotations.removeAll()
             var loop = 0
             while loop < usernames.count {
-                var annotation = GuestAnnotation(title: namesArray[loop], locationName: nil, discipline: String(loop), coordinate: nil, subtitle: usernames[loop])
+                let annotation = GuestAnnotation(title: namesArray[loop], locationName: nil, discipline: String(loop), coordinate: nil, subtitle: usernames[loop])
                 annotation.isShown = false
                 self.userAnnotations.append(annotation)
                 loop += 1
             }
+            //creates direction request
             let directions = MKDirections(request: request)
-            
+            //resets map if any gps nav was active
             self.resetMapview(withNew: directions)
-            
+            //plot gps nav
             directions.calculate { response, error in
                 //TODO: Handle error if needed
                 guard let response = response else { return }
@@ -500,18 +507,23 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     self.mapView.userTrackingMode = .follow
                 }
             }
-            
+            //saves data back on parse
+            travel.saveInBackground { success, error in
+                if success {
+                    print(success)
+                } else {
+                    print("Error: \(String(describing: error?.localizedDescription))")
+                }
+            }
             print(self.imageUser)
             self.pinImageView.isHidden = true
-            print("Sent directions")
-            travel.saveInBackground()
             print("Saved stuff :3")
             
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }
         //Add new  user annotation
-        var annonation = GuestAnnotation(title: nil, locationName: nil, discipline: nil, coordinate: nil, subtitle: nil)
+        let annonation = GuestAnnotation(title: nil, locationName: nil, discipline: nil, coordinate: nil, subtitle: nil)
         //var user = PFUser.current()!
         annonation.isShown = false
         //annonation.title = myUser["name"] as! String
@@ -521,6 +533,17 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         scheduledTimerWithTimeIntervalWaiting()
     }
     
+    /* Updates  query object hosting a multi user travelling session
+     Object joined contains infomation with key values:
+     userCount: Contains user count - 1 denoting their index. It gets updated with +1
+     startCoordinates: Contains starting position from which navegation will be calculated
+     destinationCoordinates: Contains destionation coordinate
+     access: Secret random 6 digit access key
+     author: Pointer to host
+     names: Array of the names of users in the session. It gets updated with the user joining the session
+     position: Array of position for each user on map.. It gets updated with the user joining the session location
+     Return: Void
+     */
     @objc func getLocationsUpdates() {
         print("Getting updates :3")
         guard let location = locationManger.location?.coordinate else {
@@ -530,25 +553,25 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         network.returnQuery(accessKey: myAccessKey ?? "") { travel in
             var usersPositions = travel["position"] as! [[CLLocationDegrees]]
             let userCount = travel["userCount"] as! Int
-            var joining = travel["joining"] as! Bool
-            var namesArray = travel["names"] as! [String]
-            var usernames =  travel["usernames"] as! [String]
+            let namesArray = travel["names"] as! [String]
+            let usernames =  travel["usernames"] as! [String]
             
             if self.userAnnotations.count < namesArray.count {
                 var loop = self.userAnnotations.count
-                
                 while loop < usernames.count {
-                    var annotation = GuestAnnotation(title: namesArray[loop], locationName: nil, discipline: String(loop), coordinate: nil, subtitle: usernames[loop])
+                    let annotation = GuestAnnotation(title: namesArray[loop], locationName: nil, discipline: String(loop), coordinate: nil, subtitle: usernames[loop])
                     annotation.isShown = false
                     self.userAnnotations.append(annotation)
                     loop += 1
                 }
             }
-            if joining {
-                
-                travel["joining"] = false
+            if self.imageUser.count < namesArray.count {
+                var loop = self.imageUser.count
+                while loop < usernames.count {
+                    self.getImageURL(username: usernames[loop])
+                    loop += 1
+                }
             }
-            
             var loop = 0
             while loop <= userCount {
                 if loop != self.setIndexNum {
@@ -576,7 +599,13 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 }
                 loop += 1
             }
-            travel.saveInBackground()
+            travel.saveInBackground { success, error in
+                if success {
+                    print(success)
+                } else {
+                    print("Error: \(String(describing: error?.localizedDescription))")
+                }
+            }
         } failure: { error in
             print("Error: \(error.localizedDescription)")
         }
@@ -739,26 +768,27 @@ extension HomeViewController: MKMapViewDelegate {
         
         return renderer
     }
-    
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-        guard !(annotation is MKUserLocation) else {
-            return nil
-        }
-        
-        var annonationView = mapView.dequeueReusableAnnotationView(withIdentifier: "custom")
-        
-        if annonationView == nil {
-            // Create annonation
-            annonationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "custom")
-            annonationView?.canShowCallout = true
-        } else {
-            annonationView?.annotation = annotation
-        }
-        annonationView?.image = imageUser[self.setIndexNum]
-        return annonationView
-    }
+    /*
+     private func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+     guard !(annotation is MKUserLocation) else {
+     return nil
+     }
+     
+     var annonationView = mapView.dequeueReusableAnnotationView(withIdentifier: "custom")
+     
+     if annonationView == nil {
+     // Create annonation
+     annonationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "custom")
+     annonationView?.canShowCallout = true
+     } else {
+     annonationView?.annotation = annotation
+     }
+     annonationView?.image = imageUser[self.setIndexNum]
+     return annonationView
+     }*/
 }
 
+// MARK:- GeneratedToHomeDelegate
 extension HomeViewController : GeneratedToHomeDelegate{
     func gotoHomeAndAction(access: String, createSession: Bool) {
         myAccessKey = access

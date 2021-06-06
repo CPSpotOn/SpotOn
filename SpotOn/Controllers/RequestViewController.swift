@@ -37,21 +37,6 @@ class RequestViewController: UIViewController {
     }
     
     @IBAction func onGenerate(_ sender: Any) {
-//        let request_list = PFObject(className: "request_list")
-//        let rString = randomString(length: 12)
-//        request_list["userId"] = PFUser.current()
-//        request_list["token"] = rString
-//
-//        request_list.saveInBackground { (success, error) in
-//            if success{
-//                print("saved")
-//                DispatchQueue.main.async {
-//                    self.codeLabel.text = rString
-//                }
-//            }else{
-//                print("error : \(error?.localizedDescription)")
-//            }
-//        }
         accessKey = randomString(length: 6)
         codeLabel.text = accessKey!
         generateToHomeDelegate.gotoHomeAndAction(access: accessKey!, createSession: true)
@@ -65,27 +50,17 @@ class RequestViewController: UIViewController {
     }
     
     func randomString(length: Int) -> String {
-      let letters = "0123456789"
-      return String((0..<length).map{ _ in letters.randomElement()! })
+      let numbers = "0123456789"
+      return String((0..<length).map{ _ in numbers.randomElement()! })
     }
     
     
     @IBAction func onCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
+// MARK:- UITextFieldDelegate
 extension RequestViewController : UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accessKey = textField.text!

@@ -401,6 +401,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     self.scheduledTimerWithTimeIntervalWaiting()
                 }
                 self.getImageURL(username: self.myUser.username!)
+                //self.userAnnotations[setIndexNum].userImage = self.imageUser[setIndexNum]
                 print("Query Created :D")
             }
             

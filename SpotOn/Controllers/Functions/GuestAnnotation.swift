@@ -36,6 +36,10 @@ class GuestAnnotation : NSObject, MKAnnotation {
         super.init()
     }
     
+    var userImage: UIImage {
+        return UIImage(systemName: "car")!
+    }
+    
     var markerTintColor: UIColor  {
       switch discipline {
       case "1":

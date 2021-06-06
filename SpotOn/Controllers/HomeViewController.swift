@@ -12,6 +12,7 @@ import Floaty
 import Parse
 import Alamofire
 import AlamofireImage
+import FloatingPanel
 
 class HomeViewController: UIViewController {
     
@@ -48,9 +49,12 @@ class HomeViewController: UIViewController {
     var transportMethod = MKDirectionsTransportType()
     var centerToggel = false
     var imageUser = [UIImage]()
+    var floatingVC : FloatingPanelController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadFloatingPanel()
         
     }
     
@@ -125,6 +129,20 @@ class HomeViewController: UIViewController {
     }
     
     
+    //click listener for settings
+    
+    @IBAction func onSettinsTap(_ sender: Any) {
+        print("Settings")
+        let settingsPanvelVC = FloatingPanelController()
+        settingsPanvelVC.delegate = self
+        let settingsVC = storyboard?.instantiateViewController(identifier: "Settings") as? SettingsViewController
+        settingsPanvelVC.set(contentViewController: settingsVC)
+     
+        settingsPanvelVC.addPanel(toParent: self)
+        
+        
+        settingsPanvelVC.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+    }
     
     //constraint for FLoating Action Button
     func setConstraints(floatingButton : FloatingButton){
@@ -136,7 +154,42 @@ class HomeViewController: UIViewController {
         floatingButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
     }
     
+    
 }
+
+
+///Floatng Panel View Controller
+extension HomeViewController : FloatingPanelControllerDelegate{
+    
+    func loadFloatingPanel(){
+        floatingVC = FloatingPanelController()
+        floatingVC.delegate = self
+        
+        let OptionVC = storyboard?.instantiateViewController(identifier: "optionsVC") as? OptionsViewController
+        
+        floatingVC.set(contentViewController: OptionVC)
+        floatingVC.addPanel(toParent: self)
+        floatingVC.layout = MyFloatingPanelLayout()
+        floatingVC.contentMode = .fitToBounds
+        floatingVC.invalidateLayout()
+    }
+    
+    class MyFloatingPanelLayout : FloatingPanelLayout{
+        let position: FloatingPanelPosition = .bottom
+           let initialState: FloatingPanelState = .tip
+           var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
+            return [
+                        .full: FloatingPanelLayoutAnchor(absoluteInset: 5.0, edge: .top, referenceGuide: .safeArea),
+                        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.3, edge: .bottom, referenceGuide: .safeArea),
+                        .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .safeArea),
+                    ]
+           }
+    }
+    
+}
+
+//end of floating panel
+
 
 //show closest users in the map
 //calls the LiveTravel object
@@ -788,7 +841,9 @@ extension HomeViewController: MKMapViewDelegate {
                 DispatchQueue.main.async {
                     if self.pinImageView.isHidden != true {
                         //self.geoTestLabel.text = "\(streetNumber) \(streetName)"
-                        self.searchTextField.text = "\(streetNumber) \(streetName)"
+                        
+                        ///pin addess value is changed here
+                        //self.searchTextField.text = "\(streetNumber) \(streetName)"
                     }
                 }
             }

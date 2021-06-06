@@ -23,7 +23,6 @@ class FloatingButton : Floaty{
     init(controller : UIViewController) {
         super.init()
         self.controller = controller
-        
         addButtons()
         
     }

@@ -3,6 +3,7 @@ PODS:
   - AlamofireImage (4.2.0):
     - Alamofire (~> 5.4)
   - Bolts/Tasks (1.9.1)
+  - FloatingPanel (2.4.0)
   - Floaty (4.2.0)
   - Parse (1.19.2):
     - Parse/Core (= 1.19.2)
@@ -12,6 +13,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage
+  - FloatingPanel
   - Floaty (~> 4.2.0)
   - Parse
   - SwiftHEXColors
@@ -21,6 +23,7 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - Bolts
+    - FloatingPanel
     - Floaty
     - Parse
     - SwiftHEXColors
@@ -29,10 +32,11 @@ SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
+  FloatingPanel: fa60183672ed86313b9e241e34465e82211260e8
   Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
   Parse: 081fb8755c3000fd11df817eec235def233d0af3
   SwiftHEXColors: 1cb6e5d55c52749aa33db8f088ac55eb71ca4c7f
 
-PODFILE CHECKSUM: ee04ba95a144c7e2b4e4eed93141d533801da33e
+PODFILE CHECKSUM: e3a9d37e2c34478bdc1a4a150ffe59b5bc347092
 
 COCOAPODS: 1.10.1

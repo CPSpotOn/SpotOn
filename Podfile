@@ -10,5 +10,6 @@ target 'SpotOn' do
   pod 'Floaty', '~> 4.2.0'  # Library for floating buttons
   pod 'SwiftHEXColors' # Library for hex colors 
   pod 'AlamofireImage'
+  pod 'FloatingPanel'
 
 end

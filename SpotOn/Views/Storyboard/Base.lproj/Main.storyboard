@@ -532,18 +532,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paperplane.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="m7h-ZY-cgS">
-                                <rect key="frame" x="354" y="103" width="40" height="40.000000000000014"/>
-                                <color key="tintColor" systemColor="systemBlueColor"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="7c1-qH-1GT"/>
-                                    <constraint firstAttribute="height" constant="41.333333333333329" id="qwr-FP-fXX"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="dD5-TA-Agw" appends="YES" id="qmU-vp-3vk"/>
-                                </connections>
-                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MoO-PH-dBE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -558,10 +546,8 @@
                             <constraint firstItem="8ZJ-6l-AX8" firstAttribute="top" secondItem="c4i-sP-hOe" secondAttribute="top" id="Pjz-Ju-bQl"/>
                             <constraint firstItem="OL3-xH-Rpz" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" constant="20" id="SMz-1R-NhM"/>
                             <constraint firstItem="Cna-pY-39w" firstAttribute="top" secondItem="MoO-PH-dBE" secondAttribute="top" constant="16" id="WOJ-79-RiO"/>
-                            <constraint firstItem="m7h-ZY-cgS" firstAttribute="top" secondItem="Cna-pY-39w" secondAttribute="bottom" constant="8" id="gja-Hj-pDC"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="OL3-xH-Rpz" secondAttribute="trailing" constant="20" id="gvx-Ug-cie"/>
                             <constraint firstItem="OL3-xH-Rpz" firstAttribute="top" secondItem="Cna-pY-39w" secondAttribute="bottom" constant="8" id="qw9-eG-0Rd"/>
-                            <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="m7h-ZY-cgS" secondAttribute="trailing" constant="20" id="rOP-SU-UAr"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="bottom" secondItem="8ZJ-6l-AX8" secondAttribute="bottom" id="wm6-98-Ufj"/>
                             <constraint firstItem="MkV-9R-fDW" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" constant="20" id="zvc-Ci-rhc"/>
                         </constraints>
@@ -854,7 +840,6 @@
         <image name="car.fill" catalog="system" width="128" height="93"/>
         <image name="fir" width="128" height="128"/>
         <image name="life-style" width="128" height="128"/>
-        <image name="paperplane.circle.fill" catalog="system" width="128" height="121"/>
         <image name="pathway" width="128" height="128"/>
         <image name="ruler.fill" catalog="system" width="128" height="57"/>
         <image name="sun" width="128" height="128"/>
@@ -868,9 +853,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -14,7 +14,6 @@ import Alamofire
 import AlamofireImage
 
 class HomeViewController: UIViewController {
-    
     //MARK:- Variables
     //TODO: Connect all the outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -26,6 +25,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var infoStackView: UIStackView!
+    @IBOutlet weak var searchVC: UISearchBar!
     
     
     //TODO: Add any required variables
@@ -47,6 +47,7 @@ class HomeViewController: UIViewController {
     var transportMethod = MKDirectionsTransportType()
     var centerToggel = false
     var imageUser = [UIImage]()
+    let searchVc = UISearchController(searchResultsController: SearchResultViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +57,7 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setUpSettings()
+        setUpSearchVC()
         self.title = "Home"
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
@@ -252,6 +254,11 @@ extension HomeViewController{
                                      button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
                                      scale.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -10),
                                      scale.centerYAnchor.constraint(equalTo: button.centerYAnchor)])
+    }
+    
+    func setUpSearchVC() {
+        searchVc.searchResultsUpdater = self
+        navigationItem.searchController = searchVc
     }
 }
 
@@ -822,4 +829,12 @@ extension HomeViewController : GeneratedToHomeDelegate{
         }
         scheduledTimerWithTimeInterval()
     }
+}
+
+
+extension HomeViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+    }
+    
+    
 }

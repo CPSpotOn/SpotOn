@@ -463,6 +463,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8ZJ-6l-AX8">
+<<<<<<< HEAD
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                             </mapView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cna-pY-39w">
@@ -470,6 +471,10 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+=======
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </mapView>
+>>>>>>> b1ddd4e908474a04dd568ff497d25867f5ada499
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="MkV-9R-fDW" userLabel="Weather Stack View">
                                 <rect key="frame" x="20" y="634" width="80" height="62"/>
                                 <subviews>
@@ -532,6 +537,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+<<<<<<< HEAD
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paperplane.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="m7h-ZY-cgS">
                                 <rect key="frame" x="354" y="59" width="40" height="40.000000000000014"/>
                                 <color key="tintColor" systemColor="systemBlueColor"/>
@@ -544,25 +550,22 @@
                                     <outletCollection property="gestureRecognizers" destination="dD5-TA-Agw" appends="YES" id="qmU-vp-3vk"/>
                                 </connections>
                             </imageView>
+=======
+>>>>>>> b1ddd4e908474a04dd568ff497d25867f5ada499
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MoO-PH-dBE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Cna-pY-39w" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" constant="20" id="1z0-ZH-nhe"/>
                             <constraint firstItem="8ZJ-6l-AX8" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" id="2eC-b6-EpL"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="8ZJ-6l-AX8" secondAttribute="trailing" id="5N4-fn-HYh"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="bottom" secondItem="MkV-9R-fDW" secondAttribute="bottom" constant="40" id="AzS-LC-Rlr"/>
-                            <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="Cna-pY-39w" secondAttribute="trailing" constant="20" id="FUp-Wb-wlW"/>
                             <constraint firstItem="BZV-gY-M4n" firstAttribute="centerX" secondItem="c4i-sP-hOe" secondAttribute="centerX" id="ODx-eG-ABC"/>
                             <constraint firstItem="BZV-gY-M4n" firstAttribute="centerY" secondItem="c4i-sP-hOe" secondAttribute="centerY" id="PCw-Ru-Jfx"/>
                             <constraint firstItem="8ZJ-6l-AX8" firstAttribute="top" secondItem="c4i-sP-hOe" secondAttribute="top" id="Pjz-Ju-bQl"/>
                             <constraint firstItem="OL3-xH-Rpz" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" constant="20" id="SMz-1R-NhM"/>
-                            <constraint firstItem="Cna-pY-39w" firstAttribute="top" secondItem="MoO-PH-dBE" secondAttribute="top" constant="16" id="WOJ-79-RiO"/>
-                            <constraint firstItem="m7h-ZY-cgS" firstAttribute="top" secondItem="Cna-pY-39w" secondAttribute="bottom" constant="8" id="gja-Hj-pDC"/>
+                            <constraint firstItem="OL3-xH-Rpz" firstAttribute="top" secondItem="MoO-PH-dBE" secondAttribute="top" constant="58" id="UQi-ac-Iez"/>
                             <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="OL3-xH-Rpz" secondAttribute="trailing" constant="20" id="gvx-Ug-cie"/>
-                            <constraint firstItem="OL3-xH-Rpz" firstAttribute="top" secondItem="Cna-pY-39w" secondAttribute="bottom" constant="8" id="qw9-eG-0Rd"/>
-                            <constraint firstItem="MoO-PH-dBE" firstAttribute="trailing" secondItem="m7h-ZY-cgS" secondAttribute="trailing" constant="20" id="rOP-SU-UAr"/>
-                            <constraint firstItem="MoO-PH-dBE" firstAttribute="bottom" secondItem="8ZJ-6l-AX8" secondAttribute="bottom" id="wm6-98-Ufj"/>
+                            <constraint firstAttribute="bottom" secondItem="8ZJ-6l-AX8" secondAttribute="bottom" id="wm6-98-Ufj"/>
                             <constraint firstItem="MkV-9R-fDW" firstAttribute="leading" secondItem="MoO-PH-dBE" secondAttribute="leading" constant="20" id="zvc-Ci-rhc"/>
                         </constraints>
                     </view>
@@ -574,7 +577,6 @@
                         <outlet property="infoStackView" destination="MkV-9R-fDW" id="Y5T-uV-xcg"/>
                         <outlet property="mapView" destination="8ZJ-6l-AX8" id="10E-FI-cs3"/>
                         <outlet property="pinImageView" destination="BZV-gY-M4n" id="Nln-FX-x2C"/>
-                        <outlet property="searchTextField" destination="Cna-pY-39w" id="Mnd-Fc-Gyg"/>
                         <outlet property="tempImageView" destination="2yv-Gh-j7c" id="f45-ao-9WD"/>
                         <outlet property="tempLabel" destination="hvb-JP-bEK" id="kyP-KS-xfX"/>
                         <segue destination="67r-rj-6gV" kind="presentation" identifier="homeToSettings" modalPresentationStyle="automatic" id="uu7-Xc-1H9"/>
@@ -854,7 +856,6 @@
         <image name="car.fill" catalog="system" width="128" height="93"/>
         <image name="fir" width="128" height="128"/>
         <image name="life-style" width="128" height="128"/>
-        <image name="paperplane.circle.fill" catalog="system" width="128" height="121"/>
         <image name="pathway" width="128" height="128"/>
         <image name="ruler.fill" catalog="system" width="128" height="57"/>
         <image name="sun" width="128" height="128"/>
@@ -868,9 +869,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -14,7 +14,6 @@ import Alamofire
 import AlamofireImage
 
 class HomeViewController: UIViewController {
-    
     //MARK:- Variables
     //TODO: Connect all the outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -26,6 +25,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var infoStackView: UIStackView!
+    @IBOutlet weak var searchVC: UISearchBar!
     
     
     //TODO: Add any required variables
@@ -47,15 +47,17 @@ class HomeViewController: UIViewController {
     var transportMethod = MKDirectionsTransportType()
     var centerToggel = false
     var imageUser = [UIImage]()
+    let searchVc = UISearchController(searchResultsController: SearchResultViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupUserTrackingButtonAndScaleView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setUpSettings()
+        setUpSearchVC()
         self.title = "Home"
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
@@ -230,6 +232,35 @@ extension HomeViewController{
             print("Error: \(error.localizedDescription)")
         }
         
+    }
+    
+    func setupUserTrackingButtonAndScaleView() {
+        mapView.showsUserLocation = true
+
+        let button = MKUserTrackingButton(mapView: mapView)
+        button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+
+        let scale = MKScaleView(mapView: mapView)
+        scale.legendAlignment = .trailing
+        scale.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scale)
+
+        NSLayoutConstraint.activate([
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -700),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -2),
+            scale.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -2),
+            scale.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
+    }
+    
+    func setUpSearchVC() {
+        searchVc.searchResultsUpdater = self
+        navigationItem.searchController = searchVc
     }
 }
 
@@ -755,7 +786,7 @@ extension HomeViewController: MKMapViewDelegate {
                 DispatchQueue.main.async {
                     if self.pinImageView.isHidden != true {
                         //self.geoTestLabel.text = "\(streetNumber) \(streetName)"
-                        self.searchTextField.text = "\(streetNumber) \(streetName)"
+                        self.searchVc.searchBar.text = "\(streetNumber) \(streetName)"
                     }
                 }
             }
@@ -800,4 +831,12 @@ extension HomeViewController : GeneratedToHomeDelegate{
         }
         scheduledTimerWithTimeInterval()
     }
+}
+
+
+extension HomeViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+    }
+    
+    
 }

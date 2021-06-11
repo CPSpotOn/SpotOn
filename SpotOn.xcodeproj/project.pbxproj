@@ -12,6 +12,7 @@
 		C17EBCF3264ED34B0096117B /* GuestAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */; };
 		C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610026371ED100C8EF6C /* WeatherModel.swift */; };
 		C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610426371F0A00C8EF6C /* WeatherManager.swift */; };
+		C1A47BBC2671AF4C00079AFE /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A47BBB2671AF4C00079AFE /* SearchResultViewController.swift */; };
 		C1AF18E42625EC160033476E /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF18E32625EC160033476E /* WeatherData.swift */; };
 		C1EDB2DB266092E700CFA08E /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EDB2DA266092E700CFA08E /* AppSetting.swift */; };
 		C1F67110263FBD940009AE79 /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F6710F263FBD940009AE79 /* MapData.swift */; };
@@ -42,6 +43,7 @@
 		C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAnnotation.swift; sourceTree = "<group>"; };
 		C194610026371ED100C8EF6C /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		C194610426371F0A00C8EF6C /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
+		C1A47BBB2671AF4C00079AFE /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		C1AF18E32625EC160033476E /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		C1EDB2DA266092E700CFA08E /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C1F6710F263FBD940009AE79 /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 				D772CEE72644AB0A0083245A /* AlertService.swift */,
 				C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */,
 				C10DE642266AD708002D1DA0 /* GuestAnnotationViews.swift */,
+				C1A47BBB2671AF4C00079AFE /* SearchResultViewController.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */,
 				C10DE643266AD708002D1DA0 /* GuestAnnotationViews.swift in Sources */,
 				D772CEE82644AB0A0083245A /* AlertService.swift in Sources */,
+				C1A47BBC2671AF4C00079AFE /* SearchResultViewController.swift in Sources */,
 				D72DA6102623484E008C272A /* AppDelegate.swift in Sources */,
 				D772CEEB2644AB240083245A /* RequestViewController.swift in Sources */,
 				3D0F5429264C5F4900E9A47E /* Token.swift in Sources */,

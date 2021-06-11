@@ -8,10 +8,17 @@
 import UIKit
 import SwiftHEXColors
 
+protocol ByeByeProtocol {
+    func dismissFloatingPanel(isDismiss : Bool)
+}
+
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var unitsSC: UISegmentedControl!
     @IBOutlet weak var transportationSC: UISegmentedControl!
+    
+    var dismissProtocol : ByeByeProtocol!
+    
     let userD = UserDefaults.standard
     let tableView : UITableView = {
         let tableView = UITableView()
@@ -48,6 +55,10 @@ class SettingsViewController: UIViewController {
         userD.setValue(unit, forKey: "unit")
         userD.setValue(true, forKey: "save")
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func onDismiss(_ sender: Any) {
+        dismissProtocol.dismissFloatingPanel(isDismiss: true)
     }
     /*
     // MARK: - Navigation

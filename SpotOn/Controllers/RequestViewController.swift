@@ -14,15 +14,20 @@ protocol GeneratedToHomeDelegate {
     func gotoHomeAndAction(access: String, createSession: Bool);
 }
 
+protocol AccessTransferProtocl {
+    func passAccess(access : String)
+}
+
 class RequestViewController: UIViewController {
     
     @IBOutlet weak var invitationLinkField: UITextField!
     
     @IBOutlet weak var generateLinkBtn: UIButton!
-    @IBOutlet weak var codeLabel: UILabel!
+    @IBOutlet weak var containerView: UIView!
     
     
     var generateToHomeDelegate : GeneratedToHomeDelegate!
+    var accessDelegate : AccessTransferProtocl!
     var accessKey : String?
     let viewColor = UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1)
     
@@ -33,6 +38,8 @@ class RequestViewController: UIViewController {
         
         //sets the background as transparent
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        containerView.layer.cornerRadius = 10
+        generateLinkBtn.layer.cornerRadius = 5
 
     }
     
@@ -53,12 +60,12 @@ class RequestViewController: UIViewController {
 //            }
 //        }
         accessKey = randomString(length: 6)
-        codeLabel.text = accessKey!
+        //codeLabel.text = accessKey!
         generateToHomeDelegate.gotoHomeAndAction(access: accessKey!, createSession: true)
-        
+        accessDelegate.passAccess(access: accessKey!)
         //if you want to dismiss
         //dismiss(animated: true, completion: nil)
-        codeLabel.text = accessKey
+        //codeLabel.text = accessKey
         
         print(randomString(length: 6))
         dismiss(animated: true, completion: nil)

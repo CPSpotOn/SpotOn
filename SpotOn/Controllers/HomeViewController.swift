@@ -24,8 +24,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var pinImageView: UIImageView!
     @IBOutlet weak var geoTestLabel: UILabel!
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var accessLabel: UILabel!
     @IBOutlet weak var infoStackView: UIStackView!
     @IBOutlet weak var imageView: UIImageView!
     
@@ -50,6 +48,7 @@ class HomeViewController: UIViewController {
     var centerToggel = false
     var imageUser = [UIImage]()
     var floatingVC : FloatingPanelController!
+    var settingsPanvelVC : FloatingPanelController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,24 +62,26 @@ class HomeViewController: UIViewController {
         setUpSettings()
         self.title = "Home"
         userAnnotations[0].isShown = false
-        //floating button setUp
-        let floatingButton = FloatingButton(controller: self)
-        floatingButton.test = self
-        floatingButton.addButtons(with: pinImageView)
-        
         infoStackView.backgroundColor = .clear
         
-        //invite or accept
-        floatingButton.addItem("Connect", icon: UIImage(named: "connect")){ item in
-            let alertVc = AlertService().alert(me: self)
-            alertVc.modalPresentationStyle = .overCurrentContext
-            alertVc.providesPresentationContextTransitionStyle = true
-            alertVc.definesPresentationContext = true
-            alertVc.modalTransitionStyle = .crossDissolve
-            self.present(alertVc, animated: true, completion: nil)
-            
-        }
-        
+//        //floating button setUp
+//        let floatingButton = FloatingButton(controller: self)
+//        floatingButton.test = self
+//        floatingButton.addButtons(with: pinImageView)
+//
+//        
+//        
+//        //invite or accept
+//        floatingButton.addItem("Connect", icon: UIImage(named: "connect")){ item in
+//            let alertVc = AlertService().alert(me: self)
+//            alertVc.modalPresentationStyle = .overCurrentContext
+//            alertVc.providesPresentationContextTransitionStyle = true
+//            alertVc.definesPresentationContext = true
+//            alertVc.modalTransitionStyle = .crossDissolve
+//            self.present(alertVc, animated: true, completion: nil)
+//
+//        }
+//        
 //        floatingButton.addItem("Center", icon: UIImage(systemName: "rectangle.center.inset.fill")) { item in
 //            if self.centerToggel {
 //                self.mapView.userTrackingMode = .none
@@ -90,15 +91,17 @@ class HomeViewController: UIViewController {
 //                self.centerToggel = true
 //            }
 //        }
+//        
+//        view.addSubview(floatingButton)
+//        setConstraints(floatingButton: floatingButton)
         
-        view.addSubview(floatingButton)
-        setConstraints(floatingButton: floatingButton)
+        
         setWeatherManager()
         weatherManager.performRequest(with: weatherManager.weatherURL)
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
         
-        showClosestUsers()
+        //showClosestUsers()
         
         
         network.imagesQuery(username: myUser.username!) { user in
@@ -133,28 +136,103 @@ class HomeViewController: UIViewController {
     
     @IBAction func onSettinsTap(_ sender: Any) {
         print("Settings")
-        let settingsPanvelVC = FloatingPanelController()
+        settingsPanvelVC = FloatingPanelController()
         settingsPanvelVC.delegate = self
         let settingsVC = storyboard?.instantiateViewController(identifier: "Settings") as? SettingsViewController
+        settingsVC?.dismissProtocol = self
         settingsPanvelVC.set(contentViewController: settingsVC)
-     
-        settingsPanvelVC.addPanel(toParent: self)
+        
+        self.view.addSubview(settingsPanvelVC.view)
+        
+        // REQUIRED. It makes the floating panel view have the same size as the controller's view.
+        settingsPanvelVC.view.frame = self.view.bounds
+
+        // In addition, Auto Layout constraints are highly recommended.
+        // Constraint the fpc.view to all four edges of your controller's view.
+        // It makes the layout more robust on trait collection change.
+        settingsPanvelVC.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            settingsPanvelVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0.0),
+            settingsPanvelVC.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0.0),
+            settingsPanvelVC.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0.0),
+            settingsPanvelVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0.0),
+        ])
+
+        
+        settingsPanvelVC.addChild(settingsVC!)
+        
+        settingsPanvelVC.show(animated: true) {
+            self.settingsPanvelVC.panGestureRecognizer.isEnabled = false
+            self.settingsPanvelVC.didMove(toParent: self)
+        }
         
         
-        settingsPanvelVC.backdropView.dismissalTapGestureRecognizer.isEnabled = true
     }
     
     //constraint for FLoating Action Button
     func setConstraints(floatingButton : FloatingButton){
         //constraints
         //floaty.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        floatingButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        floatingButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         floatingButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         floatingButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        floatingButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
+        floatingButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
+        
     }
     
     
+}
+
+//optionTap Extension
+extension HomeViewController : OptionTapProtocol{
+    func onWhichTap(option: String) {
+        switch option {
+        case "pin":           
+            if pinImageView.isHidden == true {
+                pinImageView.isHidden = false
+            } else {
+                pinImageView.isHidden = true
+            }
+            
+        case "go":
+            if pinImageView.isHidden != true {
+                //self.getDirection()
+                self.run(isHidden: true)
+            } else {
+                //self.mapView.userTrackingMode = .follow
+                self.run(isHidden: false)
+            }
+        case "connect":
+            break
+//            let alertVc = AlertService().alert(me: self)
+//            alertVc.modalPresentationStyle = .overCurrentContext
+//            alertVc.providesPresentationContextTransitionStyle = true
+//            alertVc.definesPresentationContext = true
+//            alertVc.modalTransitionStyle = .crossDissolve
+//            self.present(alertVc, animated: true, completion: nil)
+        default:
+            break
+        }
+    }
+    
+    
+}
+
+///dismiss protocol for panel
+extension HomeViewController : ByeByeProtocol{
+    func dismissFloatingPanel(isDismiss: Bool) {
+        // Inform the panel controller that it will be removed from the hierarchy.
+        settingsPanvelVC.willMove(toParent: nil)
+            
+        // Hide the floating panel.
+        settingsPanvelVC.hide(animated: true) {
+            // Remove the floating panel view from your controller's view.
+            self.settingsPanvelVC.view.removeFromSuperview()
+            // Remove the floating panel controller from the controller hierarchy.
+            self.settingsPanvelVC.removeFromParent()
+        }
+        
+    }
 }
 
 
@@ -165,14 +243,18 @@ extension HomeViewController : FloatingPanelControllerDelegate{
         floatingVC = FloatingPanelController()
         floatingVC.delegate = self
         
-        let OptionVC = storyboard?.instantiateViewController(identifier: "optionsVC") as? OptionsViewController
+        let optionVC = storyboard?.instantiateViewController(identifier: "optionsVC") as? OptionsViewController
+        optionVC?.optionTapDelegate = self
+        optionVC?.generateTransferDelegate = self
+        optionVC?.controller = self
         
-        floatingVC.set(contentViewController: OptionVC)
+        floatingVC.set(contentViewController: optionVC)
         floatingVC.addPanel(toParent: self)
         floatingVC.layout = MyFloatingPanelLayout()
         floatingVC.contentMode = .fitToBounds
         floatingVC.invalidateLayout()
     }
+    
     
     class MyFloatingPanelLayout : FloatingPanelLayout{
         let position: FloatingPanelPosition = .bottom
@@ -180,7 +262,7 @@ extension HomeViewController : FloatingPanelControllerDelegate{
            var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
             return [
                         .full: FloatingPanelLayoutAnchor(absoluteInset: 5.0, edge: .top, referenceGuide: .safeArea),
-                        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.3, edge: .bottom, referenceGuide: .safeArea),
+                        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.35, edge: .bottom, referenceGuide: .safeArea),
                         .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .safeArea),
                     ]
            }
@@ -315,7 +397,7 @@ extension HomeViewController{
         //Chris added this part + plist changed
         locationManger.requestWhenInUseAuthorization()
         locationManger.requestLocation()
-        accessLabel.isHidden = true
+        
     }
     
     //adjust the camera view of the map
@@ -581,7 +663,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                     self.mapView.userTrackingMode = .follow
                 }
             }
-            accessLabel.isHidden = false
+            
             //accessLabel.text = "Access: \(myAccessKey)"
             self.title = myAccessKey
             pinImageView.isHidden = true
@@ -656,7 +738,6 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         annonation.isShown = false
         //annonation.title = myUser["name"] as! String
         userAnnotations.append(annonation)
-        accessLabel.isHidden = false
         //accessLabel.text = "Access: \(myAccessKey)"
         scheduledTimerWithTimeIntervalWaiting()
     }
@@ -881,12 +962,16 @@ extension HomeViewController: MKMapViewDelegate {
 
 extension HomeViewController : GeneratedToHomeDelegate{
     func gotoHomeAndAction(access: String, createSession: Bool) {
-        myAccessKey = access
-        if createSession {
-            getDirectionForGroupSession(accessKey: myAccessKey!, inSession: inOnlineSession)
-        } else {
-            joinGroupSession()
-        }
-        scheduledTimerWithTimeInterval()
+
+ //uncomment for connection to work
+//        myAccessKey = access
+//        if createSession {
+//            getDirectionForGroupSession(accessKey: myAccessKey!, inSession: inOnlineSession)
+//        } else {
+//            joinGroupSession()
+//        }
+//        scheduledTimerWithTimeInterval()
+        
+        print("access :", access)
     }
 }

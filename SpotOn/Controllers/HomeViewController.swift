@@ -250,10 +250,12 @@ extension HomeViewController{
         scale.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scale)
 
-        NSLayoutConstraint.activate([button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
-                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-                                     scale.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -10),
-                                     scale.centerYAnchor.constraint(equalTo: button.centerYAnchor)])
+        NSLayoutConstraint.activate([
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -700),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -2),
+            scale.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -2),
+            scale.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
     }
     
     func setUpSearchVC() {
@@ -784,7 +786,7 @@ extension HomeViewController: MKMapViewDelegate {
                 DispatchQueue.main.async {
                     if self.pinImageView.isHidden != true {
                         //self.geoTestLabel.text = "\(streetNumber) \(streetName)"
-                        self.searchTextField.text = "\(streetNumber) \(streetName)"
+                        self.searchVc.searchBar.text = "\(streetNumber) \(streetName)"
                     }
                 }
             }

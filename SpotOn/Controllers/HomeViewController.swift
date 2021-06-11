@@ -77,7 +77,6 @@ class HomeViewController: UIViewController {
         view.addSubview(floatingButton)
         setConstraints(floatingButton: floatingButton)
         setWeatherManager()
-        weatherManager.performRequest(with: weatherManager.weatherURL)
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
         
@@ -220,14 +219,16 @@ extension HomeViewController{
         if unit != nil {
             //TODO: set unit
             if unit! == "SI" {
-                print("in SI")
+                print("Changing link to SI")
                 weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=metric")
                
             } else if unit! == "Imperial" {
-                print("in Imperial")
+                print("Changing link to Imperial")
                 weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial")
             }
         }
+        let center = getCenterLocation(for: mapView)
+        weatherManager.fetchWeather(latitude: center.coordinate.latitude, longitude: center.coordinate.longitude)
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -742,12 +743,13 @@ extension HomeViewController: WeatherManagerDelegate {
             }
             self.cityLabel.text = weather.cityName
             print("weather conditionname : ", weather.conditionName)
+            print("conditionID: ", weather.conditionId)
             self.tempImageView.image = UIImage(named: weather.conditionName)
         }
     }
     
     func didFailWithError(error: Error) {
-        print(error)
+        print("Error: \(error.localizedDescription)")
     }
 }
 
@@ -791,7 +793,7 @@ extension HomeViewController: MKMapViewDelegate {
             
             print("user pin co-ordinate :",previousLocation.coordinate.latitude, previousLocation.coordinate.longitude)
             
-            guard center.distance(from: previousLocation) > 50 else { return }
+            guard center.distance(from: previousLocation) > 5 else { return }
             self.previousLocation = center
             
             geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in

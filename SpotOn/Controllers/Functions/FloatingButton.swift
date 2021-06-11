@@ -49,6 +49,7 @@ class FloatingButton : Floaty{
         
         //segues into Settings from Home
         self.addItem("Settings", icon: UIImage(systemName: "gearshape")!, handler: { item in
+            
             self.controller.performSegue(withIdentifier: "homeToSettings", sender: nil)
             self.close()
         })

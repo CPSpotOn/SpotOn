@@ -8,10 +8,18 @@
 import UIKit
 import SwiftHEXColors
 
+protocol SettingsProtocol {
+    func onSettingsChanged()
+}
+
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var unitsSC: UISegmentedControl!
     @IBOutlet weak var transportationSC: UISegmentedControl!
+    
+    
+    var settingsDelegate : SettingsProtocol!
+    
     let userD = UserDefaults.standard
     let tableView : UITableView = {
         let tableView = UITableView()
@@ -44,9 +52,12 @@ class SettingsViewController: UIViewController {
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         let transport = transportationSC.titleForSegment(at: transportationSC.selectedSegmentIndex)
         let unit =  unitsSC.titleForSegment(at: unitsSC.selectedSegmentIndex)
+        print(unit)
         userD.setValue(transport, forKey: "transport")
         userD.setValue(unit, forKey: "unit")
         userD.setValue(true, forKey: "save")
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true){
+            self.settingsDelegate.onSettingsChanged()
+        }
     }
 }

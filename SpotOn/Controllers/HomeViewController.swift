@@ -738,7 +738,7 @@ extension HomeViewController: WeatherManagerDelegate {
             self.cityLabel.text = weather.cityName
             print("weather conditionname : ", weather.conditionName)
             print("conditionID: ", weather.conditionId)
-            self.tempImageView.image = UIImage(named: weather.conditionName)
+            self.tempImageView.image = UIImage(systemName: weather.conditionName)
         }
     }
     

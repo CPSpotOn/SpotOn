@@ -147,18 +147,18 @@
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="200"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mlk-BL-r91">
-                                                <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="200"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="70.333333333333329" height="200"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SpotOnLogo_1" translatesAutoresizingMaskIntoConstraints="NO" id="9dd-am-RNw">
-                                                <rect key="frame" x="69.333333333333314" y="0.0" width="280" height="200"/>
+                                                <rect key="frame" x="70.333333333333314" y="0.0" width="280" height="200"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="Rzh-Iq-sdQ"/>
                                                     <constraint firstAttribute="height" constant="200" id="e4q-w3-x6y"/>
                                                 </constraints>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="56K-cC-Co2">
-                                                <rect key="frame" x="349.33333333333331" y="0.0" width="24.666666666666686" height="200"/>
+                                                <rect key="frame" x="350.33333333333331" y="0.0" width="23.666666666666686" height="200"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                         </subviews>

@@ -8,10 +8,18 @@
 import UIKit
 import SwiftHEXColors
 
+protocol SettingsProtocol {
+    func onSettingsChanged()
+}
+
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var unitsSC: UISegmentedControl!
     @IBOutlet weak var transportationSC: UISegmentedControl!
+    
+    
+    var settingsDelegate : SettingsProtocol!
+    
     let userD = UserDefaults.standard
     let tableView : UITableView = {
         let tableView = UITableView()
@@ -47,15 +55,8 @@ class SettingsViewController: UIViewController {
         userD.setValue(transport, forKey: "transport")
         userD.setValue(unit, forKey: "unit")
         userD.setValue(true, forKey: "save")
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true){
+            self.settingsDelegate.onSettingsChanged()
+        }
     }
-    /*
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

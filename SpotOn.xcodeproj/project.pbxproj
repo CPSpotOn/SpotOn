@@ -8,10 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		3D0F5429264C5F4900E9A47E /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0F5428264C5F4900E9A47E /* Token.swift */; };
+		C10A08CD2673D32700C4691E /* LocalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10A08CC2673D32700C4691E /* LocalData.swift */; };
+		C10A08D02673F57800C4691E /* TraficData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10A08CF2673F57800C4691E /* TraficData.swift */; };
+		C10A08D226741F3300C4691E /* SearchLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10A08D126741F3300C4691E /* SearchLocation.swift */; };
+		C10A08D4267421C000C4691E /* SearchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10A08D3267421C000C4691E /* SearchData.swift */; };
+		C10A08D62674248B00C4691E /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10A08D52674248B00C4691E /* SearchModel.swift */; };
 		C10DE643266AD708002D1DA0 /* GuestAnnotationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10DE642266AD708002D1DA0 /* GuestAnnotationViews.swift */; };
 		C17EBCF3264ED34B0096117B /* GuestAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */; };
 		C194610126371ED100C8EF6C /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610026371ED100C8EF6C /* WeatherModel.swift */; };
 		C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194610426371F0A00C8EF6C /* WeatherManager.swift */; };
+		C1A47BBC2671AF4C00079AFE /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A47BBB2671AF4C00079AFE /* SearchResultViewController.swift */; };
 		C1AF18E42625EC160033476E /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF18E32625EC160033476E /* WeatherData.swift */; };
 		C1EDB2DB266092E700CFA08E /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EDB2DA266092E700CFA08E /* AppSetting.swift */; };
 		C1F67110263FBD940009AE79 /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F6710F263FBD940009AE79 /* MapData.swift */; };
@@ -38,10 +44,16 @@
 		3D0F5428264C5F4900E9A47E /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		73DF5F10D7BB0E1980A1C6EF /* Pods-SpotOn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.debug.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.debug.xcconfig"; sourceTree = "<group>"; };
 		7DE9022139D3DAA15151B691 /* Pods-SpotOn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotOn.release.xcconfig"; path = "Target Support Files/Pods-SpotOn/Pods-SpotOn.release.xcconfig"; sourceTree = "<group>"; };
+		C10A08CC2673D32700C4691E /* LocalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalData.swift; sourceTree = "<group>"; };
+		C10A08CF2673F57800C4691E /* TraficData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraficData.swift; sourceTree = "<group>"; };
+		C10A08D126741F3300C4691E /* SearchLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocation.swift; sourceTree = "<group>"; };
+		C10A08D3267421C000C4691E /* SearchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchData.swift; sourceTree = "<group>"; };
+		C10A08D52674248B00C4691E /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
 		C10DE642266AD708002D1DA0 /* GuestAnnotationViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAnnotationViews.swift; sourceTree = "<group>"; };
 		C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAnnotation.swift; sourceTree = "<group>"; };
 		C194610026371ED100C8EF6C /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		C194610426371F0A00C8EF6C /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
+		C1A47BBB2671AF4C00079AFE /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		C1AF18E32625EC160033476E /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		C1EDB2DA266092E700CFA08E /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C1F6710F263FBD940009AE79 /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
@@ -87,6 +99,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C10A08CE2673F56600C4691E /* TraficData */ = {
+			isa = PBXGroup;
+			children = (
+				C10A08CF2673F57800C4691E /* TraficData.swift */,
+			);
+			path = TraficData;
+			sourceTree = "<group>";
+		};
 		C19460FF26371EB200C8EF6C /* WeatherData */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +119,7 @@
 		C1AF18E22625EC030033476E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C10A08CE2673F56600C4691E /* TraficData */,
 				C19460FF26371EB200C8EF6C /* WeatherData */,
 				D72DA628262354D1008C272A /* MapData */,
 				3D0F5428264C5F4900E9A47E /* Token.swift */,
@@ -142,6 +163,7 @@
 		D72DA627262354C8008C272A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				C10A08D126741F3300C4691E /* SearchLocation.swift */,
 				D713ABC326235C0D0001ADDC /* NetworkCalls.swift */,
 				C194610426371F0A00C8EF6C /* WeatherManager.swift */,
 			);
@@ -153,6 +175,8 @@
 			children = (
 				D713ABC626235C620001ADDC /* MapGeoJSONs.swift */,
 				C1F6710F263FBD940009AE79 /* MapData.swift */,
+				C10A08D3267421C000C4691E /* SearchData.swift */,
+				C10A08D52674248B00C4691E /* SearchModel.swift */,
 			);
 			path = MapData;
 			sourceTree = "<group>";
@@ -221,6 +245,8 @@
 				D772CEE72644AB0A0083245A /* AlertService.swift */,
 				C17EBCF2264ED34B0096117B /* GuestAnnotation.swift */,
 				C10DE642266AD708002D1DA0 /* GuestAnnotationViews.swift */,
+				C1A47BBB2671AF4C00079AFE /* SearchResultViewController.swift */,
+				C10A08CC2673D32700C4691E /* LocalData.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -350,15 +376,21 @@
 				D72DA63326235650008C272A /* HomeViewController.swift in Sources */,
 				D78ACC5E262B22E3009B3740 /* RegisterViewController.swift in Sources */,
 				D713ABC726235C620001ADDC /* MapGeoJSONs.swift in Sources */,
+				C10A08D226741F3300C4691E /* SearchLocation.swift in Sources */,
 				D72DA63026235643008C272A /* LoginViewController.swift in Sources */,
+				C10A08D4267421C000C4691E /* SearchData.swift in Sources */,
 				C194610526371F0A00C8EF6C /* WeatherManager.swift in Sources */,
 				D713ABC426235C0D0001ADDC /* NetworkCalls.swift in Sources */,
+				C10A08CD2673D32700C4691E /* LocalData.swift in Sources */,
 				C10DE643266AD708002D1DA0 /* GuestAnnotationViews.swift in Sources */,
 				D772CEE82644AB0A0083245A /* AlertService.swift in Sources */,
+				C1A47BBC2671AF4C00079AFE /* SearchResultViewController.swift in Sources */,
+				C10A08D62674248B00C4691E /* SearchModel.swift in Sources */,
 				D72DA6102623484E008C272A /* AppDelegate.swift in Sources */,
 				D772CEEB2644AB240083245A /* RequestViewController.swift in Sources */,
 				3D0F5429264C5F4900E9A47E /* Token.swift in Sources */,
 				C1EDB2DB266092E700CFA08E /* AppSetting.swift in Sources */,
+				C10A08D02673F57800C4691E /* TraficData.swift in Sources */,
 				D78ACC61262B251A009B3740 /* ProfileViewController.swift in Sources */,
 				D72DA61A2623484E008C272A /* SpotOn.xcdatamodeld in Sources */,
 				D78370EA263F725A00CECE32 /* FloatingButton.swift in Sources */,

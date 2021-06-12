@@ -7,7 +7,6 @@
 
 import Foundation
 import Parse
-import MapKit
 import CoreLocation
 
 //TODO: Add network call methods

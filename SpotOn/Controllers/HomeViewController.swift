@@ -14,7 +14,6 @@ import Alamofire
 import AlamofireImage
 
 class HomeViewController: UIViewController {
-    
     //MARK:- Variables
     //TODO: Connect all the outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -23,14 +22,16 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var pinImageView: UIImageView!
     @IBOutlet weak var geoTestLabel: UILabel!
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var accessLabel: UILabel!
+    
+    
     @IBOutlet weak var infoStackView: UIStackView!
+    @IBOutlet weak var dummyView: UIView!
     
     
     //TODO: Add any required variables
     let locationManger = CLLocationManager()
     let zoomMagnitude : Double = 1000; // Zoomed in a little more, prev was 10000
+    let zoomMagnitudeAddress : Double = 300; // Zoomed in a little more, prev was 10000
     var weatherManager = WeatherManager() //Chris added this
     var previousLocation : CLLocation?
     var directionsArrya: [MKDirections] = []
@@ -38,7 +39,7 @@ class HomeViewController: UIViewController {
     var inOnlineSession = false
     var myAccessKey : String?
     var timer = Timer()
-    var setIndexNum: Int =  0
+    var setIndexNum: Int? =  0
     var userAnnotations = [GuestAnnotation(title: nil, locationName: nil, discipline: nil, coordinate: nil, subtitle: nil)]
     var userTrackCount : Int = 0
     var myUser = PFUser.current()!
@@ -47,15 +48,20 @@ class HomeViewController: UIViewController {
     var transportMethod = MKDirectionsTransportType()
     var centerToggel = false
     var imageUser = [UIImage]()
+    let searchVc = UISearchController(searchResultsController: SearchResultViewController())
+    var places : [SearchModel] = []
+    var searchManager = SearchLocation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupUserTrackingButtonAndScaleView()
+        searchVc.searchBar.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setUpSettings()
+        setUpSearchVC()
         self.title = "Home"
         //floating button setUp
         let floatingButton = FloatingButton(controller: self)
@@ -75,25 +81,10 @@ class HomeViewController: UIViewController {
         view.addSubview(floatingButton)
         setConstraints(floatingButton: floatingButton)
         setWeatherManager()
-        weatherManager.performRequest(with: weatherManager.weatherURL)
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
-        
-        //showClosestUsers()
+        searchManager.delegate = self
     }
-    
-    //center toggle
-    @IBAction func onTapCenter(_ sender: Any) {
-        if self.centerToggel {
-            self.mapView.userTrackingMode = .none
-            self.centerToggel = false
-        } else {
-            self.mapView.userTrackingMode = .follow
-            self.centerToggel = true
-        }
-    }
-    
-    
     
     //constraint for FLoating Action Button
     func setConstraints(floatingButton : FloatingButton){
@@ -105,6 +96,25 @@ class HomeViewController: UIViewController {
         floatingButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "homeToSettings" {
+            if let settingsVC = segue.destination as? SettingsViewController{
+                settingsVC.settingsDelegate = self
+            }
+        }
+    }
+}
+
+extension HomeViewController : SettingsProtocol{
+    func onSettingsChanged() {
+        print("on Settings Changed")
+        
+        DispatchQueue.main.async {
+            self.setUpSettings()
+            
+        }
+    }
 }
 
 // MARK:- Setup Functions
@@ -134,7 +144,7 @@ extension HomeViewController{
         //Chris added this part + plist changed
         locationManger.requestWhenInUseAuthorization()
         locationManger.requestLocation()
-        accessLabel.isHidden = true
+        
     }
     
     //adjust the camera view of the map
@@ -146,6 +156,13 @@ extension HomeViewController{
             mapView.setRegion(region, animated: true)
             
         }
+    }
+    
+    func zoomInTo(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        let zoomInLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        let region = MKCoordinateRegion.init(center: zoomInLocation, latitudinalMeters: zoomMagnitudeAddress, longitudinalMeters: zoomMagnitudeAddress)
+        mapView.setRegion(region, animated: true)
+        pinImageView.isHidden = false
     }
     
     /*
@@ -165,7 +182,7 @@ extension HomeViewController{
      */
     func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
     }
     
     /*
@@ -177,10 +194,12 @@ extension HomeViewController{
         })
     }
     
+    //weatherManager SetLink is called but not updating
     func setUpSettings() {
         settings.getUserDefaults()
         let transport = settings.getTransport()
         let unit = settings.getUnit()
+        print("transport :",transport as Any, "unit :",unit as Any)
         if transport != nil {
             //TODO set transport
             if transport! == "Car" {
@@ -194,11 +213,16 @@ extension HomeViewController{
         if unit != nil {
             //TODO: set unit
             if unit! == "SI" {
+                print("Changing link to SI")
                 weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=metric")
+                
             } else if unit! == "Imperial" {
+                print("Changing link to Imperial")
                 weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial")
             }
         }
+        let center = getCenterLocation(for: mapView)
+        weatherManager.fetchWeather(latitude: center.coordinate.latitude, longitude: center.coordinate.longitude)
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -230,6 +254,38 @@ extension HomeViewController{
             print("Error: \(error.localizedDescription)")
         }
         
+    }
+    
+    func setupUserTrackingButtonAndScaleView() {
+        mapView.showsUserLocation = true
+        
+        let button = MKUserTrackingButton(mapView: mapView)
+        button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: dummyView.topAnchor, constant: 42),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4),
+            
+        ])
+        
+        
+        DispatchQueue.main.async {
+            self.mapView.showsScale = false
+            let scale = MKScaleView(mapView: self.mapView)
+            //        scale.legendAlignment = .trailing
+            scale.translatesAutoresizingMaskIntoConstraints = false
+            self.mapView.addSubview(scale)
+        }
+        
+    }
+    
+    func setUpSearchVC() {
+        searchVc.searchResultsUpdater = self
+        navigationItem.searchController = searchVc
     }
 }
 
@@ -421,7 +477,6 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                 }
             }
             //hide lables
-            accessLabel.isHidden = false
             self.title = myAccessKey
             pinImageView.isHidden = true
             print("Sent directions")
@@ -476,7 +531,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             namesArray.append(self.myUser["name"] as! String)
             //update query column values
             travel["names"] = namesArray
-            userCount = self.setIndexNum
+            userCount = self.setIndexNum ?? 0
             travel["userCount"] = userCount
             positions.append([location.latitude, location.longitude])
             travel["position"] = positions
@@ -529,7 +584,6 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
         annonation.isShown = false
         //annonation.title = myUser["name"] as! String
         userAnnotations.append(annonation)
-        accessLabel.isHidden = false
         //accessLabel.text = "Access: \(myAccessKey)"
         scheduledTimerWithTimeIntervalWaiting()
     }
@@ -594,9 +648,12 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                         }
                     }
                 } else {
+                    let exist = usersPositions.indices.contains(self.setIndexNum!)
                     let myPos = [location.latitude, location.longitude]
-                    usersPositions[self.setIndexNum ] = myPos
-                    travel["position"] = usersPositions
+                    if exist {
+                        usersPositions[self.setIndexNum!] = myPos
+                        travel["position"] = usersPositions
+                    }
                 }
                 loop += 1
             }
@@ -683,12 +740,13 @@ extension HomeViewController: WeatherManagerDelegate {
             }
             self.cityLabel.text = weather.cityName
             print("weather conditionname : ", weather.conditionName)
-            self.tempImageView.image = UIImage(named: weather.conditionName)
+            print("conditionID: ", weather.conditionId)
+            self.tempImageView.image = UIImage(systemName: weather.conditionName)
         }
     }
     
     func didFailWithError(error: Error) {
-        print(error)
+        print("Error: \(error.localizedDescription)")
     }
 }
 
@@ -732,7 +790,7 @@ extension HomeViewController: MKMapViewDelegate {
             
             print("user pin co-ordinate :",previousLocation.coordinate.latitude, previousLocation.coordinate.longitude)
             
-            guard center.distance(from: previousLocation) > 50 else { return }
+            guard center.distance(from: previousLocation) > 5 else { return }
             self.previousLocation = center
             
             geoCoder.reverseGeocodeLocation(center) { [weak self] (placemarks, error) in
@@ -755,7 +813,7 @@ extension HomeViewController: MKMapViewDelegate {
                 DispatchQueue.main.async {
                     if self.pinImageView.isHidden != true {
                         //self.geoTestLabel.text = "\(streetNumber) \(streetName)"
-                        self.searchTextField.text = "\(streetNumber) \(streetName)"
+                        self.searchVc.searchBar.text = "\(streetNumber) \(streetName)"
                     }
                 }
             }
@@ -765,7 +823,7 @@ extension HomeViewController: MKMapViewDelegate {
     //rederer func
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        renderer.strokeColor = .blue
+        renderer.strokeColor = UIColor(hexString: "#3edbf0")
         
         return renderer
     }
@@ -799,5 +857,48 @@ extension HomeViewController : GeneratedToHomeDelegate{
             joinGroupSession()
         }
         scheduledTimerWithTimeInterval()
+    }
+}
+
+// MARK:- UISearchResultsUpdating
+extension HomeViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let resultVC = searchController.searchResultsController as? SearchResultViewController
+        resultVC?.delegate = self
+        DispatchQueue.main.async {
+            print(self.places)
+            resultVC?.update(with: self.places)
+        }
+    }
+}
+
+// MARK:- UISearchBarDelegate
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let a = searchBar.text?.components(separatedBy: " ")
+        searchManager.fetchAddress(splitAddress: a!)
+    }
+}
+
+// MARK:- SearchManagerDelegate
+extension HomeViewController: SearchManagerDelegate {
+    func didUpdateAddress(_ searchingManager: SearchLocation, search: [SearchModel]) {
+        DispatchQueue.main.async {
+            self.places = search
+            self.updateSearchResults(for: self.searchVc)
+        }
+    }
+    func didFailWithErrorSearch(error: Error) {
+        print("Error: \(error.localizedDescription)")
+    }
+}
+
+// MARK:- SearchResultDelegate
+extension HomeViewController: SearchResultDelegate {
+    func didTapPlace(lat: CLLocationDegrees, lon: CLLocationDegrees, address: String) {
+        DispatchQueue.main.async {
+            self.zoomInTo(lat: lat, lon: lon)
+            self.searchVc.searchBar.text = address
+        }
     }
 }

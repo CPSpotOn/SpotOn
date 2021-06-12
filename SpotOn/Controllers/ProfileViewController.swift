@@ -58,6 +58,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         alert.addTextField(configurationHandler: { textField in
+            textField.isSecureTextEntry = true
             textField.placeholder = "Your new Password"
            
         })
@@ -85,6 +86,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
          
         }))
         self.present(alert, animated: true)
+        PFUser.logOut()
     }
     
     

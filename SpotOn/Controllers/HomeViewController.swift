@@ -31,6 +31,7 @@ class HomeViewController: UIViewController {
     //TODO: Add any required variables
     let locationManger = CLLocationManager()
     let zoomMagnitude : Double = 1000; // Zoomed in a little more, prev was 10000
+    let zoomMagnitudeAddress : Double = 100; // Zoomed in a little more, prev was 10000
     var weatherManager = WeatherManager() //Chris added this
     var previousLocation : CLLocation?
     var directionsArrya: [MKDirections] = []
@@ -48,10 +49,13 @@ class HomeViewController: UIViewController {
     var centerToggel = false
     var imageUser = [UIImage]()
     let searchVc = UISearchController(searchResultsController: SearchResultViewController())
+    var places : [SearchModel] = []
+    var searchManager = SearchLocation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUserTrackingButtonAndScaleView()
+        searchVc.searchBar.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,7 +83,7 @@ class HomeViewController: UIViewController {
         setWeatherManager()
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
-        
+        searchManager.delegate = self
         //showClosestUsers()
     }
     
@@ -171,6 +175,13 @@ extension HomeViewController{
         }
     }
     
+    func zoomInTo(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        let zoomInLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        let region = MKCoordinateRegion.init(center: zoomInLocation, latitudinalMeters: zoomMagnitudeAddress, longitudinalMeters: zoomMagnitudeAddress)
+        mapView.setRegion(region, animated: true)
+        pinImageView.isHidden = false
+    }
+    
     /*
      Setup wWeather Manager Delegate
      */
@@ -188,7 +199,7 @@ extension HomeViewController{
      */
     func scheduledTimerWithTimeInterval(){
         // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(getLocationsUpdates), userInfo: nil, repeats: true)
     }
     
     /*
@@ -863,8 +874,45 @@ extension HomeViewController : GeneratedToHomeDelegate{
     }
 }
 
-
+// MARK:- UISearchResultsUpdating
 extension HomeViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
+        let resultVC = searchController.searchResultsController as? SearchResultViewController
+        resultVC?.delegate = self
+        DispatchQueue.main.async {
+            print(self.places)
+            resultVC?.update(with: self.places)
+        }
+    }
+}
+
+// MARK:- UISearchBarDelegate
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let a = searchBar.text?.components(separatedBy: " ")
+        searchManager.fetchAddress(splitAddress: a!)
+    }
+}
+
+// MARK:- SearchManagerDelegate
+extension HomeViewController: SearchManagerDelegate {
+    func didUpdateAddress(_ searchingManager: SearchLocation, search: [SearchModel]) {
+        DispatchQueue.main.async {
+            self.places = search
+            self.updateSearchResults(for: self.searchVc)
+        }
+        
+    }
+    func didFailWithErrorSearch(error: Error) {
+        print("Error: \(error.localizedDescription)")
+    }
+}
+
+extension HomeViewController: SearchResultDelegate {
+    func didTapPlace(lat: CLLocationDegrees, lon: CLLocationDegrees, address: String) {
+        DispatchQueue.main.async {
+            self.zoomInTo(lat: lat, lon: lon)
+            self.searchVc.searchBar.text = address
+        }
     }
 }

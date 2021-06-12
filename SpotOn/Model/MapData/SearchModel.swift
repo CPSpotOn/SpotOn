@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MapKit
+import CoreLocation
 
 struct SearchModel {
     var latitude: CLLocationDegrees

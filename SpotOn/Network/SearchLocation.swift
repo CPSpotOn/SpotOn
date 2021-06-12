@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import MapKit
+import CoreLocation
+
 protocol SearchManagerDelegate {
     func didUpdateAddress(_ searchingManager: SearchLocation, search: [SearchModel])
     func didFailWithErrorSearch(error: Error)

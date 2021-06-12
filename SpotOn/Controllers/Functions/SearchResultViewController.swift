@@ -12,6 +12,7 @@ protocol SearchResultDelegate {
 }
 
 class SearchResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
     //Variables
     var places : [SearchModel] = []
     var delegate : SearchResultDelegate?
@@ -56,9 +57,7 @@ class SearchResultViewController: UIViewController, UITableViewDelegate, UITable
         tableView.deselectRow(at: indexPath, animated: true)
         let addressObject = places[indexPath.row]
         delegate?.didTapPlace(lat: addressObject.latitude, lon: addressObject.longitude, address: addressObject.freeformAddress)
-        
         self.dismiss(animated: true, completion: nil)
     }
 }
-
-//Mark - Helper Functions
+ 

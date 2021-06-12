@@ -31,7 +31,7 @@ class HomeViewController: UIViewController {
     //TODO: Add any required variables
     let locationManger = CLLocationManager()
     let zoomMagnitude : Double = 1000; // Zoomed in a little more, prev was 10000
-    let zoomMagnitudeAddress : Double = 100; // Zoomed in a little more, prev was 10000
+    let zoomMagnitudeAddress : Double = 300; // Zoomed in a little more, prev was 10000
     var weatherManager = WeatherManager() //Chris added this
     var previousLocation : CLLocation?
     var directionsArrya: [MKDirections] = []
@@ -84,21 +84,7 @@ class HomeViewController: UIViewController {
         checkLocationServices()
         overrideUserInterfaceStyle = .light //light mode by default
         searchManager.delegate = self
-        //showClosestUsers()
     }
-    
-    
-    //center toggle
-    @IBAction func onTapCenter(_ sender: Any) {
-        if self.centerToggel {
-            self.mapView.userTrackingMode = .none
-            self.centerToggel = false
-        } else {
-            self.mapView.userTrackingMode = .follow
-            self.centerToggel = true
-        }
-    }
-    
     
     //constraint for FLoating Action Button
     func setConstraints(floatingButton : FloatingButton){
@@ -898,13 +884,13 @@ extension HomeViewController: SearchManagerDelegate {
             self.places = search
             self.updateSearchResults(for: self.searchVc)
         }
-        
     }
     func didFailWithErrorSearch(error: Error) {
         print("Error: \(error.localizedDescription)")
     }
 }
 
+// MARK:- SearchResultDelegate
 extension HomeViewController: SearchResultDelegate {
     func didTapPlace(lat: CLLocationDegrees, lon: CLLocationDegrees, address: String) {
         DispatchQueue.main.async {

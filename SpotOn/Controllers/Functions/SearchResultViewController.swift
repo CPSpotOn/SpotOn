@@ -16,6 +16,7 @@ class SearchResultViewController: UIViewController, UITableViewDelegate, UITable
     //Variables
     var places : [SearchModel] = []
     var delegate : SearchResultDelegate?
+    
     let tableView: UITableView = {
         let table = UITableView()
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")

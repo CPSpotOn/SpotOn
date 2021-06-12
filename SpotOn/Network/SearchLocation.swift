@@ -16,6 +16,8 @@ protocol SearchManagerDelegate {
 struct SearchLocation {
     var baseUrl = "https://api.tomtom.com/search/2/search/"
     var delegate: SearchManagerDelegate?
+    
+    
     func fetchAddress(splitAddress: [String]) {
         var dUrl = baseUrl
         var count = 0
@@ -83,7 +85,7 @@ struct SearchLocation {
             
         } catch {
             // If error catch, inform the protocol of error
-            print("Failed decofing :(")
+            print("Failed decoding :(")
             delegate?.didFailWithErrorSearch(error: error)
             return nil
         }

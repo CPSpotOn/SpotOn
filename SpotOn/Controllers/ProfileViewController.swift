@@ -86,7 +86,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
          
         }))
         self.present(alert, animated: true)
-        PFUser.logOut()
     }
     
     

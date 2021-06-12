@@ -22,8 +22,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var pinImageView: UIImageView!
     @IBOutlet weak var geoTestLabel: UILabel!
-   
-   
+    
+    
     @IBOutlet weak var infoStackView: UIStackView!
     @IBOutlet weak var dummyView: UIView!
     
@@ -98,7 +98,7 @@ class HomeViewController: UIViewController {
             self.centerToggel = true
         }
     }
-        
+    
     
     //constraint for FLoating Action Button
     func setConstraints(floatingButton : FloatingButton){
@@ -123,15 +123,12 @@ class HomeViewController: UIViewController {
 extension HomeViewController : SettingsProtocol{
     func onSettingsChanged() {
         print("on Settings Changed")
-      
+        
         DispatchQueue.main.async {
             self.setUpSettings()
-
+            
         }
-    
     }
-    
-    
 }
 
 // MARK:- Setup Functions
@@ -216,7 +213,7 @@ extension HomeViewController{
         settings.getUserDefaults()
         let transport = settings.getTransport()
         let unit = settings.getUnit()
-        print("transport :",transport, "unit :",unit)
+        print("transport :",transport as Any, "unit :",unit as Any)
         if transport != nil {
             //TODO set transport
             if transport! == "Car" {
@@ -232,7 +229,7 @@ extension HomeViewController{
             if unit! == "SI" {
                 print("Changing link to SI")
                 weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=metric")
-               
+                
             } else if unit! == "Imperial" {
                 print("Changing link to Imperial")
                 weatherManager.setLink(link: "https://api.openweathermap.org/data/2.5/weather?appid=90d68b60af6b20b1c2976096fefb8a9b&units=imperial")
@@ -275,7 +272,7 @@ extension HomeViewController{
     
     func setupUserTrackingButtonAndScaleView() {
         mapView.showsUserLocation = true
-
+        
         let button = MKUserTrackingButton(mapView: mapView)
         button.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
         button.layer.borderColor = UIColor.white.cgColor
@@ -293,11 +290,11 @@ extension HomeViewController{
         DispatchQueue.main.async {
             self.mapView.showsScale = false
             let scale = MKScaleView(mapView: self.mapView)
-    //        scale.legendAlignment = .trailing
+            //        scale.legendAlignment = .trailing
             scale.translatesAutoresizingMaskIntoConstraints = false
             self.mapView.addSubview(scale)
         }
-     
+        
     }
     
     func setUpSearchVC() {

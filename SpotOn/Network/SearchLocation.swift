@@ -67,7 +67,7 @@ struct SearchLocation {
         // Decode data
         do {
             print("Decoding")
-            // TRY decoding data using 'WeatherData' format from weatherData
+            // TRY decoding data using 'SearchrData' format fromsearchData
             let decodedData = try decoder.decode(SearchData.self, from: searchData)
             var aSearch : [SearchModel] = []
             for inData in decodedData.results {

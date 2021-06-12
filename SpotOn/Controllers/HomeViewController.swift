@@ -820,7 +820,7 @@ extension HomeViewController: MKMapViewDelegate {
     //rederer func
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        renderer.strokeColor = .blue
+        renderer.strokeColor = UIColor(hexString: "#3edbf0")
         
         return renderer
     }

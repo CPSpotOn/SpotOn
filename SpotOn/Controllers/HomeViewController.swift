@@ -39,7 +39,7 @@ class HomeViewController: UIViewController {
     var inOnlineSession = false
     var myAccessKey : String?
     var timer = Timer()
-    var setIndexNum: Int =  0
+    var setIndexNum: Int? =  0
     var userAnnotations = [GuestAnnotation(title: nil, locationName: nil, discipline: nil, coordinate: nil, subtitle: nil)]
     var userTrackCount : Int = 0
     var myUser = PFUser.current()!
@@ -531,7 +531,7 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
             namesArray.append(self.myUser["name"] as! String)
             //update query column values
             travel["names"] = namesArray
-            userCount = self.setIndexNum
+            userCount = self.setIndexNum ?? 0
             travel["userCount"] = userCount
             positions.append([location.latitude, location.longitude])
             travel["position"] = positions
@@ -648,9 +648,12 @@ extension HomeViewController: CLLocationManagerDelegate, Test{
                         }
                     }
                 } else {
+                    let exist = usersPositions.indices.contains(self.setIndexNum!)
                     let myPos = [location.latitude, location.longitude]
-                    usersPositions[self.setIndexNum ] = myPos
-                    travel["position"] = usersPositions
+                    if exist {
+                        usersPositions[self.setIndexNum!] = myPos
+                        travel["position"] = usersPositions
+                    }
                 }
                 loop += 1
             }

@@ -52,7 +52,6 @@ class SettingsViewController: UIViewController {
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         let transport = transportationSC.titleForSegment(at: transportationSC.selectedSegmentIndex)
         let unit =  unitsSC.titleForSegment(at: unitsSC.selectedSegmentIndex)
-        print(unit)
         userD.setValue(transport, forKey: "transport")
         userD.setValue(unit, forKey: "unit")
         userD.setValue(true, forKey: "save")
